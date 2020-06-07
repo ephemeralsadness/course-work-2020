@@ -41,13 +41,15 @@ public:
     }
 
     Vector<T>& operator = (Vector<T>&& v) noexcept {
-        ~Vector();
+        this->~Vector();
         _size = v._size;
         _capacity = v._capacity;
         _data = v._data;
         v._size = 0;
         v._capacity = 0;
         v._data = nullptr;
+
+        return *this;
     }
 
     T& operator [] (size_t index) noexcept {
@@ -80,7 +82,7 @@ public:
         _data[--_size].~T();
     }
 
-    void Reserve(int capacity) noexcept {
+    void Reserve(size_t capacity) noexcept {
         if (capacity <= _capacity)
             return;
 
