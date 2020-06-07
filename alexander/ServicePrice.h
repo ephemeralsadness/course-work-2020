@@ -13,28 +13,28 @@ public:
     typedef std::string measure_t;
 
     // Инициализация по умолчанию
-    ServicePrice()
+    ServicePrice() noexcept
             : _name("Empty"),
               _company("Empty"),
               _price(0.0),
               _measure("Empty") {}
 
     // Конструктор класса
-    ServicePrice(name_t name, company_t company, price_t price, measure_t measure)
+    ServicePrice(name_t name, company_t company, price_t price, measure_t measure) noexcept
             : _name(std::move(name)),
               _company(std::move(company)),
               _price(std::move(price)),
               _measure(std::move(measure)) {}
 
     // Геттеры и сеттеры
-    name_t GetName();
-    company_t GetCompany();
-    price_t GetPrice();
-    measure_t GetMeasure();
-    void SetName(name_t name);
-    void SetCompany(company_t company);
-    void SetPrice(price_t price);
-    void SetMeasure(measure_t measure);
+    name_t GetName() const noexcept;
+    company_t GetCompany() const noexcept;
+    price_t GetPrice() const noexcept;
+    measure_t GetMeasure() const noexcept;
+    void SetName(name_t name) noexcept;
+    void SetCompany(company_t company) noexcept;
+    void SetPrice(price_t price) noexcept;
+    void SetMeasure(measure_t measure) noexcept;
 private:
     name_t _name;
     company_t _company;

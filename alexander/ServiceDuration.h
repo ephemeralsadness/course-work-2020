@@ -11,23 +11,23 @@ public:
     typedef double duration_t;
 
     // Инициализация по умолчанию
-    ServiceDuration()
+    ServiceDuration() noexcept
             : _name("Empty"),
               _min_duration(0.0),
               _max_duration(0.0) {}
 
 
-    ServiceDuration(name_t name, duration_t min_duration, duration_t max_duration)
+    ServiceDuration(name_t name, duration_t min_duration, duration_t max_duration) noexcept
             : _name(std::move(name)),
               _min_duration(std::move(min_duration)),
               _max_duration(std::move(max_duration)) {}
 
-    name_t GetName();
-    duration_t GetMinDuration();
-    duration_t GetMaxDuration();
-    void SetName(name_t name);
-    void SetMinDuration(duration_t min_duration);
-    void SetMaxDuration(duration_t max_duration);
+    name_t GetName() const noexcept;
+    duration_t GetMinDuration() const noexcept;
+    duration_t GetMaxDuration() const noexcept;
+    void SetName(name_t name) noexcept;
+    void SetMinDuration(duration_t min_duration) noexcept;
+    void SetMaxDuration(duration_t max_duration) noexcept;
 private:
     name_t _name;
     duration_t _min_duration;
