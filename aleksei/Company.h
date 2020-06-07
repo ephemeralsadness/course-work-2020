@@ -6,7 +6,7 @@ class Company {
 public:
 
 	Company() :name("Empty"),
-		services(1),
+		services(),
 		adress("Empty") {}
 
 	Company(std::string n, Vector<std::string> s, std::string a) {
