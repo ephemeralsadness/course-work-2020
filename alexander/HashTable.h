@@ -4,6 +4,7 @@
 
 #include "ServiceDuration.h"
 #include "../helper/Vector.h"
+#include "../helper/Pair.h"
 
 class HashTable {
 public:
@@ -24,9 +25,10 @@ public:
     Vector<const ServiceDuration*> LookUp(Predicate pred) const noexcept;
     size_t Capacity() const;
     size_t LastComparisonsAmount() const;
+    const ServiceDuration* Data() const;
 
 private:
-    size_t hash(const key_t& key) {
+    size_t Hash(const key_t& key) {
         const size_t R = 27644437;
         size_t hash = 0;
         for (size_t i = 0; i < key.length(); ++i)
