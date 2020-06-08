@@ -1,9 +1,5 @@
 #pragma once
 
-#include <istream>
-#include <ostream>
-#include <map>
-
 #include "ServicePrice.h"
 #include "../helper/Vector.h"
 
