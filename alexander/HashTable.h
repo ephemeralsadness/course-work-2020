@@ -14,37 +14,25 @@ namespace Alexander {
         typedef ServiceDuration::name_t key_t;
 
         HashTable() noexcept;
-
         ~HashTable() noexcept;
-
         HashTable(const HashTable &table) = delete;
-
         HashTable &operator=(const HashTable &table) = delete;
-
         HashTable(HashTable &&table) noexcept;
-
         HashTable &operator=(HashTable &&table) noexcept;
 
         void Insert(ServiceDuration sd) noexcept;
-
         void Remove(const key_t &key) noexcept;
-
         const ServiceDuration* Find(const key_t &key) const noexcept;
-
         Vector<const ServiceDuration *> LookUp() const noexcept;
-
         template<typename Predicate>
         Vector<const ServiceDuration *> LookUp(Predicate pred) const noexcept;
-
         size_t Size() const noexcept;
-
         size_t Buckets() const noexcept;
-
         size_t LastComparisonsAmount() const noexcept;
 
     private:
         struct _Bucket {
-            ServiceDuration _data;
+            ServiceDuration* _data;
             int8_t _offset;
         };
 
@@ -63,10 +51,16 @@ namespace Alexander {
 
     };
 
-
     template<typename Predicate>
     Vector<const ServiceDuration *> HashTable::LookUp(Predicate pred) const noexcept {
-        return Vector<const ServiceDuration *>();
+        Vector<const ServiceDuration*> result;
+        for (size_t i = 0; i < _buckets + _log2_buckets; ++i) {
+            _Bucket& current = _table[i];
+            if (current._offset >= 0 && pred(*current._data))
+                result.PushBack(current._data);
+        }
+
+        return result;
     }
 
 }

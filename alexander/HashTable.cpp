@@ -12,11 +12,15 @@ namespace Alexander {
               _max_load_factor(0.8),
               _primes() {
         for (size_t i = 0; i < _buckets + _log2_buckets; ++i) {
+            _table[i]._data = nullptr;
             _table[i]._offset = -2;
         }
     }
 
     HashTable::~HashTable() noexcept {
+        if (_table == nullptr) return;
+        for (size_t i = 0; i < _buckets + _log2_buckets; ++i)
+            delete _table[i]._data;
         delete[] _table;
     }
 
@@ -27,7 +31,7 @@ namespace Alexander {
               _table(table._table),
               _max_load_factor(table._max_load_factor),
               _primes(table._primes) {
-        _table = nullptr;
+        table._table = nullptr;
     }
 
     HashTable& HashTable::operator = (HashTable && table) noexcept {
@@ -36,15 +40,14 @@ namespace Alexander {
         _size = table._size;
         _table = table._table;
         _primes = table._primes;
-        _table = nullptr;
+        table._table = nullptr;
 
         return *this;
     }
 
     void HashTable::Insert(ServiceDuration sd) noexcept {
-        // -2 : не было элемента
-        // -1 : был элемент, удален
-        // >= 0 : offset
+        if (_size * 1.0 / _buckets > _max_load_factor)
+            _Rehash();
 
         size_t hash = _Hash(sd.GetName());
         if (!_CheckUnique(sd, hash))
@@ -55,11 +58,11 @@ namespace Alexander {
             _Bucket& current = _table[hash];
 
             if (current._offset < 0) {
-                current._data = std::move(sd);
+                current._data = new ServiceDuration(std::move(sd));
                 current._offset = offset;
                 return;
             } else if (current._offset < offset) {
-                std::swap(sd, current._data);
+                std::swap(sd, *current._data);
                 std::swap(offset, current._offset);
             }
 
@@ -80,8 +83,9 @@ namespace Alexander {
 
             if (current._offset == -2) {
                 break;
-            } else if (current._offset != -1 && current._data.GetName() == key) {
-                current._data.~ServiceDuration();
+            } else if (current._offset != -1 && current._data->GetName() == key) {
+                delete current._data;
+                current._data = nullptr;
                 current._offset = -1;
                 break;
             }
@@ -100,8 +104,8 @@ namespace Alexander {
 
             if (current._offset == -2)
                 return nullptr;
-            else if (current._offset != -1 && current._data.GetName() == key)
-                return &current._data;
+            else if (current._offset != -1 && current._data->GetName() == key)
+                return current._data;
 
             ++hash;
             ++offset;
@@ -111,13 +115,7 @@ namespace Alexander {
     }
 
     Vector<const ServiceDuration *> HashTable::LookUp() const noexcept {
-        Vector<const ServiceDuration*> result;
-        for (size_t i = 0; i < _buckets + _log2_buckets; ++i) {
-            if (_table[i]._offset >= 0)
-                result.PushBack(&_table[i]._data);
-        }
-
-        return result;
+        return LookUp([](ServiceDuration&) { return true; });
     }
 
     size_t HashTable::Size() const noexcept {
@@ -142,7 +140,7 @@ namespace Alexander {
     }
 
     HashTable::_Bucket HashTable::_BuildNewBucket(ServiceDuration sd) const noexcept {
-        return { std::move(sd), 0 };
+        return { new ServiceDuration(std::move(sd)), 0 };
     }
 
     bool HashTable::_CheckUnique(const ServiceDuration& sd, size_t hash) const noexcept {
@@ -150,7 +148,7 @@ namespace Alexander {
         while (hash != limit) {
             if (_table[hash]._offset == -2)
                 return true;
-            else if (_table[hash]._data.GetName() == sd.GetName())
+            else if (_table[hash]._offset != -1 && _table[hash]._data->GetName() == sd.GetName())
                 return false;
             ++hash;
         }
@@ -169,12 +167,15 @@ namespace Alexander {
         _table = new _Bucket[_buckets + _log2_buckets];
 
         for (size_t i = 0; i < _buckets + _log2_buckets; ++i) {
+            _table[i]._data = nullptr;
             _table[i]._offset = -2;
         }
 
         for (size_t i = 0; i < old_buckets + old_log2_buckets; ++i) {
-            if (old_table[i]._offset >= 0)
-                Insert(std::move(old_table[i]._data));
+            if (old_table[i]._offset >= 0) {
+                Insert(std::move(*old_table[i]._data));
+                delete old_table[i]._data;
+            }
         }
 
         delete[] old_table;
