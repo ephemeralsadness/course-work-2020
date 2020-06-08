@@ -1,7 +1,10 @@
+// TODO Default LookUp
+
 #pragma once
 
 #include <istream>
 #include <ostream>
+#include <map>
 
 #include "ServicePrice.h"
 #include "../helper/Vector.h"
@@ -42,53 +45,56 @@ namespace Alexander {
 
         size_t GetLastComparisonsAmount() const;
     private:
-        enum _Color {
-            RED = 0,
-            BLACK = 1
-        };
-
-        enum _Side {
-            LEFT = 0,
-            RIGHT = 1
-        };
 
         struct _Node {
             const ServicePrice data;
-            _Color color;
+            bool color;
             _Node* parent;
             _Node* child[2];
-
-            _Node(ServicePrice _data);
         };
 
         _Node* _root;
+        _Node* _nil;
         size_t _last_comparisons_amount;
         size_t _size;
 
 
-        void _DeleteSubtree(_Node* node);
+        static const bool RED = 0;
+        static const bool BLACK = 1;
 
-        _Node* _LowerBound() const;
-        _Node* _UpperBound() const;
+        void _DeleteSubtree(_Node* node) noexcept;
 
-        _Node* _FixInsert(_Node* node);
+        void _Rotate(_Node* node, bool side) noexcept;
 
-        _Node* Successor(_Node* node) const;
+        void _InsertNode(_Node* node) noexcept;
 
-        // make --_size;
-        _Node* _RemoveNode(_Node* node);
+        void _FixInsert(_Node* node) noexcept;
 
-        _Node* _Min(_Node* node) const;
+        _Node* _LowerBound(const key_t& key) const noexcept;
 
-        _Node* _Max(_Node* node) const;
+        _Node* _UpperBound(const key_t& key) const noexcept;
+
+        _Node* _Successor(_Node* node) const noexcept;
+
+        void _RemoveNode(_Node* node) noexcept;
+
+        void _FixRemove(_Node* node) noexcept;
+
+        void _Transplant(_Node* x, _Node* y) noexcept;
+
+        _Node* _Min(_Node* node) const noexcept;
+
+        _Node* _Max(_Node* node) const noexcept;
+
+        _Node* BuildNewNode(ServicePrice sp) const noexcept;
     };
 
     template <typename Predicate>
     void RBTree::Remove(const key_t& key, Predicate pred) noexcept {
-        struct _Node* first = _LowerBound();
-        struct _Node* last = _UpperBound();
+        struct _Node* first = _LowerBound(key);
+        struct _Node* last = _UpperBound(key);
         while (first != last) {
-            _Node* next = Successor(first);
+            _Node* next = _Successor(first);
             if (pred(first->data)) {
                 _RemoveNode(first);
             }
@@ -99,13 +105,13 @@ namespace Alexander {
     template <typename Predicate>
     Vector<const ServicePrice*> RBTree::Find(const key_t& key, Predicate pred) const noexcept {
         Vector<const ServicePrice*> result;
-        _Node* first = _LowerBound();
-        _Node* last = _UpperBound();
+        _Node* first = _LowerBound(key);
+        _Node* last = _UpperBound(key);
 
         while (first != last) {
             if (pred(first->data))
                 result.PushBack(&first->data);
-            first = Successor(first);
+            first = _Successor(first);
         }
 
         return result;
@@ -116,12 +122,12 @@ namespace Alexander {
         Vector<const ServicePrice*> result;
 
         _Node* first = _Min(_root);
-        _Node* last = nullptr;
+        _Node* last = _nil;
 
         while (first != last) {
             if (pred(first->data))
                 result.PushBack(&first->data);
-            first = Successor(first);
+            first = _Successor(first);
         }
 
         return result;
