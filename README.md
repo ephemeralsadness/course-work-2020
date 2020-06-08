@@ -7,3 +7,4 @@
 - Доделать логику LastComparisonAmount в HashTable
 - Добавить условие с max_load_factor в HashTable
 - Протестировать RBTree и HashTable
+- Реализовать метод HashTable.LookUp(pred)
