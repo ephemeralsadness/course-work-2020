@@ -4,8 +4,10 @@
 
 namespace Alexander {
 
+    // PUBLIC METHODS
+
     RBTree::RBTree() noexcept
-            : _root(_nil),
+            : _root(nullptr),
               _nil(new _Node { ServicePrice() }),
               _last_comparisons_amount(0),
               _size(0) {
@@ -47,8 +49,10 @@ namespace Alexander {
     }
 
     void RBTree::Insert(ServicePrice sp) noexcept {
+        _last_comparisons_amount = 0;
         _Node* node = BuildNewNode(std::move(sp));
         _InsertNode(node);
+        ++_size;
     }
 
     void RBTree::Remove(const key_t& key) noexcept {
@@ -59,91 +63,176 @@ namespace Alexander {
         return Find(key, [](const ServicePrice&) { return true; });
     }
 
-    size_t RBTree::GetLastComparisonsAmount() const {
-        return _last_comparisons_amount;
+    Vector<const ServicePrice*> RBTree::LookUp() const noexcept {
+        return LookUp([](const ServicePrice&) { return true; });
     }
 
     size_t RBTree::Size() const {
         return _size;
     }
 
-    void RBTree::_DeleteSubtree(_Node* node) noexcept {
-        if (node == _nil) return;
-        _DeleteSubtree(node->child[0]);
-        _DeleteSubtree(node->child[1]);
-        delete node;
+    size_t RBTree::LastComparisonsAmount() const {
+        return _last_comparisons_amount;
+    }
+
+    // PRIVATE METHODS
+
+    bool RBTree::_Comp(const key_t& lhs, const key_t& rhs) const noexcept {
+        ++_last_comparisons_amount;
+        return lhs < rhs;
+    }
+
+    void RBTree::_DeleteSubtree(_Node* st_root) noexcept {
+        if (st_root == _nil) return;
+        _DeleteSubtree(st_root->child[0]);
+        _DeleteSubtree(st_root->child[1]);
+        delete st_root;
     }
 
     void RBTree::_Rotate(_Node* node, bool side) noexcept {
-        _Node* c = node->child[!side];
-        node->child[!side] = c->child[side];
+        _Node* child = node->child[!side];
+        node->child[!side] = child->child[side];
 
-        if (c->child[side] != _nil)
-            c->child[side]->parent = node;
-        c->parent = node->parent;
+        if (child->child[side] != _nil)
+            child->child[side]->parent = node;
+        child->parent = node->parent;
 
         if (node->parent == _nil)
-            _root = c;
-        else node->parent->child[((node == node->parent->child[side]) == side)] = c;
+            _root = child;
+        else node->parent->child[((node == node->parent->child[side]) == side)] = child;
 
-        c->child[side] = node;
-        node->parent = c;
+        child->child[side] = node;
+        node->parent = child;
+    }
+
+    void RBTree::_Transplant(_Node* x, _Node* y) noexcept {
+        if (x->parent == _nil)
+            _root = y;
+        else
+            x->parent->child[x != x->parent->child[0]] = y;
+        y->parent = x->parent;
     }
 
     void RBTree::_InsertNode(_Node* node) noexcept {
-        ++_size;
-
         _Node *y = _nil;
         _Node *x = _root;
         key_t key = node->data.GetName();
         while (x != _nil) {
             y = x;
-            x = x->child[key >= x->data.GetName()];
+            x = x->child[!_Comp(key, x->data.GetName())];
         }
 
         if (y == _nil)
             _root = node;
         else
-            y->child[key >= y->data.GetName()] = node;
+            y->child[!_Comp(key, y->data.GetName())] = node;
         node->parent = y;
 
         _FixInsert(node);
     }
 
     void RBTree::_FixInsert(_Node* node) noexcept {
-        while (!node->parent->color)
-        {
-            _Node *p = node->parent;
-            _Node *g = node->parent->parent;
-            _Node *u;
-            bool side = (p != g->child[0]);
-            u = g->child[!side];
-            if (!u->color) {
-                p->color = BLACK;
-                u->color = BLACK;
-                g->color = RED;
-                node = g;
+        while (!node->parent->color) {
+            _Node *parent = node->parent;
+            _Node *gparent = node->parent->parent;
+
+            bool side = (parent != gparent->child[0]);
+            _Node *uncle = gparent->child[!side];
+
+            if (!uncle->color) {
+                parent->color = BLACK;
+                uncle->color = BLACK;
+                gparent->color = RED;
+                node = gparent;
             } else {
-                if (node == p->child[!side]) {
-                    node = p;
+                if (node == parent->child[!side]) {
+                    node = parent;
                     _Rotate(node, side);
                 }
                 node->parent->color = BLACK;
-                g->color = RED;
-                _Rotate(g, !side);
+                gparent->color = RED;
+                _Rotate(gparent, !side);
+            }
+
+        }
+
+        _root->color = BLACK;
+    }
+
+    void RBTree::_RemoveNode(_Node* node) noexcept {
+        _Node *y = node;
+        _Node *x;
+        bool original = node->color;
+
+        if (node->child[0] == _nil) {
+            x = node->child[1];
+            _Transplant(node, node->child[1]);
+        } else if (node->child[1] == _nil) {
+            x = node->child[0];
+            _Transplant(node, node->child[0]);
+        } else {
+            y = _Min(node->child[1]);
+            original = y->color;
+            x = y->child[1];
+            if (y->parent == node) {
+                x->parent = y;
+            } else {
+                _Transplant(y, y->child[1]);
+                y->child[1] = node->child[1];
+                y->child[1]->parent = y;
+            }
+            _Transplant(node, y);
+            y->child[0] = node->child[0];
+            y->child[0]->parent = y;
+            y->color = node->color;
+        }
+
+        if (original == BLACK) {
+            _FixRemove(x);
+        }
+        delete node;
+    }
+
+    void RBTree::_FixRemove(_Node* node) noexcept {
+        while (node != _root && node->color) {
+            bool side = node != node->parent->child[0];
+            _Node *sibling = node->parent->child[!side];
+            if (!sibling->color) {
+                sibling->color = BLACK;
+                node->parent->color = RED;
+                _Rotate(node->parent, side);
+                sibling = node->parent->child[!side];
+            }
+            if (sibling->child[side]->color && sibling->child[!side]->color) {
+                sibling->color = RED;
+                node = node->parent;
+            } else {
+                if (sibling->child[!side]->color == BLACK) {
+                    sibling->child[side]->color = BLACK;
+                    sibling->color = RED;
+                    _Rotate(sibling, !side);
+                    sibling = node->parent->child[!side];
+                }
+                sibling->color = node->parent->color;
+                node->parent->color = BLACK;
+                sibling->child[!side]->color = BLACK;
+                _Rotate(node->parent, side);
+                node = _root;
             }
         }
-        _root->color = BLACK;
+        node->color = BLACK;
     }
 
     RBTree::_Node* RBTree::_LowerBound(const key_t& key) const noexcept {
         _Node* x = _root;
         _Node* y = _nil;
         while (x != _nil) {
-            if (x->data.GetName() >= key)
-                y = x, x = x->child[0];
-            else
+            if (!_Comp(x->data.GetName(), key)) {
+                y = x;
+                x = x->child[0];
+            } else {
                 x = x->child[1];
+            }
         }
 
         return y;
@@ -153,10 +242,12 @@ namespace Alexander {
         _Node* x = _root;
         _Node* y = _nil;
         while (x != _nil) {
-            if (x->data.GetName() > key)
-                y = x, x = x->child[0];
-            else
+            if (_Comp(key, x->data.GetName())) {
+                y = x;
+                x = x->child[0];
+            } else {
                 x = x->child[1];
+            }
         }
 
         return y;
@@ -173,78 +264,6 @@ namespace Alexander {
         }
 
         return y;
-    }
-
-    void RBTree::_RemoveNode(_Node* z) noexcept {
-        _Node *y = z;
-        bool original = z->color;
-        _Node *x;
-
-        if (z->child[0] == _nil) {
-            x = z->child[1];
-            _Transplant(z, z->child[1]);
-        } else if (z->child[1] == _nil) {
-            x = z->child[0];
-            _Transplant(z, z->child[0]);
-        } else {
-            y = _Min(z->child[1]);
-            original = y->color;
-            x = y->child[1];
-            if (y->parent == z) {
-                x->parent = y;
-            } else {
-                _Transplant(y, y->child[1]);
-                y->child[1] = z->child[1];
-                y->child[1]->parent = y;
-            }
-            _Transplant(z, y);
-            y->child[0] = z->child[0];
-            y->child[0]->parent = y;
-            y->color = z->color;
-        }
-
-        if (original == BLACK) {
-            _FixRemove(x);
-        }
-        delete z;
-    }
-
-    void RBTree::_FixRemove(_Node* n) noexcept {
-        while (n != _root && n->color) {
-            bool side = n != n->parent->child[0];
-            _Node *w = n->parent->child[!side];
-            if (!w->color) {
-                w->color = BLACK;
-                n->parent->color = RED;
-                _Rotate(n->parent, side);
-                w = n->parent->child[!side];
-            }
-            if (w->child[side]->color && w->child[!side]->color) {
-                w->color = RED;
-                n = n->parent;
-            } else {
-                if (w->child[!side]->color == BLACK) {
-                    w->child[side]->color = BLACK;
-                    w->color = RED;
-                    _Rotate(w, !side);
-                    w = n->parent->child[!side];
-                }
-                w->color = n->parent->color;
-                n->parent->color = BLACK;
-                w->child[!side]->color = BLACK;
-                _Rotate(n->parent, side);
-                n = _root;
-            }
-        }
-        n->color = BLACK;
-    }
-
-    void RBTree::_Transplant(_Node* x, _Node* y) noexcept {
-        if (x->parent == _nil)
-            _root = y;
-        else
-            x->parent->child[x != x->parent->child[0]] = y;
-        y->parent = x->parent;
     }
 
     RBTree::_Node* RBTree::_Min(_Node* node) const noexcept {
@@ -268,6 +287,6 @@ namespace Alexander {
     }
 
     RBTree::_Node* RBTree::BuildNewNode(ServicePrice sp) const noexcept {
-        return new _Node {std::move(sp), 0, _nil, { _nil, _nil }};
+        return new _Node {std::move(sp), RED, _nil, { _nil, _nil }};
     }
 }
