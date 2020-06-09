@@ -373,7 +373,7 @@ namespace Aleksei /* но сделал Саня */ {
         while (start != nullptr) {
             // удаляем узел start
             Node* temp = start->next;
-            DeallocateNode(temp);
+            DeallocateNode(start);
             start = temp;
             ++counter;
         }
