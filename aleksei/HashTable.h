@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 #include "../helper/Pair.h"
-#include "../helper/List.h"
+#include "ForwardList.h"
 #include "../helper/Vector.h"
 
 namespace Aleksei {
@@ -20,9 +20,9 @@ namespace Aleksei {
 
 		void Insert(Company t) noexcept;
 
-		void Remove(const Company& t) noexcept;
+		void Remove(const std::string& t) noexcept;
 
-		Company* Find(const Company& t) noexcept;
+		const Company* Find(const Company& t) noexcept;
 
 		Vector<Pair<Company, size_t>> Lookup() const noexcept;
 
@@ -35,7 +35,7 @@ namespace Aleksei {
 	private:
 
 		size_t N;
-		MyList* table;
+		ForwardList* table;
 		size_t last_comparison_amount;
 		size_t size;
 
