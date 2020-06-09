@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
-project(course)
+project(course-work-2020)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(course
+add_executable(course-work-2020
                main.cpp
                IndexManager.cpp IndexManager.h
                alexander/RBTree.cpp alexander/RBTree.h
