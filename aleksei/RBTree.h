@@ -63,6 +63,7 @@ namespace Aleksei {
 		Node* _Max(Node* node) const noexcept;
 		bool Empty();
 		void _RemoveNode(Node* node) noexcept;
+		void _DeleteSubtree(Node* st_root) noexcept;
 
 	
 	};
