@@ -3,28 +3,30 @@ using namespace Aleksei;
 
 HashTable::HashTable()noexcept {
 	N = 4;
-	table = new MyList[N];
+	table = new ForwardList[N];
 	size = 0;
 	last_comparison_amount = 0;
 }
-HashTable::~HashTable()noexcept {}
+HashTable::~HashTable()noexcept {
+	delete[] table;
+}
 
 void HashTable::Insert(Company t)noexcept {
-	table[Hash(t.GetName())].push(t);
+	table[Hash(t.GetName())].Push(t);
 	size++;
 	if (size >= (N/4)*3)
 		ReHash();
 }
 
-void HashTable::Remove(const Company & t)noexcept {
-	size_t s = table[Hash(t.GetName())].get_size();
-	table[Hash(t.GetName())].Delete(t);
-	size = size - s + table[Hash(t.GetName())].get_size();
+void HashTable::Remove(const std::string& t)noexcept {
+	size_t s = table[Hash(t)].Size();
+	 if(table[Hash(t)].Erase(t))
+	size = size - s + table[Hash(t)].Size();
 }
 
-Company* HashTable::Find(const Company & t)noexcept {
+const Company* HashTable::Find(const Company & t)noexcept {
 	Company* result = table[Hash(t.GetName())].Find(t.GetName());
-	last_comparison_amount = table[Hash(t.GetName())].GetLastComparisonAmount();
+	last_comparison_amount = table[Hash(t.GetName())].LastComparisonAmount();
 	return result;
 }
 
@@ -33,8 +35,8 @@ Vector<Pair<Company, size_t>> HashTable::Lookup() const noexcept {
 	Vector<Company> buf;
 	Pair<Company, int> pair;
 	for (size_t i = 0; i < N; i++) {
-		buf = table[i].GetAllCompanies();
-		for (size_t j = 0; j < table[i].get_size(); j++) {
+		buf = table[i].ToVector();
+		for (size_t j = 0; j < table[i].Size(); j++) {
 			v.PushBack(Pair<Company, size_t>(buf[j], (size_t)Hash(buf[j].GetName())));
 		}
 	}
@@ -65,7 +67,7 @@ Vector<Company> HashTable::GetData() const {
 	v.Reserve(size);
 	int k = 0;
 	for (int i = 0; i < N; i++) {
-			buf = table[i].GetAllCompanies();
+			buf = table[i].ToVector();
 			for (auto x : buf) {
 				v.PushBack(x);
 				k++;
@@ -78,7 +80,7 @@ void HashTable::ReHash() {
 	Vector<Company> v = GetData();
 	N *= 2;
 	delete[] table;
-	table = new MyList[N];
+	table = new ForwardList[N];
 	size = 0;
 	for (int i = 0; i < v.Size(); i++)
 		this->Insert(v[i]);
