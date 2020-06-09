@@ -5,6 +5,9 @@ using namespace Aleksei;
 
 RBTree::RBTree() noexcept{
 	root = nil;
+	nil->left = nil;
+	nil->parent = nil;
+	nil->right = nil;
 }
 
 RBTree::~RBTree() noexcept{
@@ -19,7 +22,7 @@ void RBTree::Insert(Customer t)noexcept {
 	Node* x = root;
 	while (x != nil) {
 		y = x;
-		if (z < x)
+		if (z->key.GetName() < x->key.GetName())
 			x = x->left;
 		else x = x->right;
 	}
@@ -31,7 +34,7 @@ void RBTree::Insert(Customer t)noexcept {
 		root->parent = nil;
 	}
 	else {
-		if (z < y)
+		if (z->key.GetName() < y->key.GetName())
 			y->left = z;
 		else
 			y->right = z;
@@ -80,8 +83,8 @@ void RBTree::transplant(Node* u, Node* v)
 	if (u->parent == nil)
 		root = v;
 	else if (u == u->parent->left)
-		u->parent = v->left;
-	else u->parent = v->right;
+		u->parent->left = v;
+	else u->parent->right = v;
 	v->parent = u->parent;
 }
 
@@ -371,13 +374,13 @@ void RBTree::Remove(const std::string& key) noexcept {
 }
 
 void RBTree::_RemoveNode(Node* node) noexcept {
-	Node* z = { std::move(node) };
+	Node* z = node;
 	Node* x;
 	Node* y = z;
 	bool orig_color = y->color;
 	if (z->left == nil) {
 		x = z->right;
-		transplant(z, z->left);
+		transplant(z, z->right);
 	}
 	else
 		if (z->right == nil) {
