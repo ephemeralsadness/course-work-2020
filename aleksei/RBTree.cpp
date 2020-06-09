@@ -11,7 +11,15 @@ RBTree::RBTree() noexcept{
 }
 
 RBTree::~RBTree() noexcept{
+	_DeleteSubtree(root);
+}
 
+void RBTree::_DeleteSubtree(Node* st_root) noexcept {
+	if (st_root != nil) {
+		_DeleteSubtree(st_root->left);
+		_DeleteSubtree(st_root->right);
+		delete st_root;
+	}
 }
 
 void RBTree::Insert(Customer t)noexcept {
