@@ -1,17 +1,17 @@
 #include"RBTree.h"
+#include<utility>
 
 using namespace Aleksei;
 
-RBTree::RBTree() {
+RBTree::RBTree() noexcept{
 	root = nil;
 }
 
-RBTree::~RBTree() {
+RBTree::~RBTree() noexcept{
 
 }
 
-void RBTree::Insert(Customer t) //(T t)
-{
+void RBTree::Insert(Customer t)noexcept {
 
 	Node* z = new Node();
 	z->key = { std::move(t) };
@@ -39,7 +39,7 @@ void RBTree::Insert(Customer t) //(T t)
 		z->right = nil;
 		z->color = 0;
 		z->parent = y;
-		RBFixup(z);
+		InsertFixup(z);
 	}
 	size++;
 }
@@ -329,4 +329,79 @@ Vector<const Customer*> RBTree::Find(const std::string& key) const noexcept {
 		v.PushBack(&temp->key);
 	}
 	return v;
+}
+
+Vector<const Customer*> RBTree::LookUp() const noexcept {
+	Node* temp = root;
+	while (temp->left != nil)
+		temp = temp->left;
+	Node* buf = temp;
+	Vector<const Customer*> v;
+	do {
+		v.PushBack(&temp->key);
+		temp = _Successor(temp);
+	} while (temp != buf);
+		return v;
+}
+
+RBTree::Node* RBTree::_Min(Node* node) const noexcept {
+	Node* temp = node;
+	while (temp->left != nil)
+		temp = temp->left;
+	return temp;
+}
+
+RBTree::Node* RBTree::_Max(Node* node) const noexcept {
+	Node* temp = node;
+	while (temp->right != nil)
+		temp = temp->right;
+	return temp;
+}
+
+void RBTree::Remove(const std::string& key) noexcept {
+	Node* z;
+	Node* suc;
+	z = _LowerBound(key);
+	suc = _Successor(z);
+	while (z->key.GetName() == key) {
+		_RemoveNode(z);
+		z = suc;
+		suc = _Successor(z);
+	}
+}
+
+void RBTree::_RemoveNode(Node* node) noexcept {
+	Node* z = { std::move(node) };
+	Node* x;
+	Node* y = z;
+	bool orig_color = y->color;
+	if (z->left == nil) {
+		x = z->right;
+		transplant(z, z->left);
+	}
+	else
+		if (z->right == nil) {
+			x = z->left;
+			transplant(z, z->left);
+		}
+		else {
+			y = _Min(z->right);
+			orig_color = y->color;
+			x = y->right;
+			if (y->parent == z)
+				x->parent = y;
+			else {
+				transplant(y, y->right);
+				y->right = z->right;
+				y->right->parent = y;
+			}
+			transplant(z, y);
+			y->left = z->left;
+			y->left->parent = y;
+			y->color = z->color;
+		}
+	delete z;
+	size--;
+	if (orig_color == 1)
+		DeleteFixup(x);
 }
