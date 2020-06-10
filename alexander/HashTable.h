@@ -11,6 +11,7 @@ namespace Alexander {
 
     class HashTable {
     public:
+        typedef ServiceDuration value_t;
         typedef ServiceDuration::name_t key_t;
 
         HashTable() noexcept;
@@ -20,44 +21,62 @@ namespace Alexander {
         HashTable(HashTable &&table) noexcept;
         HashTable &operator=(HashTable &&table) noexcept;
 
-        void Insert(ServiceDuration sd) noexcept;
-        void Remove(const key_t &key) noexcept;
-        const ServiceDuration* Find(const key_t &key) const noexcept;
-        Vector<const ServiceDuration *> LookUp() const noexcept;
-        template<typename Predicate>
-        Vector<const ServiceDuration *> LookUp(Predicate pred) const noexcept;
+        bool Insert(value_t value) noexcept;
+        bool Remove(const key_t &key) noexcept;
+        const value_t* Find(const key_t &key) const noexcept;
+        Vector<const value_t*> LookUp() const noexcept;
+        template <typename Predicate>
+        Vector<const value_t*> LookUp(Predicate pred) const noexcept;
         size_t Size() const noexcept;
         size_t Buckets() const noexcept;
         size_t LastComparisonsAmount() const noexcept;
 
     private:
+
         struct _Bucket {
-            ServiceDuration* _data;
+            value_t _data;
             int8_t _offset;
         };
 
         size_t _buckets;
         size_t _log2_buckets;
         size_t _size;
-        mutable size_t _last_comparisons_amount;
+        mutable size_t _last_comparison_amount;
         _Bucket* _table;
-        const double _max_load_factor;
         PrimeNumbersManager _primes;
 
-        size_t _Hash(const key_t &key) const noexcept;
-        _Bucket _BuildNewBucket(ServiceDuration sd) const noexcept;
-        bool _CheckUnique(const ServiceDuration& sd, size_t hash) const noexcept;
-        void _Rehash();
+        constexpr static double _MAX_LOAD_FACTOR = 0.8;
+        constexpr static int BUCKET_REMOVED = -1;
+        constexpr static int BUCKET_UNTOUCHED = -2;
 
+        size_t _Hash(const key_t& key) const noexcept;
+        size_t _TableRealSize() const noexcept;
+        bool _CheckUnique(const value_t& value, size_t hash) const noexcept;
+        void _Insert(value_t value, size_t hash) noexcept;
+        void _Insert(value_t value) noexcept;
+        bool _Equal(const key_t& lhs, const key_t& rhs) const noexcept;
+        _Bucket* _FindBucket(const key_t &key) const noexcept;
+        void _Rehash() noexcept;
+
+        _Bucket* _AllocateTable(size_t size) const noexcept;
+        void _DeallocateTable(_Bucket* start) const noexcept;
     };
 
+
     template<typename Predicate>
-    Vector<const ServiceDuration *> HashTable::LookUp(Predicate pred) const noexcept {
-        Vector<const ServiceDuration*> result;
-        for (size_t i = 0; i < _buckets + _log2_buckets; ++i) {
-            _Bucket& current = _table[i];
-            if (current._offset >= 0 && pred(*current._data))
-                result.PushBack(current._data);
+    Vector<const HashTable::value_t*> HashTable::LookUp(Predicate pred) const noexcept {
+        Vector<const value_t*> result;
+        size_t table_real_size = _TableRealSize();
+        for (size_t i = 0; i < table_real_size; ++i) {
+            _Bucket& b = _table[i];
+
+            if (b._offset != BUCKET_REMOVED &&
+                b._offset != BUCKET_UNTOUCHED &&
+                pred(b._data)) {
+
+                result.PushBack(&b._data);
+
+            }
         }
 
         return result;
