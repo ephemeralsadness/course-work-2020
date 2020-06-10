@@ -91,7 +91,7 @@ namespace Alexander {
     }
 
 
-    Vector<const HashTable::value_t*> HashTable::LookUp() const noexcept {
+    Vector<Pair<const HashTable::value_t*, size_t>> HashTable::LookUp() const noexcept {
         return LookUp([](const value_t&){ return true; });
     }
 
@@ -171,6 +171,7 @@ namespace Alexander {
 
 
     bool HashTable::_Equal(const key_t& lhs, const key_t& rhs) const noexcept {
+        ++_last_comparison_amount;
         return lhs == rhs;
     }
 

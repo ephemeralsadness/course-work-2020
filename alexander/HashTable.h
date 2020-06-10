@@ -24,9 +24,9 @@ namespace Alexander {
         bool Insert(value_t value) noexcept;
         bool Remove(const key_t &key) noexcept;
         const value_t* Find(const key_t &key) const noexcept;
-        Vector<const value_t*> LookUp() const noexcept;
+        Vector<Pair<const HashTable::value_t*, size_t>> LookUp() const noexcept;
         template <typename Predicate>
-        Vector<const value_t*> LookUp(Predicate pred) const noexcept;
+        Vector<Pair<const HashTable::value_t*, size_t>> LookUp(Predicate pred) const noexcept;
         size_t Size() const noexcept;
         size_t Buckets() const noexcept;
         size_t LastComparisonsAmount() const noexcept;
@@ -64,8 +64,8 @@ namespace Alexander {
 
 
     template<typename Predicate>
-    Vector<const HashTable::value_t*> HashTable::LookUp(Predicate pred) const noexcept {
-        Vector<const value_t*> result;
+    Vector<Pair<const HashTable::value_t*, size_t>> HashTable::LookUp(Predicate pred) const noexcept {
+        Vector<Pair<const HashTable::value_t*, size_t>> result;
         size_t table_real_size = _TableRealSize();
         for (size_t i = 0; i < table_real_size; ++i) {
             _Bucket& b = _table[i];
@@ -74,7 +74,7 @@ namespace Alexander {
                 b._offset != BUCKET_UNTOUCHED &&
                 pred(b._data)) {
 
-                result.PushBack(&b._data);
+                result.PushBack({&b._data, i});
 
             }
         }
