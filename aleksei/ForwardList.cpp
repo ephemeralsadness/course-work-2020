@@ -6,9 +6,9 @@ namespace Aleksei /* но сделал Саня */ {
      * Конструктор по умолчанию
      */
     ForwardList::ForwardList() noexcept
-            : head(nullptr),
-              size(0),
-              last_comparison_amount(0) {}
+        : head(nullptr),
+        size(0),
+        last_comparison_amount(0) {}
 
 
     /**
@@ -28,10 +28,10 @@ namespace Aleksei /* но сделал Саня */ {
      *
      * @param another - список, из которого копируются объекты
      */
-    ForwardList::ForwardList(const ForwardList &another) noexcept
-            : head(nullptr),
-              size(another.size),
-              last_comparison_amount(0) {
+    ForwardList::ForwardList(const ForwardList& another) noexcept
+        : head(nullptr),
+        size(another.size),
+        last_comparison_amount(0) {
 
         // если another - пустой список, то копировать нечего
         if (another.Empty())
@@ -62,7 +62,7 @@ namespace Aleksei /* но сделал Саня */ {
      *
      * @param another - список, из которого копируются объекты
      */
-    ForwardList& ForwardList::operator = (const ForwardList &another) noexcept {
+    ForwardList& ForwardList::operator = (const ForwardList& another) noexcept {
         // Если this и &another - одинаковые списки, то
         // у нас нет нужды в их копировании.
         if (this == &another)
@@ -73,16 +73,18 @@ namespace Aleksei /* но сделал Саня */ {
             // и устанавливаем размер равный 0
             DeallocateList(head);
             size = 0;
-        } else if (this->Empty()) {                     // если текущий список - пустой
-            // создается новый объект списка при помощи
-            // конструктора копирования, после чего
-            // вызывается оператор перемещающего присваивания
-            // от нового объекта.
-            // теоретически, это должно работать без std::move,
-            // но так безопаснее.
+        }
+        else if (this->Empty()) {                     // если текущий список - пустой
+         // создается новый объект списка при помощи
+         // конструктора копирования, после чего
+         // вызывается оператор перемещающего присваивания
+         // от нового объекта.
+         // теоретически, это должно работать без std::move,
+         // но так безопаснее.
             *this = std::move(ForwardList(another));
-        } else if (this->Size() < another.Size()){      // если текущий список меньше another
-            // создается два указателя на узлы разных списков
+        }
+        else if (this->Size() < another.Size()) {      // если текущий список меньше another
+         // создается два указателя на узлы разных списков
             Node* this_ptr = head;
             Node* another_ptr = another.head;
 
@@ -107,10 +109,11 @@ namespace Aleksei /* но сделал Саня */ {
                 another_ptr = another_ptr->next;
             }
 
-        } else {                                        // если текущий список больше/равен another
-            // создается два указателя на узлы разных списков
-            Node *this_ptr = head;
-            Node *another_ptr = another.head;
+        }
+        else {                                        // если текущий список больше/равен another
+         // создается два указателя на узлы разных списков
+            Node* this_ptr = head;
+            Node* another_ptr = another.head;
 
             // копируем все объекты в текущий список,
             // не изменяя структуру узлов (не создавая новые)
@@ -139,10 +142,10 @@ namespace Aleksei /* но сделал Саня */ {
      *
      * @param another - список, из которого перемещаются объекты
      */
-    ForwardList::ForwardList(ForwardList &&another) noexcept
-            : head(another.head),
-              size(another.size),
-              last_comparison_amount(another.last_comparison_amount) {
+    ForwardList::ForwardList(ForwardList&& another) noexcept
+        : head(another.head),
+        size(another.size),
+        last_comparison_amount(another.last_comparison_amount) {
 
         // начало списка another должно стать nullptr, потому что
         // иначе это может привести к ошибкам (например delete дважды
@@ -161,7 +164,7 @@ namespace Aleksei /* но сделал Саня */ {
      *
      * @param another - список, из которого копируются объекты
      */
-    ForwardList& ForwardList::operator = (ForwardList &&another) noexcept {
+    ForwardList& ForwardList::operator = (ForwardList&& another) noexcept {
         // подробнее в операторе присваивания копированием
         if (this == &another)
             return *this;
@@ -213,9 +216,10 @@ namespace Aleksei /* но сделал Саня */ {
 
         if (Empty()) {                                          // если список - пустой
             return false;
-        } else if (Equals(head->data.GetName(), key)) {     // если начало списка содержит
-                                                                // объект с ключом key
-            // изменяем переменную, хранящую размер списка
+        }
+        else if (Equals(head->data.GetName(), key)) {     // если начало списка содержит
+                                                             // объект с ключом key
+         // изменяем переменную, хранящую размер списка
             --size;
             // удаляем первый узел списка
             Node* temp_ptr = head;
@@ -224,7 +228,8 @@ namespace Aleksei /* но сделал Саня */ {
 
             return true;
 
-        } else {                                                // ищем объект в списке
+        }
+        else {                                                // ищем объект в списке
             Node* prev_ptr = head;
             Node* this_ptr = head->next;
 
@@ -284,8 +289,8 @@ namespace Aleksei /* но сделал Саня */ {
     ForwardList::value_t* ForwardList::Find(const key_t& key) noexcept {
         // вызываем константный метод Find
         return const_cast<value_t*>(
-                static_cast<const ForwardList*>(this)->Find(key)
-        );
+            static_cast<const ForwardList*>(this)->Find(key)
+            );
     }
 
 
@@ -307,7 +312,23 @@ namespace Aleksei /* но сделал Саня */ {
         return result;
     }
 
+    /**
+     * Преобразование в Vector<const value_t*>
+     * Копирует указатели на объекты, хранящиеся в списке в Vector и возвращает его
+     *
+     * @return Vector<const value_t*>, состоящий из указателей на объекты, хранящихся в списке
+     */
+    Vector<const ForwardList::value_t*> ForwardList::ToPointerVector() const noexcept {
+        // создаем Vector с зарезервированной памятью под size элементов
+        Vector<const value_t*> result;
+        result.Reserve(size);
 
+        // последовательно копируем указатели на объекты списка в Vector
+        for (Node* it = head; it != nullptr; it = it->next)
+            result.PushBack(&it->data);
+
+        return result;
+    }
     /**
      * Размер списка
      *
@@ -346,7 +367,7 @@ namespace Aleksei /* но сделал Саня */ {
      * @return указатель на новый узел с объектом Company
      */
     ForwardList::Node* ForwardList::AllocateNode(value_t data) const noexcept {
-        return new Node { std::move(data), nullptr };
+        return new Node{ std::move(data), nullptr };
     }
 
 
