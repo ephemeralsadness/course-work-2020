@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "../helper/Vector.h"
 #include "Company.h"
 
@@ -32,29 +33,32 @@ namespace Aleksei {
 
         ForwardList() noexcept;
         ~ForwardList() noexcept;
-        ForwardList(const ForwardList &another) noexcept;
-        ForwardList &operator=(const ForwardList &another) noexcept;
-        ForwardList(ForwardList &&another) noexcept;
-        ForwardList &operator=(ForwardList &&another) noexcept;
+        ForwardList(const ForwardList& another) noexcept;
+        ForwardList& operator=(const ForwardList& another) noexcept;
+        ForwardList(ForwardList&& another) noexcept;
+        ForwardList& operator=(ForwardList&& another) noexcept;
 
         void Push(value_t value) noexcept;
         bool Erase(const key_t& key) noexcept;
         const value_t* Find(const key_t& key) const noexcept;
         value_t* Find(const key_t& key) noexcept;
         Vector<value_t> ToVector() const noexcept;
+        Vector<const value_t*> ToPointerVector() const noexcept;
         size_t Size() const noexcept;
         bool Empty() const noexcept;
+        template <typename Predicate>
+        Vector<const Company*> LookUp(Predicate pred) const noexcept;
         size_t LastComparisonAmount() const noexcept;
     private:
         // узел списка
         struct Node {
             Company data;
             // указатель на следующий узел
-            Node *next;
+            Node* next;
         };
 
         // указатель на начало списка
-        Node *head;
+        Node* head;
         // количество элементов в списке
         size_t size;
         // количество сравнений объектов Company
@@ -67,4 +71,15 @@ namespace Aleksei {
         bool Equals(const key_t& lhs, const key_t& rhs) const noexcept;
     };
 
+
+    template <typename Predicate>
+    Vector<const Company*> ForwardList::LookUp(Predicate pred) const noexcept {
+        Vector<const Company*> result;
+        
+        for (Node* it = head; it != nullptr; it = it->next)
+            if (pred(it->data))
+                result.PushBack(&it->data);
+       
+        return result;
+    }
 }
