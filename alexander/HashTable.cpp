@@ -117,7 +117,7 @@ namespace Alexander {
         for (char c : key)
             hash = (R * hash + c) % _buckets;
 
-        return hash;
+        return R * hash % _buckets;
     }
 
 
@@ -128,7 +128,7 @@ namespace Alexander {
 
     bool HashTable::_CheckUnique(const value_t& value, size_t hash) const noexcept {
         size_t limit = hash + _log2_buckets;
-        while (hash < limit) {
+        while (hash <= limit) {
             _Bucket& bucket = _table[hash];
             if (bucket._offset == BUCKET_UNTOUCHED)
                 return true;
@@ -179,7 +179,7 @@ namespace Alexander {
     HashTable::_Bucket* HashTable::_FindBucket(const key_t &key) const noexcept {
         size_t hash = _Hash(key);
         size_t limit = hash + _log2_buckets;
-        while (hash < limit) {
+        while (hash <= limit) {
             _Bucket& b = _table[hash];
             if (b._offset != BUCKET_REMOVED &&
                 b._offset != BUCKET_UNTOUCHED &&
