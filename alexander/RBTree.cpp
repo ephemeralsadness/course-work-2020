@@ -8,7 +8,7 @@ namespace Alexander {
 
     RBTree::RBTree() noexcept
             : _root(nullptr),
-              _nil(new _Node { ServicePrice() }),
+              _nil(_AllocateNode( { ServicePrice() } )),
               _last_comparisons_amount(0),
               _size(0) {
         _root = _nil;
@@ -50,7 +50,7 @@ namespace Alexander {
 
     void RBTree::Insert(ServicePrice sp) noexcept {
         _last_comparisons_amount = 0;
-        _Node* node = BuildNewNode(std::move(sp));
+        _Node* node = _AllocateNode(std::move(sp));
         _InsertNode(node);
         ++_size;
     }
@@ -86,7 +86,7 @@ namespace Alexander {
         if (st_root == _nil) return;
         _DeleteSubtree(st_root->child[0]);
         _DeleteSubtree(st_root->child[1]);
-        delete st_root;
+        _DeallocateNode(st_root);
     }
 
     void RBTree::_Rotate(_Node* node, bool side) noexcept {
@@ -190,7 +190,7 @@ namespace Alexander {
         if (original == BLACK) {
             _FixRemove(x);
         }
-        delete node;
+        _DeallocateNode(node);
     }
 
     void RBTree::_FixRemove(_Node* node) noexcept {
@@ -286,7 +286,11 @@ namespace Alexander {
         return node;
     }
 
-    RBTree::_Node* RBTree::BuildNewNode(ServicePrice sp) const noexcept {
+    RBTree::_Node* RBTree::_AllocateNode(ServicePrice sp) const noexcept {
         return new _Node {std::move(sp), RED, _nil, { _nil, _nil }};
+    }
+
+    void RBTree::_DeallocateNode(Alexander::RBTree::_Node* node) const noexcept {
+        delete node;
     }
 }

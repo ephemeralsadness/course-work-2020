@@ -57,7 +57,8 @@ namespace Alexander {
         _Node* _Successor(_Node* node) const noexcept;
         _Node* _Min(_Node* node) const noexcept;
         _Node* _Max(_Node* node) const noexcept;
-        _Node* BuildNewNode(ServicePrice sp) const noexcept;
+        _Node* _AllocateNode(ServicePrice sp) const noexcept;
+        void _DeallocateNode(_Node* node) const noexcept;
     };
 
     template <typename Predicate>
