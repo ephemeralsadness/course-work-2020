@@ -20,7 +20,7 @@ namespace Alexander {
 
     RBTree::~RBTree() noexcept {
         _DeleteSubtree(_root);
-        delete _nil;
+        _DeallocateNode(_nil);
     }
 
     RBTree::RBTree(RBTree&& tree) noexcept
