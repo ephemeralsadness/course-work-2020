@@ -44,6 +44,8 @@ namespace Aleksei {
         value_t* Find(const key_t& key) noexcept;
         Vector<value_t> ToVector() const noexcept;
         Vector<const value_t*> ToPointerVector() const noexcept;
+        template <typename Predicate>
+        void ForEach(Predicate pred) const noexcept;
         size_t Size() const noexcept;
         bool Empty() const noexcept;
         template <typename Predicate>
@@ -75,11 +77,23 @@ namespace Aleksei {
     template <typename Predicate>
     Vector<const Company*> ForwardList::LookUp(Predicate pred) const noexcept {
         Vector<const Company*> result;
-        
-        for (Node* it = head; it != nullptr; it = it->next)
-            if (pred(it->data))
-                result.PushBack(&it->data);
+
+        ForEach([&result, &pred](const value_t &value) {
+            if (pred(value))
+                result.PushBack(&value);
+        });
        
         return result;
     }
+
+
+    template <typename Predicate>
+    void ForwardList::ForEach(Predicate pred) const noexcept {
+
+        for (Node* it = head; it != nullptr; it = it->next) {
+            pred(it->data);
+        }
+
+    }
+
 }

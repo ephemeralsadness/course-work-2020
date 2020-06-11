@@ -6,9 +6,9 @@ namespace Aleksei /* но сделал Саня */ {
      * Конструктор по умолчанию
      */
     ForwardList::ForwardList() noexcept
-        : head(nullptr),
-        size(0),
-        last_comparison_amount(0) {}
+            : head(nullptr),
+              size(0),
+              last_comparison_amount(0) {}
 
 
     /**
@@ -29,9 +29,9 @@ namespace Aleksei /* но сделал Саня */ {
      * @param another - список, из которого копируются объекты
      */
     ForwardList::ForwardList(const ForwardList& another) noexcept
-        : head(nullptr),
-        size(another.size),
-        last_comparison_amount(0) {
+            : head(nullptr),
+              size(another.size),
+              last_comparison_amount(0) {
 
         // если another - пустой список, то копировать нечего
         if (another.Empty())
@@ -82,8 +82,7 @@ namespace Aleksei /* но сделал Саня */ {
          // теоретически, это должно работать без std::move,
          // но так безопаснее.
             *this = std::move(ForwardList(another));
-        }
-        else if (this->Size() < another.Size()) {      // если текущий список меньше another
+        } else if (this->Size() < another.Size()) {      // если текущий список меньше another
          // создается два указателя на узлы разных списков
             Node* this_ptr = head;
             Node* another_ptr = another.head;
@@ -109,8 +108,7 @@ namespace Aleksei /* но сделал Саня */ {
                 another_ptr = another_ptr->next;
             }
 
-        }
-        else {                                        // если текущий список больше/равен another
+        } else {                                        // если текущий список больше/равен another
          // создается два указателя на узлы разных списков
             Node* this_ptr = head;
             Node* another_ptr = another.head;
@@ -143,9 +141,9 @@ namespace Aleksei /* но сделал Саня */ {
      * @param another - список, из которого перемещаются объекты
      */
     ForwardList::ForwardList(ForwardList&& another) noexcept
-        : head(another.head),
-        size(another.size),
-        last_comparison_amount(another.last_comparison_amount) {
+            : head(another.head),
+              size(another.size),
+              last_comparison_amount(another.last_comparison_amount) {
 
         // начало списка another должно стать nullptr, потому что
         // иначе это может привести к ошибкам (например delete дважды
@@ -305,9 +303,9 @@ namespace Aleksei /* но сделал Саня */ {
         Vector<value_t> result;
         result.Reserve(size);
 
-        // последовательно копируем объекты списка в Vector
-        for (Node* it = head; it != nullptr; it = it->next)
-            result.PushBack(it->data);
+        ForEach([&result](const value_t &value) {
+            result.PushBack(value);
+        });
 
         return result;
     }
@@ -323,9 +321,9 @@ namespace Aleksei /* но сделал Саня */ {
         Vector<const value_t*> result;
         result.Reserve(size);
 
-        // последовательно копируем указатели на объекты списка в Vector
-        for (Node* it = head; it != nullptr; it = it->next)
-            result.PushBack(&it->data);
+        ForEach([&result](const value_t &value) {
+            result.PushBack(&value);
+        });
 
         return result;
     }
