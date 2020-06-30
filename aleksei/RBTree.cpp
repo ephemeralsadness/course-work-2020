@@ -14,6 +14,17 @@ RBTree::~RBTree() noexcept{
 	_DeleteSubtree(root);
 }
 
+bool RBTree::_Compare(const std::string rhs, const std::string& lhs) noexcept {
+	last_comparison_amount++;
+	return rhs < lhs;
+}
+
+template<typename T>
+bool RBTree::_Equals(const T& rhs, const T& lhs) noexcept {
+	last_comparison_amount++;
+	return rhs == lhs;
+}
+
 void RBTree::_DeleteSubtree(Node* st_root) noexcept {
 	if (st_root != nil) {
 		_DeleteSubtree(st_root->left);
@@ -24,13 +35,14 @@ void RBTree::_DeleteSubtree(Node* st_root) noexcept {
 
 void RBTree::Insert(Customer t)noexcept {
 
+	last_comparison_amount = 0;
 	Node* z = new Node();
 	z->key = { std::move(t) };
 	Node* y = nil;
 	Node* x = root;
 	while (x != nil) {
 		y = x;
-		if (z->key.GetName() < x->key.GetName())
+		if (_Compare(z->key.GetName(),x->key.GetName()))
 			x = x->left;
 		else x = x->right;
 	}
@@ -42,7 +54,7 @@ void RBTree::Insert(Customer t)noexcept {
 		root->parent = nil;
 	}
 	else {
-		if (z->key.GetName() < y->key.GetName())
+		if (_Compare(z->key.GetName(), y->key.GetName()))
 			y->left = z;
 		else
 			y->right = z;
@@ -198,66 +210,6 @@ void RBTree::DeleteFixup(Node* x) {
 	x->color = 1;
 }
 
-/*void RBTree::Remove(const std::string& key)
-{
-	myList* z;
-	z = this->getListPointer(day, month);
-	if (z != NULL)
-	{
-		if (z->getSize() == 1)
-		{
-			myList* x;
-			myList* y = z;
-			bool orig_color = y->getColor();
-			if (z->getLeft() == nil)
-			{
-				x = z->getRight();
-				transplant(z, z->getLeft());
-			}
-			else
-				if (z->getRight() == nil)
-				{
-					x = z->getLeft();
-					transplant(z, z->getLeft());
-				}
-				else
-				{
-					y = TreeMin(z->getRight());
-					orig_color = y->getColor();
-					x = y->getRight();
-					if (y->getParent() == z)
-						x->setParent(y);
-					else
-					{
-						transplant(y, y->getRight());
-						y->setRight(z->getRight());
-						y->getRight()->setParent(y);
-					}
-					transplant(z, y);
-					y->setLeft(z->getLeft());
-					y->getLeft()->setParent(y);
-					y->setColor(z->getColor());
-				}
-			z->~myList();
-			if (orig_color == 1)
-				RBDeleteFixup(x);
-		}
-		else
-		{
-			z->deleteOne();
-		}
-	}
-}
-
-bool RBTree::Empty() {
-	if (root == nil)
-		return true;
-	else return false;
-}
-
-size_t RBTree::Size() const {
-	return size;
-}*/
 
 RBTree::Node* RBTree::_Predecessor(Node* node) const noexcept {
 	Node* temp = node;
@@ -295,28 +247,28 @@ RBTree::Node* RBTree::_Successor(Node* node) const noexcept {
 	return temp;
 }
 
-RBTree::Node* RBTree::_LowerBound(const std::string& key) const noexcept {
+RBTree::Node* RBTree::_LowerBound(const std::string& key) noexcept {
 	Node* temp = root;
-	while (temp->key.GetName() != key) {
-		if (temp->key.GetName() < key)
+	while (!_Equals(temp->key.GetName(), key)) {
+		if (_Compare(temp->key.GetName(), key))
 			temp = temp->right;
 		else
 			temp = temp->left;
 	}
-	while (temp->key.GetName() == key)
+	while (_Equals(temp->key.GetName(), key))
 		temp = _Predecessor(temp);
 	return _Successor(temp);
 }
 
-RBTree::Node* RBTree::_UpperBound(const std::string& key) const noexcept {
+RBTree::Node* RBTree::_UpperBound(const std::string& key)noexcept {
 	Node* temp = root;
-	while (temp->key.GetName() != key) {
-		if (temp->key.GetName() < key)
+	while (!_Equals(temp->key.GetName(), key)) {
+		if (_Compare(temp->key.GetName(), key))
 			temp = temp->right;
 		else
 			temp = temp->left;
 	}
-	while (temp->key.GetName() == key)
+	while (_Equals(temp->key.GetName(), key))
 		temp = _Successor(temp);
 	return _Predecessor(temp);
 }
@@ -333,8 +285,9 @@ bool RBTree::Empty() {
 	return size;
 }
 
-Vector<const Customer*> RBTree::Find(const std::string& key) const noexcept {
+Vector<const Customer*> RBTree::Find(const std::string& key) noexcept {
 	Vector<const Customer*> v;
+	last_comparison_amount = 0;
 	Node* temp = _LowerBound(key);
 	while (temp->key.GetName() == key) {
 		v.PushBack(&temp->key);
@@ -370,6 +323,7 @@ RBTree::Node* RBTree::_Max(Node* node) const noexcept {
 }
 
 void RBTree::Remove(const std::string& key) noexcept {
+	last_comparison_amount = 0;
 	Node* z;
 	Node* suc;
 	z = _LowerBound(key);
