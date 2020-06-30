@@ -26,6 +26,7 @@ bool HashTable::Remove(const std::string& t)noexcept {
 	size_t s = table[Hash(t)].Size();
 	if (table[Hash(t)].Erase(t)) {
 		size = size - s + table[Hash(t)].Size();
+		last_comparison_amount = table[Hash(t)].LastComparisonAmount();
 		return true;
 	}
 	else return false;
