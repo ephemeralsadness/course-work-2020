@@ -20,9 +20,9 @@ namespace Aleksei {
 		template <typename Predicate>
 		void Remove(const std::string& key, Predicate pred) noexcept;
 		void Remove(const std::string& key) noexcept;
-		Vector<const Customer*> Find(const std::string& key) const noexcept;
+		Vector<const Customer*> Find(const std::string& key) noexcept;
 		template <typename Predicate>
-		Vector<const Customer*> Find(const std::string& key, Predicate pred) const noexcept;
+		Vector<const Customer*> Find(const std::string& key, Predicate pred) noexcept;
 		Vector<const Customer*> LookUp() const noexcept;
 		template <typename Predicate>
 		Vector<const Customer*> LookUp(Predicate pred) const noexcept;
@@ -55,8 +55,8 @@ namespace Aleksei {
 		void transplant(Node* u, Node* v);
 		void InsertFixup(Node* z);
 		void DeleteFixup(Node* x);
-		Node* _LowerBound(const std::string& key) const noexcept;
-		Node* _UpperBound(const std::string& key) const noexcept;
+		Node* _LowerBound(const std::string& key) noexcept;
+		Node* _UpperBound(const std::string& key) noexcept;
 		Node* _Successor(Node* node) const noexcept;
 		Node* _Predecessor(Node* node) const noexcept;
 		Node* _Min(Node* node) const noexcept;
@@ -64,7 +64,9 @@ namespace Aleksei {
 		bool Empty();
 		void _RemoveNode(Node* node) noexcept;
 		void _DeleteSubtree(Node* st_root) noexcept;
-
+		bool _Compare(const std::string rhs, const std::string& lhs) noexcept;
+		template <typename T>
+		bool _Equals(const T& rhs, const T& lhs) noexcept;
 	
 	};
 
@@ -84,7 +86,7 @@ namespace Aleksei {
 	}
 
 	template <typename Predicate>
-	Vector<const Customer*> RBTree::Find(const std::string& key, Predicate pred) const noexcept {
+	Vector<const Customer*> RBTree::Find(const std::string& key, Predicate pred)noexcept {
 		last_comparison_amount = 0;
 
 		Vector<const Customer*> result;
