@@ -47,8 +47,8 @@ public:
 	void RemoveService(const std::string& name);
 
 	const Company& FindCompany(const std::string& name);
-	const Company& FindCustomer(const std::string& name);
-	const Company& FindServicePrice(const std::string& name);
+	Vector<const Customer> FindCustomer(const std::string& name);
+	Vector<const ServicePrice> FindServicePrice(const std::string& name);
 	const Company& FindServiceDuration(const std::string& name);
 
 	Vector<Pair<const Company*, size_t>> LookUpCompanies();
