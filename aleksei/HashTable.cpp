@@ -14,7 +14,7 @@ namespace Aleksei {
     }
 
     bool HashTable::Insert(Company t) noexcept {
-        if (Find(t) == nullptr) {
+        if (Find(t.GetName()) == nullptr) {
             table[Hash(t.GetName())].Push(t);
             size++;
             if (size >= (N / 4) * 3)
@@ -32,9 +32,9 @@ namespace Aleksei {
         } else return false;
     }
 
-    const Company *HashTable::Find(const Company &t) noexcept {
-        Company *result = table[Hash(t.GetName())].Find(t.GetName());
-        last_comparison_amount = table[Hash(t.GetName())].LastComparisonAmount();
+    const Company *HashTable::Find(const std::string& t) noexcept {
+        Company *result = table[Hash(t)].Find(t);
+        last_comparison_amount = table[Hash(t)].LastComparisonAmount();
         return result;
     }
 
@@ -84,8 +84,8 @@ namespace Aleksei {
         int k = 0;
         for (int i = 0; i < N; i++) {
             buf = table[i].ToVector();
-            for (auto x : buf) {
-                v.PushBack(x);
+            for (auto it = buf.Begin(); it != buf.End(); ++it) {
+                v.PushBack(*it);
                 k++;
             }
         }
