@@ -46,10 +46,10 @@ public:
 	void RemoveCustomer(const std::string& name);
 	void RemoveService(const std::string& name);
 
-	const Company& FindCompany(const std::string& name);
-	Vector<const Customer> FindCustomer(const std::string& name);
-	Vector<const ServicePrice> FindServicePrice(const std::string& name);
-	const Company& FindServiceDuration(const std::string& name);
+	Company FindCompany(const std::string& name);
+	Vector<Customer> FindCustomer(const std::string& name);
+	Vector<ServicePrice> FindServicePrice(const std::string& name);
+	ServiceDuration FindServiceDuration(const std::string& name);
 
 	Vector<Pair<const Company*, size_t>> LookUpCompanies();
 	Vector<const Customer*> LookUpCustomers();
