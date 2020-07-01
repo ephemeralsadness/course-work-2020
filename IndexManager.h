@@ -40,11 +40,13 @@ public:
 
 	void AddCompany(Company c);
 	void AddCustomer(Customer c);
-	void AddService(ServicePrice sp, ServiceDuration sd);
+	void AddServicePrice(ServicePrice sp);
+	void AddServiceDuration(ServiceDuration sd);
 
 	void RemoveCompany(const std::string& name);
 	void RemoveCustomer(const std::string& name);
-	void RemoveService(const std::string& name);
+	void RemoveServicePrice(const std::string& name);
+	void RemoveServiceDuration(const std::string& name);
 
 	Company FindCompany(const std::string& name);
 	Vector<Customer> FindCustomer(const std::string& name);
