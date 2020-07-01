@@ -18,4 +18,4 @@ add_executable(course-work-2020
                helper/Pair.h
                helper/Vector.h
                helper/PrimeNumbersManager.cpp helper/PrimeNumbersManager.h
-              )
+        )

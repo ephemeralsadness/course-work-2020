@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include <algorithm>
 
 template <typename T>
 class Vector {
@@ -113,8 +114,86 @@ public:
         return _size;
     }
 
+    template <typename Comp>
+    void MergeSort(Comp comp) noexcept {
+        auto begin = Begin();
+        auto end = End();
+
+        if (end - begin <= 1) return;
+
+        T* mid = begin + (end - begin) / 2;
+
+        Vector<T> left;
+        left.Reserve(mid - left);
+        for (auto it = begin; it != mid; ++it)
+            left.PushBack(*it);
+
+        Vector<T> right;
+        right.Reserve(end - mid);
+        for (auto it = mid; it != end; ++it)
+            right.PushBack(*it);
+
+        left.MergeSort(comp);
+        right.MergeSort(comp);
+        Merge(left, right, comp);
+    }
+
+    template <typename ToFind, typename Comp>
+    size_t BinarySearch(T& to_find, Comp comp) {
+        auto left = Begin();
+        auto right = End();
+        while (left < right) {
+            auto mid = left + (right - left) / 2;
+            bool is_lower = comp(*mid, to_find);
+            bool is_greater = comp(to_find, *mid);
+
+            if (is_lower && is_greater) {
+                return mid - left;
+            } else if (is_lower) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return -1;
+    }
+
 private:
+
+    template <typename Comp>
+    void Merge(Vector<T>& left, Vector<T>& right, Comp comp) {
+        auto l_ptr = left.Begin();
+        auto r_ptr = right.Begin();
+        auto out_ptr = Begin();
+
+        while (l_ptr != left.End() && r_ptr != right.End()) {
+            if (comp(*l_ptr, *r_ptr)) {
+                *out_ptr = *l_ptr;
+                ++l_ptr;
+            } else {
+                *out_ptr = *r_ptr;
+                ++r_ptr;
+            }
+            ++out_ptr;
+        }
+
+        while (l_ptr != left.End()) {
+            *out_ptr = *l_ptr;
+            ++l_ptr;
+            ++out_ptr;
+        }
+
+        while (r_ptr != right.End()) {
+            *out_ptr = *r_ptr;
+            ++r_ptr;
+            ++out_ptr;
+        }
+    }
+
+
     size_t _size;
     size_t _capacity;
     T* _data;
 };
+
