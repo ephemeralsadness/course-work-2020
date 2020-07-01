@@ -32,20 +32,20 @@ namespace Aleksei {
         } else return false;
     }
 
-    const Company *HashTable::Find(const std::string& t) noexcept {
+    Company *HashTable::Find(const std::string& t) noexcept {
         Company *result = table[Hash(t)].Find(t);
         last_comparison_amount = table[Hash(t)].LastComparisonAmount();
         return result;
     }
 
-    Vector<Pair<const Company *, size_t>> HashTable::LookUp() const noexcept {
-        Vector<Pair<const Company *, size_t>> v;
-        Vector<const Company *> buf;
+    Vector<Pair<Company *, size_t>> HashTable::LookUp() const noexcept {
+        Vector<Pair<Company *, size_t>> v;
+        Vector<Company *> buf;
         Pair<Company, int> pair;
         for (size_t i = 0; i < N; i++) {
             buf = table[i].ToPointerVector();
             for (size_t j = 0; j < table[i].Size(); j++) {
-                v.PushBack(Pair<const Company *, size_t>(buf[j], (size_t) Hash(buf[j]->GetName())));
+                v.PushBack(Pair<Company *, size_t>(buf[j], (size_t) Hash(buf[j]->GetName())));
             }
         }
         return v;

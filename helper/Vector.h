@@ -83,6 +83,13 @@ public:
         _data[--_size].~T();
     }
 
+    void Erase(size_t index) {
+    	for (size_t i = index; i < _size - 1; ++i) {
+    		_data[i] = std::move(_data[i + 1]);
+    	}
+    	_data[--_size];
+    }
+
     void Reserve(size_t capacity) noexcept {
         if (capacity <= _capacity)
             return;

@@ -45,7 +45,7 @@ public:
 
 	void RemoveCompany(const std::string& name);
 	void RemoveCustomer(const std::string& name);
-	void RemoveServicePrice(const std::string& name);
+	void RemoveServicePrice(const std::string& name, const std::string& company);
 	void RemoveServiceDuration(const std::string& name);
 
 	Company FindCompany(const std::string& name);
@@ -53,10 +53,10 @@ public:
 	Vector<ServicePrice> FindServicePrice(const std::string& name);
 	ServiceDuration FindServiceDuration(const std::string& name);
 
-	Vector<Pair<const Company*, size_t>> LookUpCompanies();
-	Vector<const Customer*> LookUpCustomers();
-	Vector<const ServicePrice*> LookUpServicePrices();
-	Vector<Pair<const ServiceDuration*, size_t>> LookUpServiceDurations();
+	Vector<Pair<Company, size_t>> LookUpCompanies();
+	Vector<Customer> LookUpCustomers();
+	Vector<ServicePrice> LookUpServicePrices();
+	Vector<Pair<ServiceDuration, size_t>> LookUpServiceDurations();
 
 	void SaveData(const std::string& file_name);
 	void LoadData(const std::string& file_name);

@@ -1,6 +1,7 @@
 #include "HashTable.h"
 
 #include <cmath>
+#include <utility>
 
 namespace Alexander {
 
@@ -32,6 +33,9 @@ namespace Alexander {
 
 
     HashTable& HashTable::operator = (HashTable && table) noexcept {
+    	if (this == &table)
+    		return *this;
+
         _DeallocateTable(_table);
 
         _buckets = table._buckets;

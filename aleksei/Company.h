@@ -16,11 +16,11 @@ public:
 	}
 
 	std::string GetName() const;
-	Vector<std::string> GetServices() const;
+	Vector<std::string>& GetServices();
+	const Vector<std::string>& Company::GetServices() const;
 	std::string GetAdress() const;
 
 	void SetName(std::string n);
-	void SetServices(Vector<std::string> s);
 	void SetAdress(std::string a);
 
 public:

@@ -22,6 +22,12 @@ public:
               _min_duration(std::move(min_duration)),
               _max_duration(std::move(max_duration)) {}
 
+    ServiceDuration(const ServiceDuration& sd) = default;
+    ServiceDuration(ServiceDuration&& sd) = default;
+    ServiceDuration& operator = (const ServiceDuration& sd) = default;
+    ServiceDuration& operator = (ServiceDuration&& sd) = default;
+
+
     name_t GetName() const noexcept;
     duration_t GetMinDuration() const noexcept;
     duration_t GetMaxDuration() const noexcept;
