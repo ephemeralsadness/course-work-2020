@@ -39,9 +39,9 @@ public:
 	IndexManager() = default;
 
 	void AddCompany(std::string company_name, std::string address);
-	void AddCustomer(Customer c);
-	void AddServicePrice(ServicePrice sp);
-	void AddServiceDuration(ServiceDuration sd);
+	void AddCustomer(std::string name, std::string service, std::string company, uint16_t volume);
+	void AddServicePrice(std::string name, std::string company, double price, std::string measure);
+	void AddServiceDuration(std::string name, double min_duration, double max_duration);
 
 	void RemoveCompany(const std::string& name);
 	void RemoveCustomer(const std::string& name);

@@ -14,7 +14,8 @@ void IndexManager::AddCompany(std::string company_name, std::string address) {
 	}
 }
 
-void IndexManager::AddCustomer(Customer c) {
+void IndexManager::AddCustomer(std::string name, std::string service, std::string company, uint16_t volume) {
+	Customer c(std::move(name), std::move(service), std::move(company), volume);
 	const Company* c_ptr = _companies.Find(c.GetCompanyName());
 
 	if (c_ptr == nullptr) {
@@ -38,7 +39,9 @@ void IndexManager::AddCustomer(Customer c) {
 }
 
 
-void IndexManager::AddServicePrice(ServicePrice sp) {
+void IndexManager::AddServicePrice(std::string name, std::string company, double price, std::string measure) {
+	ServicePrice sp(std::move(name), std::move(company), price, std::move(measure));
+
     auto ptr = _service_durations.Find(sp.GetName());
     if (ptr == nullptr) {
         throw std::invalid_argument("Данной услуги нету в базе данных");
@@ -62,7 +65,9 @@ void IndexManager::AddServicePrice(ServicePrice sp) {
 }
 
 
-void IndexManager::AddServiceDuration(ServiceDuration sd) {
+void IndexManager::AddServiceDuration(std::string name, double min_duration, double max_duration) {
+	ServiceDuration sd(std::move(name), min_duration, max_duration);
+
 	bool success = _service_durations.Insert(std::move(sd));
 	if (!success) {
 		throw std::invalid_argument("Данная услуга уже существует");
@@ -183,6 +188,7 @@ Vector<ServicePrice> IndexManager::FindServicePrice(const std::string &name) {
 ServiceDuration IndexManager::FindServiceDuration(const std::string &name) {
 	auto service_duration_ptr = _service_durations.Find(name);
 	_last_comparisons_amount = _service_durations.LastComparisonsAmount();
+
 	if (service_duration_ptr == nullptr) {
 		throw std::invalid_argument("Компании с таким названием нету в базе данных");
 	}
