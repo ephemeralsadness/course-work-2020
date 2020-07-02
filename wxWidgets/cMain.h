@@ -1,7 +1,8 @@
 #pragma once
 #include<wx\wx.h>
 #include <wx\richtext\richtextbuffer.h>
-#include <wx/listctrl.h>
+#include <wx\listctrl.h>
+#include"IndexManager.h"
 
 class cMain:public wxFrame
 {
@@ -16,7 +17,9 @@ private:
 	wxButton* search = new wxButton(this, 10104, "Найти", wxDefaultPosition, wxSize(150, 50), 0);
 	wxBoxSizer* buttons_box = nullptr;
 	wxBoxSizer* main_box = nullptr;
-	wxListCtrl* main_list = nullptr;
+	wxListView* main_list = nullptr;
+	wxDialog* choice = nullptr;
+	IndexManager data_manager;
 
 	void ClickOnMenuNew(wxCommandEvent& event);
 	void ClickOnMenuOpen(wxCommandEvent& event);
@@ -27,7 +30,15 @@ private:
 	void ClickOnRemove(wxCommandEvent& event);
 	void ClickOnShow(wxCommandEvent& event);
 	void ClickOnSearch(wxCommandEvent& event);
-
+	void ClickOnCustomer(wxCommandEvent& event);
+	void ClickOnCompany(wxCommandEvent& event);
+	void ClickOnServicePrice(wxCommandEvent& event);
+	void ClickOnServiceLength(wxCommandEvent& event);
+	void ClickOnAddCustomer(wxCommandEvent& event);
+	void ClickOnAddCompany(wxCommandEvent& event);
+	void ClickOnAddServicePrice(wxCommandEvent& event);
+	void ClickOnAddServiceLength(wxCommandEvent& event);
+	void ClickOnOkAdd(wxCommandEvent& event);
 	wxDECLARE_EVENT_TABLE();
 };
 
