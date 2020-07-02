@@ -108,20 +108,20 @@ public:
         return true;
     }
 
-    Value& Find(const Key& key) noexcept {
-        return const_cast<Value&>(
+    Value* Find(const Key& key) noexcept {
+        return const_cast<Value*>(
                 static_cast<const BinarySearchTree*>(this)->Find(key)
         );
     }
 
-    const Value& Find(const Key& key) const noexcept {
+    const Value* Find(const Key& key) const noexcept {
         Node* prev = nullptr;
         Node* now = root;
 
         while (now != nullptr) {
             prev = now;
             if (key == now->key)
-                return now->value;
+                return &now->value;
             else if (key < now->key)
                 now = now->left;
             else
@@ -157,7 +157,7 @@ private:
         if (tree_root == nullptr)
             return;
         LNRTraversal(tree_root->left);
-        callback(tree_root->value);
+        callback(tree_root->key, tree_root->value);
         LNRTraversal(tree_root->right);
     }
 
