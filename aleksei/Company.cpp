@@ -1,6 +1,6 @@
 #include "Company.h"
 
-std::string Company::GetName() const {
+const std::string& Company::GetName() const {
 	return name;
 }
 
@@ -13,7 +13,7 @@ const Vector<std::string>& Company::GetServices() const {
 }
 
 
-std::string Company::GetAddress() const {
+const std::string& Company::GetAddress() const {
 	return address;
 }
 

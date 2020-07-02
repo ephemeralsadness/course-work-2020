@@ -6,21 +6,20 @@
 class Customer {
 public:
 
-	Customer() :name("Empty"),
-				service("Empty"),
-				company_name("Empty"),
-				volume(0) {}
+	Customer() : name("Empty"),
+				 service("Empty"),
+				 company_name("Empty"),
+				 volume(0) {}
 
-	Customer(std::string n, std::string s, std::string c, uint16_t v) {
-		name = n;
-		service = s;
-		company_name = c;
-		volume = v;
-	}
+	Customer(std::string n, std::string s, std::string c, uint16_t v)
+		:   name(std::move(n)),
+		    service(std::move(s)),
+		    company_name(std::move(c)),
+		    volume(v) {}
 				
-	std::string GetName() const;
-	std::string GetService() const;
-	std::string GetCompanyName() const;
+	const std::string& GetName() const;
+    const std::string& GetService() const;
+    const std::string& GetCompanyName() const;
 	uint16_t GetVolume() const;
 
 	void SetName(std::string s);

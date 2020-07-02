@@ -20,10 +20,10 @@ public:
         address = a;
 	}
 
-	std::string GetName() const;
+    const std::string& GetName() const;
 	Vector<std::string>& GetServices();
 	const Vector<std::string>& GetServices() const;
-	std::string GetAddress() const;
+    const std::string& GetAddress() const;
 
 	void SetName(std::string n);
 	void SetAddress(std::string a);
