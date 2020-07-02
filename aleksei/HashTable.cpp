@@ -23,6 +23,15 @@ namespace Aleksei {
         } else return false;
     }
 
+    bool HashTable::InsertService(const std::string& company, std::string service) noexcept {
+        auto ptr = table[Hash(company)].Find(company);
+        if (ptr != nullptr) {
+            ptr->GetServices().PushBack(std::move(service));
+            return true;
+        }
+        return false;
+    }
+
     bool HashTable::Remove(const std::string &t) noexcept {
         size_t s = table[Hash(t)].Size();
         if (table[Hash(t)].Erase(t)) {
@@ -32,20 +41,20 @@ namespace Aleksei {
         } else return false;
     }
 
-    Company *HashTable::Find(const std::string& t) noexcept {
-        Company *result = table[Hash(t)].Find(t);
+    const Company *HashTable::Find(const std::string& t) noexcept {
+        const Company *result = table[Hash(t)].Find(t);
         last_comparison_amount = table[Hash(t)].LastComparisonAmount();
         return result;
     }
 
-    Vector<Pair<Company *, size_t>> HashTable::LookUp() const noexcept {
-        Vector<Pair<Company *, size_t>> v;
-        Vector<Company *> buf;
+    Vector<Pair<const Company *, size_t>> HashTable::LookUp() const noexcept {
+        Vector<Pair<const Company *, size_t>> v;
+        Vector<const Company *> buf;
         Pair<Company, int> pair;
         for (size_t i = 0; i < N; i++) {
             buf = table[i].ToPointerVector();
             for (size_t j = 0; j < table[i].Size(); j++) {
-                v.PushBack(Pair<Company *, size_t>(buf[j], (size_t) Hash(buf[j]->GetName())));
+                v.PushBack(Pair<const Company *, size_t>(buf[j], (size_t) Hash(buf[j]->GetName())));
             }
         }
         return v;
@@ -71,7 +80,7 @@ namespace Aleksei {
     int HashTable::Hash(std::string s) const {
         float h = 0;
         float A = (float) 0.6180339887;
-        for (unsigned int i = 0; i < s.size(); i++) {
+        for (size_t i = 0; i < s.size(); i++) {
             h = (abs((int) s[i]) * A + h) - (int) (abs((int) s[i]) * A + h);
         }
         int result = (int) (N * h);
