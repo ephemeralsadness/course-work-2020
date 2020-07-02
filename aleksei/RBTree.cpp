@@ -15,13 +15,13 @@ RBTree::~RBTree() noexcept{
 }
 
 bool RBTree::_Compare(const std::string rhs, const std::string& lhs) noexcept {
-	last_comparison_amount++;
+	last_comparisons_amount++;
 	return rhs < lhs;
 }
 
 template<typename T>
 bool RBTree::_Equals(const T& rhs, const T& lhs) noexcept {
-	last_comparison_amount++;
+	last_comparisons_amount++;
 	return rhs == lhs;
 }
 
@@ -35,7 +35,7 @@ void RBTree::_DeleteSubtree(Node* st_root) noexcept {
 
 void RBTree::Insert(Customer t)noexcept {
 
-	last_comparison_amount = 0;
+    last_comparisons_amount = 0;
 	Node* z = new Node();
 	z->key = { std::move(t) };
 	Node* y = nil;
@@ -280,7 +280,7 @@ size_t RBTree::Size() const noexcept {
 }
 
 size_t RBTree::LastComparisonsAmount() const noexcept {
-	return last_comparison_amount;
+	return last_comparisons_amount;
 }
 
 bool RBTree::Empty() {
@@ -288,13 +288,7 @@ bool RBTree::Empty() {
 }
 
 Vector<const Customer*> RBTree::Find(const std::string& key) noexcept {
-	Vector<const Customer*> v;
-	last_comparison_amount = 0;
-	Node* temp = _LowerBound(key);
-	while (temp->key.GetName() == key) {
-		v.PushBack(&temp->key);
-	}
-	return v;
+	return Find(key, [](const Customer& c) { return true; });
 }
 
 Vector<const Customer*> RBTree::LookUp() const noexcept {

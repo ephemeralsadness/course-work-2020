@@ -20,6 +20,8 @@ namespace Alexander {
         void Remove(const key_t& key) noexcept;
         template <typename Predicate>
         void Remove(const key_t& key, Predicate pred) noexcept;
+        template <typename Predicate>
+        void Remove(Predicate pred) noexcept;
         Vector<const ServicePrice*> Find(const key_t& key) const noexcept;
         template <typename Predicate>
         Vector<const ServicePrice*> Find(const key_t& key, Predicate pred) const noexcept;
@@ -67,6 +69,22 @@ namespace Alexander {
 
         struct _Node* first = _LowerBound(key);
         struct _Node* last = _UpperBound(key);
+        while (first != last) {
+            _Node* next = _Successor(first);
+            if (pred(first->data)) {
+                --_size;
+                _RemoveNode(first);
+            }
+            first = next;
+        }
+    }
+
+    template <typename Predicate>
+    void RBTree::Remove(Predicate pred) noexcept {
+        _last_comparisons_amount = 0;
+
+        struct _Node* first = _Min(_root);
+        struct _Node* last = _nil;
         while (first != last) {
             _Node* next = _Successor(first);
             if (pred(first->data)) {

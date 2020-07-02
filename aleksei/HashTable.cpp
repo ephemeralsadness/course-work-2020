@@ -44,7 +44,7 @@ namespace Aleksei {
     bool HashTable::RemoveService(const std::string& company, const std::string& service) noexcept {
         auto ptr = table[Hash(company)].Find(company);
         if (ptr != nullptr) {
-            auto v = ptr->GetServices();
+            auto& v = ptr->GetServices();
             for (size_t i = 0; i < v.Size(); ++i) {
                 if (v[i] == service) {
                     v.Erase(i);

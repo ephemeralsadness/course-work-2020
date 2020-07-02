@@ -76,19 +76,19 @@ void IndexManager::RemoveCompany(const std::string &name) {
 	auto customer_lambda = [&name](const Customer& c) {
 		return c.GetCompanyName() == name;
 	};
-	_customers.Remove(name, customer_lambda);
+	_customers.Remove(customer_lambda);
 
 	auto service_price_lambda = [&name](const ServicePrice& sp) {
 		return sp.GetCompany() == name;
 	};
-	_service_prices.Remove(name, service_price_lambda);
+	_service_prices.Remove(service_price_lambda);
 
 }
 
 void IndexManager::RemoveCustomer(const std::string &name) {
 	auto v = _customers.Find(name);
 
-	if (v.Size() != 0) {
+	if (v.Size() == 0) {
 		throw std::invalid_argument("Клиента с таким именем нету в базе данных");
 	}
 
@@ -101,7 +101,7 @@ void IndexManager::RemoveServicePrice(const std::string &name, const std::string
 	};
 	auto v = _service_prices.Find(name, lambda);
 
-	if (v.Size() != 0) {
+	if (v.Size() == 0) {
 		throw std::invalid_argument("Данная компания не предоставляет такой услуги");
 	}
 
@@ -112,12 +112,7 @@ void IndexManager::RemoveServicePrice(const std::string &name, const std::string
 	auto customer_lambda = [&name, &company](const Customer& c) {
 		return name == c.GetService() && company == c.GetCompanyName();
 	};
-	auto customers = _customers.LookUp(customer_lambda);
-
-	for (auto it = customers.Begin(); it != customers.End(); ++it) {
-		_customers.Remove((**it).GetName(), customer_lambda);
-	}
-
+	_customers.Remove(customer_lambda);
 }
 
 void IndexManager::RemoveServiceDuration(const std::string &name) {
@@ -129,22 +124,15 @@ void IndexManager::RemoveServiceDuration(const std::string &name) {
 
 	auto& companies_field = _companies;
 	auto lambda = [&name, &companies_field](const ServicePrice& sp) {
-		if (name == sp.GetName()) {
-		    companies_field.RemoveService(sp.GetName(), name);
-			return true;
-		}
-		return false;
+        companies_field.RemoveService(sp.GetCompany(), name);
+		return true;
 	};
+	_service_prices.Remove(name, lambda);
 
 	auto customer_lambda = [&name](const Customer& c) {
 		return name == c.GetService();
 	};
-	auto customers = _customers.LookUp(customer_lambda);
-
-	for (auto it = customers.Begin(); it != customers.End(); ++it) {
-		_customers.Remove((**it).GetName(), customer_lambda);
-	}
-
+    _customers.Remove(customer_lambda);
 }
 
 Company IndexManager::FindCompany(const std::string &name) {
@@ -154,7 +142,6 @@ Company IndexManager::FindCompany(const std::string &name) {
 	}
 	return *company_ptr;
 }
-
 
 Vector<Customer> IndexManager::FindCustomer(const std::string &name) {
 	Vector<Customer> result;
