@@ -17,9 +17,9 @@ void ServiceDuration::SetName(name_t name) noexcept {
 }
 
 void ServiceDuration::SetMinDuration(duration_t min_duration) noexcept {
-    _min_duration = std::move(min_duration);
+    _min_duration = min_duration;
 }
 
 void ServiceDuration::SetMaxDuration(duration_t max_duration) noexcept {
-    _max_duration = std::move(max_duration);
+    _max_duration = max_duration;
 }

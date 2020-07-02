@@ -25,7 +25,7 @@ void ServicePrice::SetCompany(ServicePrice::company_t company) noexcept {
 }
 
 void ServicePrice::SetPrice(ServicePrice::price_t price) noexcept {
-    _name = std::move(price);
+    _name = price;
 }
 
 void ServicePrice::SetMeasure(ServicePrice::measure_t measure) noexcept {

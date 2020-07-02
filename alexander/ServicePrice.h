@@ -23,7 +23,7 @@ public:
     ServicePrice(name_t name, company_t company, price_t price, measure_t measure) noexcept
             : _name(std::move(name)),
               _company(std::move(company)),
-              _price(std::move(price)),
+              _price(price),
               _measure(std::move(measure)) {}
 
     // Геттеры и сеттеры

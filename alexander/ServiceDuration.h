@@ -19,8 +19,8 @@ public:
 
     ServiceDuration(name_t name, duration_t min_duration, duration_t max_duration) noexcept
             : _name(std::move(name)),
-              _min_duration(std::move(min_duration)),
-              _max_duration(std::move(max_duration)) {}
+              _min_duration(min_duration),
+              _max_duration(max_duration) {}
 
     ServiceDuration(const ServiceDuration& sd) = default;
     ServiceDuration(ServiceDuration&& sd) = default;
