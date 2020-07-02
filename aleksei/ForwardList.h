@@ -87,11 +87,11 @@ namespace Aleksei {
     }
 
 
-    template <typename Predicate>
-    void ForwardList::ForEach(Predicate pred) const noexcept {
+    template <typename Function>
+    void ForwardList::ForEach(Function func) const noexcept {
 
         for (Node* it = head; it != nullptr; it = it->next) {
-            pred(it->data);
+            func(it->data);
         }
 
     }

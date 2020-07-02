@@ -41,6 +41,20 @@ namespace Aleksei {
         } else return false;
     }
 
+    bool HashTable::RemoveService(const std::string& company, const std::string& service) noexcept {
+        auto ptr = table[Hash(company)].Find(company);
+        if (ptr != nullptr) {
+            auto v = ptr->GetServices();
+            for (size_t i = 0; i < v.Size(); ++i) {
+                if (v[i] == service) {
+                    v.Erase(i);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     const Company *HashTable::Find(const std::string& t) noexcept {
         const Company *result = table[Hash(t)].Find(t);
         last_comparison_amount = table[Hash(t)].LastComparisonAmount();

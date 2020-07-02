@@ -18,6 +18,7 @@ namespace Aleksei {
 		bool Insert(Company t) noexcept;
 		bool InsertService(const std::string& company, std::string service) noexcept;
 		bool Remove(const std::string& t) noexcept;
+        bool RemoveService(const std::string& company, const std::string& service) noexcept;
 		const Company* Find(const std::string& t) noexcept;
 		Vector<Pair<const Company*, size_t>> LookUp() const noexcept;
 		template <typename Predicate>
