@@ -11,11 +11,11 @@ public:
 				 company_name("Empty"),
 				 volume(0) {}
 
-	Customer(std::string n, std::string s, std::string c, uint16_t v)
-		:   name(std::move(n)),
-		    service(std::move(s)),
-		    company_name(std::move(c)),
-		    volume(v) {}
+	Customer(std::string name, std::string service, std::string company, uint16_t volume)
+		:   name(std::move(name)),
+		    service(std::move(service)),
+		    company_name(std::move(company)),
+		    volume(volume) {}
 				
 	const std::string& GetName() const;
     const std::string& GetService() const;

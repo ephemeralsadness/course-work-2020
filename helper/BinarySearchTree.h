@@ -18,6 +18,7 @@ public:
         root = tree.root;
         tree.root = nullptr;
     }
+
     BinarySearchTree& operator = (BinarySearchTree&& tree) noexcept {
         if (this != &tree) {
             DeleteTree(root);
@@ -30,7 +31,7 @@ public:
     bool Insert(Key key, Value value) noexcept {
         Node* prev = nullptr;
         Node* now = root;
-        Node* to_insert = new Node {std::move(key), std::move(value), nullptr, nullptr};
+        Node* to_insert = new Node(std::move(key), std::move(value));
 
         if (now == nullptr) {
             root = to_insert;
@@ -137,11 +138,17 @@ public:
     }
 
 private:
-    class Node {
+    struct Node {
         Key key;
         Value value;
         Node* left;
         Node* right;
+
+        Node(Key key, Value value) noexcept
+                : key(std::move(key)),
+                  value(std::move(value)),
+                  left(nullptr),
+                  right(nullptr) {}
     };
 
     void DeleteTree(Node* tree_root) noexcept {
@@ -156,10 +163,10 @@ private:
     void LNRTraversal(Node* tree_root, Callback callback) const noexcept {
         if (tree_root == nullptr)
             return;
-        LNRTraversal(tree_root->left);
+        LNRTraversal(tree_root->left, callback);
         callback(tree_root->key, tree_root->value);
-        LNRTraversal(tree_root->right);
+        LNRTraversal(tree_root->right, callback);
     }
 
-    Node root;
+    Node* root;
 };

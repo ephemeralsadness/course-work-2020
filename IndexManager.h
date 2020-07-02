@@ -38,7 +38,7 @@ class IndexManager {
 public:
 	IndexManager() = default;
 
-	void AddCompany(Company c);
+	void AddCompany(std::string company_name, std::string address);
 	void AddCustomer(Customer c);
 	void AddServicePrice(ServicePrice sp);
 	void AddServiceDuration(ServiceDuration sd);

@@ -3,13 +3,18 @@
 
 #include "IndexManager.h"
 
-using namespace Alexander;
-
 int main() {
 
     IndexManager manager;
 
+    manager.AddCompany("россия", "земля");
+    manager.AddServiceDuration(ServiceDuration("захватить мир", 1, 2));
+    manager.AddServicePrice(ServicePrice("захватить мир", "россия", 100, "один мир"));
+    manager.AddCustomer(Customer("Алексей нахуй", "захватить мир", "россия", 20));
 
+    manager.RemoveCompany("россия");
+
+    manager.SaveData("data.txt");
 
     return 0;
 }

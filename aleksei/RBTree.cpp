@@ -1,5 +1,5 @@
-#include"RBTree.h"
-#include<utility>
+#include "RBTree.h"
+#include <utility>
 
 using namespace Aleksei;
 
@@ -242,35 +242,37 @@ RBTree::Node* RBTree::_Successor(Node* node) const noexcept {
 			return temp->parent;
 		temp = temp->parent;
 	}
-	while (temp->left != nil)
-		temp = temp->left;
-	return temp;
+	return nil;
 }
 
 RBTree::Node* RBTree::_LowerBound(const std::string& key) noexcept {
-	Node* temp = root;
-	while (!_Equals(temp->key.GetName(), key)) {
-		if (_Compare(temp->key.GetName(), key))
-			temp = temp->right;
-		else
-			temp = temp->left;
-	}
-	while (_Equals(temp->key.GetName(), key))
-		temp = _Predecessor(temp);
-	return _Successor(temp);
+    Node* x = root;
+    Node* y = nil;
+    while (x != nil) {
+        if (!_Compare(x->key.GetName(), key)) {
+            y = x;
+            x = x->left;
+        } else {
+            x = x->right;
+        }
+    }
+
+    return y;
 }
 
 RBTree::Node* RBTree::_UpperBound(const std::string& key)noexcept {
-	Node* temp = root;
-	while (!_Equals(temp->key.GetName(), key)) {
-		if (_Compare(temp->key.GetName(), key))
-			temp = temp->right;
-		else
-			temp = temp->left;
-	}
-	while (_Equals(temp->key.GetName(), key))
-		temp = _Successor(temp);
-	return _Predecessor(temp);
+    Node* x = root;
+    Node* y = nil;
+    while (x != nil) {
+        if (_Compare(key, x->key.GetName())) {
+            y = x;
+            x = x->left;
+        } else {
+            x = x->right;
+        }
+    }
+
+    return y;
 }
 
 size_t RBTree::Size() const noexcept {
@@ -296,16 +298,7 @@ Vector<const Customer*> RBTree::Find(const std::string& key) noexcept {
 }
 
 Vector<const Customer*> RBTree::LookUp() const noexcept {
-	Node* temp = root;
-	while (temp->left != nil)
-		temp = temp->left;
-	Node* buf = temp;
-	Vector<const Customer*> v;
-	do {
-		v.PushBack(&temp->key);
-		temp = _Successor(temp);
-	} while (temp != buf);
-		return v;
+	return LookUp([](const Customer& c) { return true; });
 }
 
 RBTree::Node* RBTree::_Min(Node* node) const noexcept {
@@ -323,16 +316,7 @@ RBTree::Node* RBTree::_Max(Node* node) const noexcept {
 }
 
 void RBTree::Remove(const std::string& key) noexcept {
-	last_comparison_amount = 0;
-	Node* z;
-	Node* suc;
-	z = _LowerBound(key);
-	suc = _Successor(z);
-	while (z->key.GetName() == key) {
-		_RemoveNode(z);
-		z = suc;
-		suc = _Successor(z);
-	}
+	return Remove(key, [](const Customer&) { return true; });
 }
 
 void RBTree::_RemoveNode(Node* node) noexcept {

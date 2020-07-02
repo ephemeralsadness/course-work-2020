@@ -11,13 +11,10 @@ public:
                 services(),
                 address("Empty") {}
 
-	Company(std::string n, Vector<std::string> s, std::string a)
-            : name(std::move(n)),
-              services(std::move(s)),
-              address(std::move(a)) {
-		name = n;
-		services = s;
-        address = a;
+	Company(std::string name, Vector<std::string> services, std::string address)
+            : name(std::move(name)),
+              services(std::move(services)),
+              address(std::move(address)) {
 	}
 
     const std::string& GetName() const;

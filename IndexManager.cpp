@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <fstream>
 
-void IndexManager::AddCompany(Company c) {
+void IndexManager::AddCompany(std::string company_name, std::string address) {
+    Company c = Company(std::move(company_name), {}, std::move(address));
 	bool success = _companies.Insert(std::move(c));
 	if (!success) {
 		throw std::invalid_argument("Компания с таким названием уже есть в базе данных");
@@ -36,6 +37,11 @@ void IndexManager::AddCustomer(Customer c) {
 
 
 void IndexManager::AddServicePrice(ServicePrice sp) {
+    auto ptr = _service_durations.Find(sp.GetName());
+    if (ptr == nullptr) {
+        throw std::invalid_argument("Данной услуги нету в базе данных");
+    }
+
 	auto lambda = [&sp](const ServicePrice& s) {
 		return s.GetCompany() == sp.GetCompany();
 	};
