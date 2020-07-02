@@ -6,7 +6,9 @@
 
 void IndexManager::AddCompany(std::string company_name, std::string address) {
     Company c = Company(std::move(company_name), {}, std::move(address));
+
 	bool success = _companies.Insert(std::move(c));
+
 	if (!success) {
 		throw std::invalid_argument("Компания с таким названием уже есть в базе данных");
 	}
@@ -424,8 +426,8 @@ Vector<Pair<std::string, Pair<double, double>>> IndexManager::GetCustomersServic
 			current_customer = (**it).GetName();
 			result.PushBack({current_customer, {0, 0}});
 		}
-		result[result.Size() - 1].second.first += sd->GetMinDuration();
-		result[result.Size() - 1].second.second += sd->GetMaxDuration();
+		result[result.Size() - 1].second.first += sd->GetMinDuration() * (**it).GetVolume();
+		result[result.Size() - 1].second.second += sd->GetMaxDuration() * (**it).GetVolume();
 	}
 
 	return result;
