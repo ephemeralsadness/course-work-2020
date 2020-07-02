@@ -12,8 +12,6 @@ int main() {
     manager.AddServicePrice(ServicePrice("захватить мир", "россия", 100, "один мир"));
     manager.AddCustomer(Customer("Алексей нахуй", "захватить мир", "россия", 20));
 
-    std::cout << manager.FindCompany("россия");
-
     manager.SaveData("data.txt");
 
     return 0;
