@@ -369,7 +369,7 @@ Vector<Pair<std::string, double>> IndexManager::GetCompaniesIncomes() {
         auto lambda = [it](const ServicePrice& sp) {
             return sp.GetCompany() == (**it).GetCompanyName();
         };
-        auto v = _service_prices.Find((**it).GetName(), lambda);
+        auto v = _service_prices.Find((**it).GetService(), lambda);
 
         auto ptr = tree.Find((**it).GetCompanyName());
         double value = v[0]->GetPrice() * (**it).GetVolume();
@@ -455,4 +455,9 @@ Vector<Pair<std::string, Vector<std::string>>> IndexManager::GetServiceCompanies
     });
 
     return result;
+}
+
+
+size_t IndexManager::GetLastComparisonsAmount() {
+	return _last_comparisons_amount;
 }

@@ -4,7 +4,7 @@ project(course-work-2020)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(course-work-2020
-               main.cpp
+               course-work-2020.cpp
                IndexManager.cpp IndexManager.h
                alexander/RBTree.cpp alexander/RBTree.h
                alexander/HashTable.cpp alexander/HashTable.h

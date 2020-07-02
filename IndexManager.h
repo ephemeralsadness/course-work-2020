@@ -73,7 +73,11 @@ public:
 	// vector of {service, {companies, who perform this service}}
 	Vector<Pair<std::string, Vector<std::string>>> GetServiceCompanies();
 
+	// последнее количество сравнений
+	size_t GetLastComparisonsAmount();
+
 private:
+	size_t _last_comparisons_amount = 0;
 	Aleksei::HashTable _companies;
 	Aleksei::RBTree _customers;
 	Alexander::RBTree _service_prices;

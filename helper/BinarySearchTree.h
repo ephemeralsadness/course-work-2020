@@ -60,9 +60,9 @@ public:
         Node *prev = nullptr;
         Node *now = root;
 
-        while (now != nullptr && now->data != key) {
+        while (now != nullptr && now->key != key) {
             prev = now;
-            if (key < now->data)
+            if (key < now->key)
                 now = now->left;
             else
                 now = now->right;
@@ -103,7 +103,7 @@ public:
             else
                 now->right = temp->right;
 
-            now->data = temp->data;
+            now->key = temp->key;
             delete temp;
         }
         return true;

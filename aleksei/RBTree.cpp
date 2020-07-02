@@ -12,6 +12,7 @@ RBTree::RBTree() noexcept{
 
 RBTree::~RBTree() noexcept{
 	_DeleteSubtree(root);
+	delete nil;
 }
 
 bool RBTree::_Compare(const std::string rhs, const std::string& lhs) noexcept {
