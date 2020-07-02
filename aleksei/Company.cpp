@@ -13,14 +13,14 @@ const Vector<std::string>& Company::GetServices() const {
 }
 
 
-std::string Company::GetAdress() const {
-	return adress;
+std::string Company::GetAddress() const {
+	return address;
 }
 
 void Company::SetName(std::string n) {
-	name = n;
+	name = std::move(n);
 }
 
-void Company::SetAdress(std::string a) {
-	adress = a;
+void Company::SetAddress(std::string a) {
+    address = std::move(a);
 }
