@@ -139,6 +139,8 @@ void IndexManager::RemoveServiceDuration(const std::string &name) {
 
 Company IndexManager::FindCompany(const std::string &name) {
 	auto company_ptr = _companies.Find(name);
+	_last_comparisons_amount = _companies.LastComparisonsAmount();
+
 	if (company_ptr == nullptr) {
 		throw std::invalid_argument("Компании с таким названием нету в базе данных");
 	}
@@ -147,7 +149,9 @@ Company IndexManager::FindCompany(const std::string &name) {
 
 Vector<Customer> IndexManager::FindCustomer(const std::string &name) {
 	Vector<Customer> result;
+
 	auto customer_ptrs = _customers.Find(name);
+	_last_comparisons_amount = _customers.LastComparisonsAmount();
 
 	if (customer_ptrs.Size() == 0) {
 		throw std::invalid_argument("Заказчика с таким именем нету в базе данных");
@@ -163,6 +167,7 @@ Vector<Customer> IndexManager::FindCustomer(const std::string &name) {
 Vector<ServicePrice> IndexManager::FindServicePrice(const std::string &name) {
 	Vector<ServicePrice> result;
 	auto service_price_ptrs = _service_prices.Find(name);
+	_last_comparisons_amount = _service_prices.LastComparisonsAmount();
 
 	if (service_price_ptrs.Size() == 0) {
 		throw std::invalid_argument("Компаний, выполняющих данную услугу нету в базе данных");
@@ -177,6 +182,7 @@ Vector<ServicePrice> IndexManager::FindServicePrice(const std::string &name) {
 
 ServiceDuration IndexManager::FindServiceDuration(const std::string &name) {
 	auto service_duration_ptr = _service_durations.Find(name);
+	_last_comparisons_amount = _service_durations.LastComparisonsAmount();
 	if (service_duration_ptr == nullptr) {
 		throw std::invalid_argument("Компании с таким названием нету в базе данных");
 	}
