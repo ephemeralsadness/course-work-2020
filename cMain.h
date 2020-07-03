@@ -37,7 +37,7 @@ private:
 	void ClickOnAddCustomer(wxCommandEvent& event);
 	void ClickOnAddCompany(wxCommandEvent& event);
 	void ClickOnAddServicePrice(wxCommandEvent& event);
-	void ClickOnAddServiceLength(wxCommandEvent& event);
+	void ClickOnAddServiceDuration(wxCommandEvent& event);
 	void ClickOnOkAdd(wxCommandEvent& event);
 	wxDECLARE_EVENT_TABLE();
 };
