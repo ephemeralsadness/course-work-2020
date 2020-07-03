@@ -2,7 +2,7 @@
 #include <wx/grid.h>
 #include <wx/minifram.h>
 #include "AddCompany.h"
-#include "IndexManager.h"
+#include"IndexManager.h"
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_MENU(wxID_OPEN, cMain::ClickOnMenuNew)
@@ -62,14 +62,14 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	this->SetIcon({ "icon2.png", wxBITMAP_TYPE_PNG });
 
 	wxMenu* menu_file = new wxMenu();
-	menu_file->Append(wxID_NEW, "ÕÓ‚˚È\tCtrl+N");
-	menu_file->Append(wxID_OPEN, "ŒÚÍ˚Ú¸\tCtrl+O");
-	menu_file->Append(wxID_SAVE, "—Óı‡ÌËÚ¸\tCtrl+S");
-	menu_file->Append(wxID_SAVEAS, "—Óı‡ÌËÚ¸ Í‡Í");
+	menu_file->Append(wxID_NEW, "–ù–æ–≤—ã–π\tCtrl+N");
+	menu_file->Append(wxID_OPEN, "–û—Ç–∫—Ä—ã—Ç—å\tCtrl+O");
+	menu_file->Append(wxID_SAVE, "–°–æ—Ö—Ä–∞–Ω–∏—Ç—å\tCtrl+S");
+	menu_file->Append(wxID_SAVEAS, "–°–æ—Ö—Ä–∞–Ω–∏—Ç—å –∫–∞–∫");
 	menu_file->AppendSeparator();
-	menu_file->Append(wxID_EXIT, "¬˚ıÓ‰");
+	menu_file->Append(wxID_EXIT, "–í—ã—Ö–æ–¥");
 
-	m_menu_bar->Append(menu_file, "‘‡ÈÎ");
+	m_menu_bar->Append(menu_file, "–§–∞–π–ª");
 
 	this->SetMenuBar(m_menu_bar);
 }
@@ -102,16 +102,16 @@ void cMain::ClickOnMenuExit(wxCommandEvent& event) {
 void cMain::ClickOnAdd(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
-	choice = new wxDialog(this, wxID_ANY, "¬˚·ÂÂÚÂ ÒÔ‡‚Ó˜ÌËÍ");
+	choice = new wxDialog(this, wxID_ANY, "–í—ã–±–µ—Ä–µ—Ç–µ —Å–ø—Ä–∞–≤–æ—á–Ω–∏–∫");
 	wxBoxSizer* s = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* s_main = new wxBoxSizer(wxVERTICAL);
 	choice->SetBackgroundColour(wxColour(255, 255, 255));
 
 	wxButton* ok = new wxButton(choice, 14000, "Ok", wxDefaultPosition, wxSize(150, 25));
-	wxButton* cust = new wxButton(choice, 14001, "«‡Í‡Á˜ËÍË", wxDefaultPosition, wxSize(150, 50));
-	wxButton* comp = new wxButton(choice, 14002, "ƒÓ·‡‚ËÚ¸ ÍÓÏÔ‡ÌË˛", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_pr = new wxButton(choice, 14003, "÷ÂÌ‡ ÛÒÎÛ„", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_len = new wxButton(choice, 14004, "ƒÎËÚÂÎ¸ÌÓÒÚ¸ ÛÒÎÛ„", wxDefaultPosition, wxSize(150, 50));
+	wxButton* cust = new wxButton(choice, 14001, "–ó–∞–∫–∞–∑—á–∏–∫–∏", wxDefaultPosition, wxSize(150, 50));
+	wxButton* comp = new wxButton(choice, 14002, "–î–æ–±–∞–≤–∏—Ç—å –∫–æ–º–ø–∞–Ω–∏—é", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_pr = new wxButton(choice, 14003, "–¶–µ–Ω–∞ —É—Å–ª—É–≥", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_len = new wxButton(choice, 14004, "–î–ª–∏—Ç–µ–ª—å–Ω–æ—Å—Ç—å —É—Å–ª—É–≥", wxDefaultPosition, wxSize(150, 50));
 	ok->SetBackgroundColour(wxColour(127, 255, 212));
 	cust->SetBackgroundColour(wxColour(127, 255, 212));
 	comp->SetBackgroundColour(wxColour(127, 255, 212));
@@ -153,14 +153,14 @@ void cMain::ClickOnShow(wxCommandEvent& event)
 	wxWindow::SetFocus();
 
 
-	choice = new wxDialog(this, wxID_ANY, "¬˚·ÂÂÚÂ ÒÔ‡‚Ó˜ÌËÍ");
+	choice = new wxDialog(this, wxID_ANY, "–í—ã–±–µ—Ä–µ—Ç–µ —Å–ø—Ä–∞–≤–æ—á–Ω–∏–∫");
 	wxBoxSizer* s = new wxBoxSizer(wxHORIZONTAL);
 	choice->SetBackgroundColour(wxColour(255, 255, 255));
 
-	wxButton* cust = new wxButton(choice, 13001, "«‡Í‡Á˜ËÍË", wxDefaultPosition, wxSize(150, 50));
-	wxButton* comp = new wxButton(choice, 13002, " ÓÏÔ‡ÌËË", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_pr = new wxButton(choice, 13003, "÷ÂÌ‡ ÛÒÎÛ„", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_len = new wxButton(choice, 13004, "ƒÎËÚÂÎ¸ÌÓÒÚ¸ ÛÒÎÛ„", wxDefaultPosition, wxSize(150, 50));
+	wxButton* cust = new wxButton(choice, 13001, "–ó–∞–∫–∞–∑—á–∏–∫–∏", wxDefaultPosition, wxSize(150, 50));
+	wxButton* comp = new wxButton(choice, 13002, "–ö–æ–º–ø–∞–Ω–∏–∏", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_pr = new wxButton(choice, 13003, "–¶–µ–Ω–∞ —É—Å–ª—É–≥", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_len = new wxButton(choice, 13004, "–î–ª–∏—Ç–µ–ª—å–Ω–æ—Å—Ç—å —É—Å–ª—É–≥", wxDefaultPosition, wxSize(150, 50));
 	cust->SetBackgroundColour(wxColour(127, 255, 212));
 	comp->SetBackgroundColour(wxColour(127, 255, 212));
 	serv_pr->SetBackgroundColour(wxColour(127, 255, 212));
@@ -197,21 +197,24 @@ void cMain::ClickOnCompany(wxCommandEvent& event)
 	main_list->ClearAll();
 
 	Vector<Pair<Company, size_t>> data;
-	Vector<std::string> str;
-	//data = data_manager.LookUpCompanies();
+	data = data_manager.LookUpCompanies();
 
-	main_list->AppendColumn("’˝¯", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn(" ÓÏÔ‡ÌËˇ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("”ÒÎÛ„Ë", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("¿‰ÂÒ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–•—ç—à", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ö–æ–º–ø–∞–Ω–∏—è", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–£—Å–ª—É–≥–∏", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ê–¥—Ä–µ—Å", wxLIST_FORMAT_LEFT, 200);
 
-	std::string str_buf;
-	for (int i = 0; i < str.Size(); i++) {
-		for (int j = 0; j < data[i].first.GetServices().Size(); j++) {
+	size_t size_of_services = 0;
+	std::string str_buf = "";
+	for (int i = 0; i < data.Size(); i++) {
+		size_of_services = data[i].first.GetServices().Size();
+		for (int j = 0; j < (size_of_services - 1) && size_of_services!=0; j++) {
 			str_buf += data[i].first.GetServices()[j];
 			str_buf += ", ";
 		}
-		str_buf += data[i].first.GetServices()[data[i].first.GetServices().Size() - 1];
+		if (size_of_services != 0) { 
+			str_buf += data[i].first.GetServices()[data[i].first.GetServices().Size() - 1]; 
+		}
 		main_list->InsertItem(i, std::to_string(data[i].second));
 		main_list->SetItem(i, 1, data[i].first.GetName());
 		main_list->SetItem(i, 2, str_buf);
@@ -235,10 +238,10 @@ void cMain::ClickOnServicePrice(wxCommandEvent& event)
 		data.PushBack(ServicePrice(std::to_string(i), std::to_string(i), i, std::to_string(i)));
 	}
 
-	main_list->AppendColumn("”ÒÎÛ„‡", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn(" ÓÏÔ‡ÌËˇ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("÷ÂÌ‡ Á‡ Â‰ÂÌËˆÛ ËÁÏÂÂÌËˇ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("≈‰ÂÌËˆ‡ ËÁÏÂÂÌËˇ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–£—Å–ª—É–≥–∞", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ö–æ–º–ø–∞–Ω–∏—è", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–¶–µ–Ω–∞ –∑–∞ –µ–¥–µ–Ω–∏—Ü—É –∏–∑–º–µ—Ä–µ–Ω–∏—è", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ï–¥–µ–Ω–∏—Ü–∞ –∏–∑–º–µ—Ä–µ–Ω–∏—è", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < 500; i++) {
 
@@ -264,10 +267,10 @@ void cMain::ClickOnServiceLength(wxCommandEvent& event)
 		data.PushBack(Pair<ServiceDuration, size_t>(ServiceDuration(std::to_string(i), i, i), i));
 	}
 
-	main_list->AppendColumn("’˝¯", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("”ÒÎÛ„‡", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("ÃËÌËÏ‡Î¸Ì‡ˇ ‰ÎËÚÂÎ¸ÌÓÒÚ¸", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Ã‡ÍÒËÏ‡Î¸Ì‡ˇ ‰ÎËÚÂÎ¸ÌÓÒÚ¸", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–•—ç—à", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–£—Å–ª—É–≥–∞", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ú–∏–Ω–∏–º–∞–ª—å–Ω–∞—è –¥–ª–∏—Ç–µ–ª—å–Ω–æ—Å—Ç—å", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ú–∞–∫—Å–∏–º–∞–ª—å–Ω–∞—è –¥–ª–∏—Ç–µ–ª—å–Ω–æ—Å—Ç—å", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < 100; i++) {
 
@@ -292,7 +295,7 @@ void cMain::ClickOnAddCompany(wxCommandEvent& event)
 	wxWindow::SetFocus();
 	AddCompany* x = new AddCompany(this, wxID_ANY, "123");
 	x->ShowModal();
-	//data_manager.AddCompany(x->GetData()->GetName(), x->GetData()->GetAddress());
+	data_manager.AddCompany(x->GetData()->GetName(), x->GetData()->GetAddress());
 	wxWindow::SetFocus();
 	event.Skip();
 }
@@ -322,10 +325,10 @@ void cMain::ClickOnCustomer(wxCommandEvent& event) {
 		data.PushBack(Customer(std::to_string(i), std::to_string(i), std::to_string(i), i));
 	}
 
-	main_list->AppendColumn("«‡Í‡Á˜ËÍ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn(" ÓÏÔ‡ÌËˇ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Õ‡ËÏÂÌÓ‚‡ÌËÂ ÛÒÎÛ„Ë", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Œ·˙ÂÏ ÛÒÎÛ„Ë", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ó–∞–∫–∞–∑—á–∏–∫", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ö–æ–º–ø–∞–Ω–∏—è", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–ù–∞–∏–º–µ–Ω–æ–≤–∞–Ω–∏–µ —É—Å–ª—É–≥–∏", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("–û–±—ä–µ–º —É—Å–ª—É–≥–∏", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < 500; i++) {
 
