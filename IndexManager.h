@@ -1,9 +1,9 @@
 #pragma once
 
-#include "alexander/RBTree.h"
-#include "alexander/HashTable.h"
-#include "aleksei/RBTree.h"
-#include "aleksei/HashTable.h"
+#include "AlexanderRBTree.h"
+#include "AlekseiRBTree.h"
+#include "AlexanderHashTable.h"
+#include "AlekseiHashTable.h"
 
 
 /*

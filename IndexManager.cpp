@@ -1,5 +1,5 @@
 #include "IndexManager.h"
-#include "helper/BinarySearchTree.h"
+#include "BinarySearchTree.h"
 
 #include <stdexcept>
 #include <fstream>
