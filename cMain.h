@@ -1,5 +1,5 @@
 #pragma once
-#include <wx\wx.h>
+#include<wx\wx.h>
 #include <wx\richtext\richtextbuffer.h>
 #include <wx\listctrl.h>
 #include"IndexManager.h"

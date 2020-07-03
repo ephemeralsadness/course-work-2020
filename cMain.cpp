@@ -62,14 +62,14 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	this->SetIcon({ "icon2.png", wxBITMAP_TYPE_PNG });
 
 	wxMenu* menu_file = new wxMenu();
-	menu_file->Append(wxID_NEW, "РќРѕРІС‹Р№\tCtrl+N");
-	menu_file->Append(wxID_OPEN, "РћС‚РєСЂС‹С‚СЊ\tCtrl+O");
-	menu_file->Append(wxID_SAVE, "РЎРѕС…СЂР°РЅРёС‚СЊ\tCtrl+S");
-	menu_file->Append(wxID_SAVEAS, "РЎРѕС…СЂР°РЅРёС‚СЊ РєР°Рє");
+	menu_file->Append(wxID_NEW, "Новый\tCtrl+N");
+	menu_file->Append(wxID_OPEN, "Открыть\tCtrl+O");
+	menu_file->Append(wxID_SAVE, "Сохранить\tCtrl+S");
+	menu_file->Append(wxID_SAVEAS, "Сохранить как");
 	menu_file->AppendSeparator();
-	menu_file->Append(wxID_EXIT, "Р’С‹С…РѕРґ");
+	menu_file->Append(wxID_EXIT, "Выход");
 
-	m_menu_bar->Append(menu_file, "Р¤Р°Р№Р»");
+	m_menu_bar->Append(menu_file, "Файл");
 
 	this->SetMenuBar(m_menu_bar);
 }
@@ -102,16 +102,16 @@ void cMain::ClickOnMenuExit(wxCommandEvent& event) {
 void cMain::ClickOnAdd(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
-	choice = new wxDialog(this, wxID_ANY, "Р’С‹Р±РµСЂРµС‚Рµ СЃРїСЂР°РІРѕС‡РЅРёРє");
+	choice = new wxDialog(this, wxID_ANY, "Выберете справочник");
 	wxBoxSizer* s = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* s_main = new wxBoxSizer(wxVERTICAL);
 	choice->SetBackgroundColour(wxColour(255, 255, 255));
 
 	wxButton* ok = new wxButton(choice, 14000, "Ok", wxDefaultPosition, wxSize(150, 25));
-	wxButton* cust = new wxButton(choice, 14001, "Р—Р°РєР°Р·С‡РёРєРё", wxDefaultPosition, wxSize(150, 50));
-	wxButton* comp = new wxButton(choice, 14002, "Р”РѕР±Р°РІРёС‚СЊ РєРѕРјРїР°РЅРёСЋ", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_pr = new wxButton(choice, 14003, "Р¦РµРЅР° СѓСЃР»СѓРі", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_len = new wxButton(choice, 14004, "Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ СѓСЃР»СѓРі", wxDefaultPosition, wxSize(150, 50));
+	wxButton* cust = new wxButton(choice, 14001, "Заказчики", wxDefaultPosition, wxSize(150, 50));
+	wxButton* comp = new wxButton(choice, 14002, "Добавить компанию", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_pr = new wxButton(choice, 14003, "Цена услуг", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_len = new wxButton(choice, 14004, "Длительность услуг", wxDefaultPosition, wxSize(150, 50));
 	ok->SetBackgroundColour(wxColour(127, 255, 212));
 	cust->SetBackgroundColour(wxColour(127, 255, 212));
 	comp->SetBackgroundColour(wxColour(127, 255, 212));
@@ -153,14 +153,14 @@ void cMain::ClickOnShow(wxCommandEvent& event)
 	wxWindow::SetFocus();
 
 
-	choice = new wxDialog(this, wxID_ANY, "Р’С‹Р±РµСЂРµС‚Рµ СЃРїСЂР°РІРѕС‡РЅРёРє");
+	choice = new wxDialog(this, wxID_ANY, "Выберете справочник");
 	wxBoxSizer* s = new wxBoxSizer(wxHORIZONTAL);
 	choice->SetBackgroundColour(wxColour(255, 255, 255));
 
-	wxButton* cust = new wxButton(choice, 13001, "Р—Р°РєР°Р·С‡РёРєРё", wxDefaultPosition, wxSize(150, 50));
-	wxButton* comp = new wxButton(choice, 13002, "РљРѕРјРїР°РЅРёРё", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_pr = new wxButton(choice, 13003, "Р¦РµРЅР° СѓСЃР»СѓРі", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_len = new wxButton(choice, 13004, "Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ СѓСЃР»СѓРі", wxDefaultPosition, wxSize(150, 50));
+	wxButton* cust = new wxButton(choice, 13001, "Заказчики", wxDefaultPosition, wxSize(150, 50));
+	wxButton* comp = new wxButton(choice, 13002, "Компании", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_pr = new wxButton(choice, 13003, "Цена услуг", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_len = new wxButton(choice, 13004, "Длительность услуг", wxDefaultPosition, wxSize(150, 50));
 	cust->SetBackgroundColour(wxColour(127, 255, 212));
 	comp->SetBackgroundColour(wxColour(127, 255, 212));
 	serv_pr->SetBackgroundColour(wxColour(127, 255, 212));
@@ -199,10 +199,10 @@ void cMain::ClickOnCompany(wxCommandEvent& event)
 	Vector<Pair<Company, size_t>> data;
 	data = data_manager.LookUpCompanies();
 
-	main_list->AppendColumn("РҐСЌС€", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РљРѕРјРїР°РЅРёСЏ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РЈСЃР»СѓРіРё", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РђРґСЂРµСЃ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Хэш", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Услуги", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Адрес", wxLIST_FORMAT_LEFT, 200);
 
 	size_t size_of_services = 0;
 	std::string str_buf = "";
@@ -238,10 +238,10 @@ void cMain::ClickOnServicePrice(wxCommandEvent& event)
 		data.PushBack(ServicePrice(std::to_string(i), std::to_string(i), i, std::to_string(i)));
 	}
 
-	main_list->AppendColumn("РЈСЃР»СѓРіР°", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РљРѕРјРїР°РЅРёСЏ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Р¦РµРЅР° Р·Р° РµРґРµРЅРёС†Сѓ РёР·РјРµСЂРµРЅРёСЏ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Р•РґРµРЅРёС†Р° РёР·РјРµСЂРµРЅРёСЏ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Услуга", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Цена за еденицу измерения", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Еденица измерения", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < 500; i++) {
 
@@ -267,10 +267,10 @@ void cMain::ClickOnServiceLength(wxCommandEvent& event)
 		data.PushBack(Pair<ServiceDuration, size_t>(ServiceDuration(std::to_string(i), i, i), i));
 	}
 
-	main_list->AppendColumn("РҐСЌС€", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РЈСЃР»СѓРіР°", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РњРёРЅРёРјР°Р»СЊРЅР°СЏ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Хэш", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Услуга", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Минимальная длительность", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Максимальная длительность", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < 100; i++) {
 
@@ -325,10 +325,10 @@ void cMain::ClickOnCustomer(wxCommandEvent& event) {
 		data.PushBack(Customer(std::to_string(i), std::to_string(i), std::to_string(i), i));
 	}
 
-	main_list->AppendColumn("Р—Р°РєР°Р·С‡РёРє", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РљРѕРјРїР°РЅРёСЏ", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РќР°РёРјРµРЅРѕРІР°РЅРёРµ СѓСЃР»СѓРіРё", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("РћР±СЉРµРј СѓСЃР»СѓРіРё", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Заказчик", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Объем услуги", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < 500; i++) {
 
