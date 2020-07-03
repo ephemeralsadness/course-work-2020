@@ -35,8 +35,7 @@ WindowAddServiceDuration::WindowAddServiceDuration(wxWindow* parent, wxWindowID 
 	main_s->Add(label, 1, wxBOTTOM, 10);
 	main_s->Add(text_in, 1, wxEXPAND, 10);
 	main_s->Add(button, 1, wxALIGN_CENTER, 10);
-	this->SetSizerAndFit(main_s);
-
+	this->SetSizerAndFit(main_s);;
 }
 
 WindowAddServiceDuration::~WindowAddServiceDuration()
