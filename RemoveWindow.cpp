@@ -14,10 +14,7 @@ RemoveWindow::RemoveWindow(wxWindow* parent, wxWindowID id, const wxString& titl
 
     this->SetBackgroundColour(wxColour(255, 255, 255));
     
-    main_s->Add(top, wxALIGN_CENTER);
-    main_s->Add(lable_mid, wxALIGN_CENTER);
-    main_s->Add(choice_mid, wxALIGN_CENTER);
-    main_s->Add(bottom, wxALIGN_CENTER);
+ 
     wxArrayString choices;
     choices.Add("Компания");
     choices.Add("Заказчик");
@@ -28,23 +25,25 @@ RemoveWindow::RemoveWindow(wxWindow* parent, wxWindowID id, const wxString& titl
     label1 = new wxStaticText(this, wxID_ANY, "Выберете что удалить:");
     top->Add(label1, 1, wxALL, 5);
     top->Add(main_choice, 1, wxALL, 5);
+    top->Layout();
     ok_b = new wxButton(this, wxID_OK, "Ок");
     cancel_b = new wxButton(this, wxID_CANCEL, "Отмена");
     bottom->Add(ok_b, 1, wxALL,5);
     bottom->Add(cancel_b, 1, wxALL, 5);
    
-    label2 = new wxStaticText(this, wxID_ANY, "Выберете компанию");
-    label3 = new wxStaticText(this, wxID_ANY, "Выберете услугу");
+    label2 = new wxStaticText(this, wxID_ANY, "_______________");
+    label3 = new wxStaticText(this, wxID_ANY, "_______________");
     first_choice = new wxChoice(this, wxID_APPLY);
     second_choice = new wxChoice(this, wxID_ANY);
     lable_mid->Add(label2, 1, wxALL | wxALIGN_BOTTOM, 10);
     lable_mid->Add(label3, 1, wxALL | wxALIGN_BOTTOM, 10);
-    choice_mid->Add(first_choice, 1,wxALL |  wxALIGN_CENTER, 10);
-    choice_mid->Add(second_choice, 1, wxALL | wxALIGN_CENTER, 10);
-  
+    choice_mid->Add(first_choice, 1, wxALL | wxALIGN_BOTTOM, 10);
+    choice_mid->Add(second_choice, 1, wxALL | wxALIGN_BOTTOM, 10);
+    main_s->Add(top, wxEXPAND);
+    main_s->Add(lable_mid, wxEXPAND);
+    main_s->Add(choice_mid, wxEXPAND);
+    main_s->Add(bottom, wxEXPAND);
     this->SetSizerAndFit(main_s);
-    label2->SetLabelText("");
-    label3->SetLabelText("");
 }
 
 RemoveWindow::~RemoveWindow(){

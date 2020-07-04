@@ -6,12 +6,17 @@
 #include"IndexManager.h"
 #include"WindowAddServicePrice.h"
 #include"WindowAddCustomer.h"
+#include "RemoveWindow.h"
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_MENU(wxID_OPEN, cMain::ClickOnMenuOpen)
 EVT_MENU(wxID_SAVE, cMain::ClickOnMenuSave)
 EVT_MENU(wxID_NEW, cMain::ClickOnMenuNew)
 EVT_MENU(wxID_EXIT, cMain::ClickOnMenuExit)
+EVT_MENU(11111, cMain::ClickOnReportGetCompaniesIncomes)
+EVT_MENU(11112, cMain::ClickOnReportGetCompaniesClients)
+EVT_MENU(11113, cMain::ClickOnReportGetCustomersServiceDurations)
+EVT_MENU(11114, cMain::ClickOnReportGetServiceCompanies)
 EVT_BUTTON(10101, cMain::ClickOnAdd)
 EVT_BUTTON(10102, cMain::ClickOnRemove)
 EVT_BUTTON(10103, cMain::ClickOnShow)
@@ -69,9 +74,14 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	menu_file->Append(wxID_SAVE, "Сохранить\t");
 	menu_file->AppendSeparator();
 	menu_file->Append(wxID_EXIT, "Выход");
-
 	m_menu_bar->Append(menu_file, "Файл");
 
+	wxMenu* menu_reports = new wxMenu();
+	menu_reports->Append(11111, "Доходы компаний\t");
+	menu_reports->Append(11112, "Клиенты компаний\t");
+	menu_reports->Append(11113, "Длительность выполнения всех услуг\nдля каждого клиента\t");
+	menu_reports->Append(11114, "Перечень всех услуг со списком компаний, \nкоторые их предоставляют");
+	m_menu_bar->Append(menu_reports, "Отчёты");
 	this->SetMenuBar(m_menu_bar);
 
 	data_manager = new IndexManager();
@@ -119,6 +129,22 @@ void cMain::ClickOnMenuExit(wxCommandEvent& event) {
 	event.Skip();
 }
 
+void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event){
+	data_manager->GetCompaniesIncomes();
+}
+
+void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event){
+	data_manager->GetCompaniesClients();
+}
+
+void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event){
+	data_manager->GetCustomersServiceDurations();
+}
+
+void cMain::ClickOnReportGetServiceCompanies(wxCommandEvent& event){
+	data_manager->GetServiceCompanies();
+}
+
 void cMain::ClickOnAdd(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
@@ -158,11 +184,17 @@ void cMain::ClickOnAdd(wxCommandEvent& event)
 void cMain::ClickOnRemove(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
-
-
-
-
-
+	RemoveWindow* remove_dialog = new RemoveWindow(this, wxID_ANY, "Удаление");
+	remove_dialog->SetManagerPointer(*data_manager);
+	remove_dialog->ShowModal();
+	if (remove_dialog->GetData() != nullptr) {
+		switch (remove_dialog->GetData()->choice_num) {
+		case 0:data_manager->RemoveCompany(remove_dialog->GetData()->main_str); break;
+		case 1:data_manager->RemoveCustomer(remove_dialog->GetData()->main_str); break;
+		case 2:data_manager->RemoveServiceDuration(remove_dialog->GetData()->main_str); break;
+		case 3:data_manager->RemoveServicePrice(remove_dialog->GetData()->main_str, remove_dialog->GetData()->additional_str); break;
+		}
+	}
 	wxWindow::SetFocus();
 	event.Skip();
 }

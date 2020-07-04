@@ -25,6 +25,10 @@ private:
 	void ClickOnMenuOpen(wxCommandEvent& event);
 	void ClickOnMenuSave(wxCommandEvent& event);
 	void ClickOnMenuExit(wxCommandEvent& event);
+	void ClickOnReportGetCompaniesIncomes(wxCommandEvent& event);
+	void ClickOnReportGetCompaniesClients(wxCommandEvent& event);
+	void ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event);
+	void ClickOnReportGetServiceCompanies(wxCommandEvent& event);
 	void ClickOnAdd(wxCommandEvent& event);
 	void ClickOnRemove(wxCommandEvent& event);
 	void ClickOnShow(wxCommandEvent& event);
