@@ -62,16 +62,16 @@ public:
 	void LoadData(const std::string& file_name);
 
 	// vector of {company name, income of this company}
-	Vector<Pair<std::string, double>> GetCompaniesIncomes();
+	void SaveCompaniesIncomes(const std::string& file_name);
 
 	// vector of {company name, vector of its clients}
-	Vector<Pair<std::string, Vector<std::string>>> GetCompaniesClients();
+	void SaveCompaniesClients(const std::string& file_name);
 
 	// vector of {customer name, {min duration of its services, max duration of its services}}
-	Vector<Pair<std::string, Pair<double, double>>> GetCustomersServiceDurations();
+	void SaveCustomersServiceDurations(const std::string& file_name);
 
 	// vector of {service, {companies, who perform this service}}
-	Vector<Pair<std::string, Vector<std::string>>> GetServiceCompanies();
+	void SaveServiceCompanies(const std::string& file_name);
 
 	// последнее количество сравнений
 	size_t GetLastComparisonsAmount();

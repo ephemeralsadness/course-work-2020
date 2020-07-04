@@ -1,6 +1,7 @@
 #include "IndexManager.h"
 #include "BinarySearchTree.h"
 
+#include <iomanip>
 #include <stdexcept>
 #include <fstream>
 
@@ -375,35 +376,36 @@ void IndexManager::LoadData(const std::string &file_name) {
 }
 
 // vector of {company name, income of this company}
-Vector<Pair<std::string, double>> IndexManager::GetCompaniesIncomes() {
-    BinarySearchTree<std::string, double> tree;
+void IndexManager::SaveCompaniesIncomes(const std::string& file_name) {
+	BinarySearchTree<std::string, double> tree;
 
-    auto customers = _customers.LookUp();
-    for (auto it = customers.Begin(); it != customers.End(); ++it) {
-        auto lambda = [it](const ServicePrice& sp) {
-            return sp.GetCompany() == (**it).GetCompanyName();
-        };
-        auto v = _service_prices.Find((**it).GetService(), lambda);
+	auto customers = _customers.LookUp();
+	for (auto it = customers.Begin(); it != customers.End(); ++it) {
+		auto lambda = [it](const ServicePrice& sp) {
+			return sp.GetCompany() == (**it).GetCompanyName();
+		};
+		auto v = _service_prices.Find((**it).GetService(), lambda);
 
-        auto ptr = tree.Find((**it).GetCompanyName());
-        double value = v[0]->GetPrice() * (**it).GetVolume();
-        if (ptr == nullptr) {
-            tree.Insert((**it).GetCompanyName(), value);
-        } else {
-            *ptr += value;
-        }
-    }
+		auto ptr = tree.Find((**it).GetCompanyName());
+		double value = v[0]->GetPrice() * (**it).GetVolume();
+		if (ptr == nullptr) {
+			tree.Insert((**it).GetCompanyName(), value);
+		}
+		else {
+			*ptr += value;
+		}
+	}
 
-    Vector<Pair<std::string, double>> result;
-    tree.ForEach([&result](const std::string& key, double value){
-        result.PushBack({key, value});
-    });
-
-	return result;
+	std::ofstream fout(file_name);
+	size_t counter = 0;
+	tree.ForEach([&fout, &counter](const std::string& key, double value) {
+		fout << ++counter << ". \"" << key << "\""
+			<< " : " << std::setprecision(6) << value << "\n";
+	});
 }
 
 // vector of {company name, vector of its clients}
-Vector<Pair<std::string, Vector<std::string>>> IndexManager::GetCompaniesClients() {
+void IndexManager::SaveCompaniesClients(const std::string& file_name) {
     BinarySearchTree<std::string, Vector<std::string>> tree;
     auto lookup = _customers.LookUp();
 
@@ -417,17 +419,22 @@ Vector<Pair<std::string, Vector<std::string>>> IndexManager::GetCompaniesClients
         }
     }
 
-    Vector<Pair<std::string, Vector<std::string>>> result;
-    tree.ForEach([&result](const std::string& key, const Vector<std::string>& value){
-        result.PushBack({key, value});
-    });
+	std::ofstream fout(file_name);
+	size_t counter = 0;
+	tree.ForEach([&fout, &counter](const std::string& key, const Vector<std::string>& value) {
+		fout << ++counter << ". \"" << key << "\" : {";
 
-    return result;
+		for (auto it = value.Begin(); it != value.End() - 1; ++it) {
+			fout << "\"" << *it << "\"" << ", ";
+		}
+		fout << "\"" << *(value.End() - 1) << "\"" << "}" << "\n";
+	});
+
 }
 
 
 // vector of {customer name, {min duration of its services, max duration of its services}}
-Vector<Pair<std::string, Pair<double, double>>> IndexManager::GetCustomersServiceDurations() {
+void IndexManager::SaveCustomersServiceDurations(const std::string& file_name) {
 	Vector<Pair<std::string, Pair<double, double>>> result;
 	auto lookup = _customers.LookUp();
 
@@ -442,11 +449,18 @@ Vector<Pair<std::string, Pair<double, double>>> IndexManager::GetCustomersServic
 		result[result.Size() - 1].second.second += sd->GetMaxDuration() * (**it).GetVolume();
 	}
 
-	return result;
+	std::ofstream fout(file_name);
+	size_t counter = 0;
+	for (auto it = result.Begin(); it != result.End(); ++it) {
+		fout << ++counter << ". " << it->first << " : "
+			<< std::setprecision(3) << it->second.first << ", "
+			<< std::setprecision(3) << it->second.second << "\n";
+	}
+
 }
 
 // vector of {service, {companies, who perform this service}}
-Vector<Pair<std::string, Vector<std::string>>> IndexManager::GetServiceCompanies() {
+void IndexManager::SaveServiceCompanies(const std::string& file_name) {
     BinarySearchTree<std::string, Vector<std::string>> tree;
 
     auto companies = _companies.LookUp();
@@ -463,12 +477,17 @@ Vector<Pair<std::string, Vector<std::string>>> IndexManager::GetServiceCompanies
         }
     }
 
-    Vector<Pair<std::string, Vector<std::string>>> result;
-    tree.ForEach([&result](const std::string& key, const Vector<std::string>& value){
-        result.PushBack({key, value});
-    });
+	std::ofstream fout(file_name);
+	size_t counter = 0;
+	tree.ForEach([&fout, &counter](const std::string& key, const Vector<std::string>& value) {
+		fout << ++counter << ". \"" << key << "\" : {";
 
-    return result;
+		for (auto it = value.Begin(); it != value.End() - 1; ++it) {
+			fout << "\"" << *it << "\"" << ", ";
+		}
+		fout << "\"" << *(value.End() - 1) << "\"" << "}" << "\n";
+	});
+
 }
 
 

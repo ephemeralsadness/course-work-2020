@@ -1,11 +1,14 @@
 #include "cMain.h" 
+
+#include <fstream>
 #include <wx/grid.h>
 #include <wx/minifram.h>
+
 #include "WindowAddCompany.h"
 #include "WindowAddServiceDuration.h"
-#include"IndexManager.h"
-#include"WindowAddServicePrice.h"
-#include"WindowAddCustomer.h"
+#include "IndexManager.h"
+#include "WindowAddServicePrice.h"
+#include "WindowAddCustomer.h"
 #include "RemoveWindow.h"
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
@@ -130,19 +133,47 @@ void cMain::ClickOnMenuExit(wxCommandEvent& event) {
 }
 
 void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event){
-	data_manager->GetCompaniesIncomes();
+	wxFileDialog
+		openFileDialog(this, _("Сохранить отчет..."), "", "",
+			"(*.txt)|*.txt", wxFD_SAVE);
+
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;     // the user changed idea...
+
+	data_manager->SaveCompaniesIncomes(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event){
-	data_manager->GetCompaniesClients();
+	wxFileDialog
+		openFileDialog(this, _("Сохранить отчет..."), "", "",
+			"(*.txt)|*.txt", wxFD_SAVE);
+
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;     // the user changed idea...
+
+	data_manager->SaveCompaniesClients(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event){
-	data_manager->GetCustomersServiceDurations();
+	wxFileDialog
+		openFileDialog(this, _("Сохранить отчет..."), "", "",
+			"(*.txt)|*.txt", wxFD_SAVE);
+
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;     // the user changed idea...
+
+	data_manager->SaveCustomersServiceDurations(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnReportGetServiceCompanies(wxCommandEvent& event){
-	data_manager->GetServiceCompanies();
+	wxFileDialog
+		openFileDialog(this, _("Сохранить отчет..."), "", "",
+			"(*.txt)|*.txt", wxFD_SAVE);
+
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;     // the user changed idea...
+
+	data_manager->SaveServiceCompanies(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnAdd(wxCommandEvent& event)
