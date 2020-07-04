@@ -1,15 +1,14 @@
 #include "cMain.h" 
-
-#include <fstream>
 #include <wx/grid.h>
 #include <wx/minifram.h>
-
 #include "WindowAddCompany.h"
 #include "WindowAddServiceDuration.h"
-#include "IndexManager.h"
-#include "WindowAddServicePrice.h"
-#include "WindowAddCustomer.h"
+#include"IndexManager.h"
+#include"WindowAddServicePrice.h"
+#include"WindowAddCustomer.h"
 #include "RemoveWindow.h"
+#include <fstream>
+#include "FindWindow.h"
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_MENU(wxID_OPEN, cMain::ClickOnMenuOpen)
@@ -134,7 +133,7 @@ void cMain::ClickOnMenuExit(wxCommandEvent& event) {
 
 void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event){
 	wxFileDialog
-		openFileDialog(this, _("Сохранить отчет..."), "", "",
+		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -145,7 +144,7 @@ void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event){
 
 void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event){
 	wxFileDialog
-		openFileDialog(this, _("Сохранить отчет..."), "", "",
+		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -156,7 +155,7 @@ void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event){
 
 void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event){
 	wxFileDialog
-		openFileDialog(this, _("Сохранить отчет..."), "", "",
+		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -167,7 +166,7 @@ void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event){
 
 void cMain::ClickOnReportGetServiceCompanies(wxCommandEvent& event){
 	wxFileDialog
-		openFileDialog(this, _("Сохранить отчет..."), "", "",
+		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -266,10 +265,86 @@ void cMain::ClickOnShow(wxCommandEvent& event)
 void cMain::ClickOnSearch(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
+	FindWindowDialog* window = new FindWindowDialog(this, wxID_ANY, "Поиск");
+	window->ShowModal();
+	try {
+		if (window->GetData() != nullptr) {
+			main_list->ClearAll();
+			switch (window->GetData()->choice_num) {
+			case 0: {
+				Company x = data_manager->FindCompany(window->GetData()->main_str);
+				main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Услуги", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Адрес", wxLIST_FORMAT_LEFT, 200);
 
+				size_t size_of_services = 0;
+				std::string str_buf = "";
+				size_of_services = x.GetServices().Size();
+				for (int j = 0; j < (size_of_services - 1) && size_of_services != 0; j++) {
+					str_buf += x.GetServices()[j];
+					str_buf += ", ";
+				}
+				if (size_of_services != 0) {
+					str_buf += x.GetServices()[x.GetServices().Size() - 1];
+				}
+				main_list->InsertItem(0, x.GetName());
+				main_list->SetItem(0, 1, str_buf);
+				main_list->SetItem(0, 2, x.GetAddress());
+				break;
+			}
+			case 1: {
+				Vector<Customer> x = data_manager->FindCustomer(window->GetData()->main_str);
+				main_list->AppendColumn("Заказчик", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Объем услуги", wxLIST_FORMAT_LEFT, 200);
 
+				for (int i = 0; i < x.Size(); i++) {
 
+					main_list->InsertItem(i, x[i].GetName());
+					main_list->SetItem(i, 1, x[i].GetCompanyName());
+					main_list->SetItem(i, 2, x[i].GetService());
+					main_list->SetItem(i, 3, std::to_string(x[i].GetVolume()));
+				}
+				break;
+			}
+			case 2: {
+				ServiceDuration x = data_manager->FindServiceDuration(window->GetData()->main_str);
+				main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Минимальная длительность", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Максимальная длительность", wxLIST_FORMAT_LEFT, 200);
 
+				main_list->InsertItem(0, x.GetName());
+				main_list->SetItem(0, 1, std::to_string(x.GetMinDuration()));
+				main_list->SetItem(0, 2, std::to_string(x.GetMaxDuration()));
+
+				break;
+			}
+			case 3: {
+				Vector<ServicePrice> x = data_manager->FindServicePrice(window->GetData()->main_str);
+				main_list->AppendColumn("Услуга", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Цена за еденицу измерения", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Еденица измерения", wxLIST_FORMAT_LEFT, 200);
+
+				for (int i = 0; i < x.Size(); i++) {
+
+					main_list->InsertItem(i, x[i].GetName());
+					main_list->SetItem(i, 1, x[i].GetCompany());
+					main_list->SetItem(i, 2, std::to_string(x[i].GetPrice()));
+					main_list->SetItem(i, 3, x[i].GetMeasure());
+				}
+				break;
+			}
+				  
+			}
+			size_t comparisons = data_manager->GetLastComparisonsAmount();
+			wxMessageBox("Произведено " + std::to_string(comparisons) + " сравнений");
+		}
+	}
+	catch (std::invalid_argument e) {
+		wxMessageBox(e.what());
+	}
 	wxWindow::SetFocus();
 	event.Skip();
 }
@@ -323,6 +398,7 @@ void cMain::ClickOnServicePrice(wxCommandEvent& event)
 	main_list->AppendColumn("Еденица измерения", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < data.Size(); i++) {
+
 
 		main_list->InsertItem(i, data[i].GetName());
 		main_list->SetItem(i, 1, data[i].GetCompany());

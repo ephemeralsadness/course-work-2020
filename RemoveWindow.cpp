@@ -23,26 +23,27 @@ RemoveWindow::RemoveWindow(wxWindow* parent, wxWindowID id, const wxString& titl
 
     main_choice = new wxChoice(this, wxID_SETUP, wxDefaultPosition, wxDefaultSize,choices);
     label1 = new wxStaticText(this, wxID_ANY, "Выберете что удалить:");
-    top->Add(label1, 1, wxALL, 5);
-    top->Add(main_choice, 1, wxALL, 5);
-    top->Layout();
+    top->Add(label1, 1, wxALL | wxALIGN_BOTTOM, 5);
+    top->Add(main_choice, 1, wxALL | wxALIGN_BOTTOM, 5);
     ok_b = new wxButton(this, wxID_OK, "Ок");
     cancel_b = new wxButton(this, wxID_CANCEL, "Отмена");
-    bottom->Add(ok_b, 1, wxALL,5);
-    bottom->Add(cancel_b, 1, wxALL, 5);
-   
-    label2 = new wxStaticText(this, wxID_ANY, "_______________");
-    label3 = new wxStaticText(this, wxID_ANY, "_______________");
+    ok_b->SetBackgroundColour(wxColour(127, 255, 212));
+    cancel_b->SetBackgroundColour(wxColour(127, 255, 212));
+    label2 = new wxStaticText(this, wxID_ANY, "");
+    label3 = new wxStaticText(this, wxID_ANY, "");
     first_choice = new wxChoice(this, wxID_APPLY);
     second_choice = new wxChoice(this, wxID_ANY);
     lable_mid->Add(label2, 1, wxALL | wxALIGN_BOTTOM, 10);
     lable_mid->Add(label3, 1, wxALL | wxALIGN_BOTTOM, 10);
-    choice_mid->Add(first_choice, 1, wxALL | wxALIGN_BOTTOM, 10);
-    choice_mid->Add(second_choice, 1, wxALL | wxALIGN_BOTTOM, 10);
-    main_s->Add(top, wxEXPAND);
-    main_s->Add(lable_mid, wxEXPAND);
-    main_s->Add(choice_mid, wxEXPAND);
-    main_s->Add(bottom, wxEXPAND);
+    choice_mid->Add(first_choice, 1, wxALL | wxALIGN_CENTER, 10);
+    choice_mid->Add(second_choice, 1, wxALL | wxALIGN_CENTER, 10);
+    bottom->Add(ok_b, 1, wxALL, 5);
+    bottom->Add(cancel_b, 1, wxALL, 5);
+    main_s->Add(top,0, wxBOTTOM);
+    main_s->Add(lable_mid,0, wxEXPAND);
+    main_s->Add(choice_mid,0, wxEXPAND);
+    main_s->Add(bottom,0, wxALIGN_CENTER);
+    
     this->SetSizerAndFit(main_s);
 }
 
@@ -107,6 +108,7 @@ void RemoveWindow::Choosing(wxCommandEvent& event)
         choice_mid->Hide(second_choice);
         lable_mid->Hide(label3);
         label2->SetLabelText("Выберете компанию");
+      
         first_choice->Clear();
         Vector<std::string> str_vec;
         Vector<Pair<Company,size_t>> all_companies = manager->LookUpCompanies();

@@ -7,7 +7,6 @@ class RemoveWindow: public wxDialog
 {
 	enum { COMPANY, CUSTOMER, SERVICE_ALL, SERVICE_COMPANY };
 	struct data {
-		
 		size_t choice_num;
 		std::string main_str;
 		std::string additional_str;
