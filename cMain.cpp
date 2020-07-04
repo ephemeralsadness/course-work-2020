@@ -73,6 +73,8 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	m_menu_bar->Append(menu_file, "Файл");
 
 	this->SetMenuBar(m_menu_bar);
+
+	data_manager = new IndexManager();
 }
 
 
@@ -82,9 +84,14 @@ cMain::~cMain() {
 
 void cMain::ClickOnMenuNew(wxCommandEvent& event) {
 	// TODO подтверждение действия
+	delete data_manager;
+	data_manager = new IndexManager();
 }
 
 void cMain::ClickOnMenuOpen(wxCommandEvent& event) {
+
+	delete data_manager;
+	data_manager = new IndexManager();
 
 	wxFileDialog
 		openFileDialog(this, _("Открыть файл..."), "", "",
@@ -93,7 +100,7 @@ void cMain::ClickOnMenuOpen(wxCommandEvent& event) {
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
 		return;     // the user changed idea...
 
-	data_manager.LoadData(openFileDialog.GetPath().ToStdString());
+	data_manager->LoadData(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnMenuSave(wxCommandEvent& event) {
@@ -104,7 +111,7 @@ void cMain::ClickOnMenuSave(wxCommandEvent& event) {
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
 		return;     // the user changed idea...
 
-	data_manager.SaveData(openFileDialog.GetPath().ToStdString());
+	data_manager->SaveData(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnMenuExit(wxCommandEvent& event) {
@@ -210,7 +217,7 @@ void cMain::ClickOnCompany(wxCommandEvent& event)
 	main_list->ClearAll();
 
 	Vector<Pair<Company, size_t>> data;
-	data = data_manager.LookUpCompanies();
+	data = data_manager->LookUpCompanies();
 
 	main_list->AppendColumn("Хэш", wxLIST_FORMAT_LEFT, 200);
 	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
@@ -246,7 +253,7 @@ void cMain::ClickOnServicePrice(wxCommandEvent& event)
 	main_list->ClearAll();
 
 	Vector<ServicePrice> data;
-	data = data_manager.LookUpServicePrices();
+	data = data_manager->LookUpServicePrices();
 	main_list->AppendColumn("Услуга", wxLIST_FORMAT_LEFT, 200);
 	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
 	main_list->AppendColumn("Цена за еденицу измерения", wxLIST_FORMAT_LEFT, 200);
@@ -271,7 +278,7 @@ void cMain::ClickOnServiceLength(wxCommandEvent& event)
 	main_list->ClearAll();
 
 	Vector<Pair<ServiceDuration, size_t>> data;
-	data = data_manager.LookUpServiceDurations();
+	data = data_manager->LookUpServiceDurations();
 
 	main_list->AppendColumn("Хэш", wxLIST_FORMAT_LEFT, 200);
 	main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
@@ -297,14 +304,14 @@ void cMain::ClickOnAddCustomer(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
 	WindowAddCustomer* x = new WindowAddCustomer(this, wxID_ANY, "Добавление заказа");
-	if (data_manager.LookUpCompanies().Size() == 0) {
+	if (data_manager->LookUpCompanies().Size() == 0) {
 		wxMessageBox("Список компаний пуст");
 	}
 	else {
-		x->SetManagerPointer(data_manager);
+		x->SetManagerPointer(*data_manager);
 		x->ShowModal();
 		if (x->GetData() != nullptr) {
-			data_manager.AddCustomer(x->GetData()->name_customer, x->GetData()->name_service, x->GetData()->name_company, x->GetData()->volume);
+			data_manager->AddCustomer(x->GetData()->name_customer, x->GetData()->name_service, x->GetData()->name_company, x->GetData()->volume);
 		}
 	}
 	wxWindow::SetFocus();
@@ -317,7 +324,7 @@ void cMain::ClickOnAddCompany(wxCommandEvent& event)
 	WindowAddCompany* x = new WindowAddCompany(this, wxID_ANY, "Добваление компании");
 	x->ShowModal();
 	if (x->GetData() != nullptr) {
-		data_manager.AddCompany(x->GetData()->GetName(), x->GetData()->GetAddress());
+		data_manager->AddCompany(x->GetData()->GetName(), x->GetData()->GetAddress());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -327,18 +334,18 @@ void cMain::ClickOnAddServicePrice(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
 	WindowAddServicePrice* x = new WindowAddServicePrice(this, wxID_ANY, "Добавление услуги к компании");
-	if (data_manager.LookUpCompanies().Size() == 0 && data_manager.LookUpServiceDurations().Size() == 0) {
+	if (data_manager->LookUpCompanies().Size() == 0 && data_manager->LookUpServiceDurations().Size() == 0) {
 		wxMessageBox("Список компаний и услуг пуст");
-	} else if (data_manager.LookUpCompanies().Size() == 0) {
+	} else if (data_manager->LookUpCompanies().Size() == 0) {
 		wxMessageBox("Список компаний пуст");
-	} else if ( data_manager.LookUpServiceDurations().Size() == 0) {
+	} else if ( data_manager->LookUpServiceDurations().Size() == 0) {
 		wxMessageBox("Список услуг пуст");
 	}
 	else {
-		x->SetManagerPointer(data_manager);
+		x->SetManagerPointer(*data_manager);
 		x->ShowModal();
 		if (x->GetData() != nullptr) {
-			data_manager.AddServicePrice(x->GetData()->name_s, x->GetData()->name_c, x->GetData()->price_s, x->GetData()->measure_s);
+			data_manager->AddServicePrice(x->GetData()->name_s, x->GetData()->name_c, x->GetData()->price_s, x->GetData()->measure_s);
 		}
 	}
 	wxWindow::SetFocus();
@@ -351,7 +358,7 @@ void cMain::ClickOnAddServiceDuration(wxCommandEvent& event)
 	WindowAddServiceDuration* x = new WindowAddServiceDuration(this, wxID_ANY, "Добавление новой услуги");
 	x->ShowModal();
 	if (x->GetData() != nullptr) {
-		data_manager.AddServiceDuration(x->GetData()->GetName(), x->GetData()->GetMinDuration(), x->GetData()->GetMaxDuration());
+		data_manager->AddServiceDuration(x->GetData()->GetName(), x->GetData()->GetMinDuration(), x->GetData()->GetMaxDuration());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -368,7 +375,7 @@ void cMain::ClickOnCustomer(wxCommandEvent& event) {
 	choice->SetFocus();
 	main_list->ClearAll();
 
-	Vector<Customer> data = data_manager.LookUpCustomers();
+	Vector<Customer> data = data_manager->LookUpCustomers();
 
 	main_list->AppendColumn("Заказчик", wxLIST_FORMAT_LEFT, 200);
 	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);

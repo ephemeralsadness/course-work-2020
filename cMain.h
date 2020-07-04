@@ -19,7 +19,7 @@ private:
 	wxBoxSizer* main_box = nullptr;
 	wxListView* main_list = nullptr;
 	wxDialog* choice = nullptr;
-	IndexManager data_manager;
+	IndexManager* data_manager;
 
 	void ClickOnMenuNew(wxCommandEvent& event);
 	void ClickOnMenuOpen(wxCommandEvent& event);
