@@ -8,10 +8,9 @@
 #include"WindowAddCustomer.h"
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
-EVT_MENU(wxID_OPEN, cMain::ClickOnMenuNew)
-EVT_MENU(wxID_SAVE, cMain::ClickOnMenuOpen)
-EVT_MENU(wxID_SAVEAS, cMain::ClickOnMenuSave)
-EVT_MENU(wxID_NEW, cMain::ClickOnMenuSaveAs)
+EVT_MENU(wxID_OPEN, cMain::ClickOnMenuOpen)
+EVT_MENU(wxID_SAVE, cMain::ClickOnMenuSave)
+EVT_MENU(wxID_NEW, cMain::ClickOnMenuNew)
 EVT_MENU(wxID_EXIT, cMain::ClickOnMenuExit)
 EVT_BUTTON(10101, cMain::ClickOnAdd)
 EVT_BUTTON(10102, cMain::ClickOnRemove)
@@ -65,10 +64,9 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	this->SetIcon({ "icon2.png", wxBITMAP_TYPE_PNG });
 
 	wxMenu* menu_file = new wxMenu();
-	menu_file->Append(wxID_NEW, "Новый\tCtrl+N");
-	menu_file->Append(wxID_OPEN, "Открыть\tCtrl+O");
-	menu_file->Append(wxID_SAVE, "Сохранить\tCtrl+S");
-	menu_file->Append(wxID_SAVEAS, "Сохранить как");
+	menu_file->Append(wxID_NEW, "Новый\t");
+	menu_file->Append(wxID_OPEN, "Открыть\t");
+	menu_file->Append(wxID_SAVE, "Сохранить\t");
 	menu_file->AppendSeparator();
 	menu_file->Append(wxID_EXIT, "Выход");
 
@@ -83,18 +81,30 @@ cMain::~cMain() {
 }
 
 void cMain::ClickOnMenuNew(wxCommandEvent& event) {
-
+	// TODO подтверждение действия
 }
 
 void cMain::ClickOnMenuOpen(wxCommandEvent& event) {
 
+	wxFileDialog
+		openFileDialog(this, _("Открыть файл..."), "", "",
+			"(*.cw2020)|*.cw2020", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;     // the user changed idea...
+
+	data_manager.LoadData(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnMenuSave(wxCommandEvent& event) {
-}
+	wxFileDialog
+		openFileDialog(this, _("Сохранить файл..."), "", "",
+			"(*.cw2020)|*.cw2020", wxFD_SAVE);
 
-void cMain::ClickOnMenuSaveAs(wxCommandEvent& event) {
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;     // the user changed idea...
 
+	data_manager.SaveData(openFileDialog.GetPath().ToStdString());
 }
 
 void cMain::ClickOnMenuExit(wxCommandEvent& event) {
@@ -110,7 +120,7 @@ void cMain::ClickOnAdd(wxCommandEvent& event)
 	wxBoxSizer* s_main = new wxBoxSizer(wxVERTICAL);
 	choice->SetBackgroundColour(wxColour(255, 255, 255));
 
-	wxButton* ok = new wxButton(choice, 14000, "Ok", wxDefaultPosition, wxSize(150, 25));
+	wxButton* ok = new wxButton(choice, 14000, "ОК", wxDefaultPosition, wxSize(150, 25));
 	wxButton* cust = new wxButton(choice, 14001, "Добавить заказ", wxDefaultPosition, wxSize(150, 50));
 	wxButton* comp = new wxButton(choice, 14002, "Добавить компанию", wxDefaultPosition, wxSize(150, 50));
 	wxButton* serv_pr = new wxButton(choice, 14003, "Добавить услугу\n к компании", wxDefaultPosition, wxSize(150, 50));

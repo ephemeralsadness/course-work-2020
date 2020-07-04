@@ -24,7 +24,6 @@ private:
 	void ClickOnMenuNew(wxCommandEvent& event);
 	void ClickOnMenuOpen(wxCommandEvent& event);
 	void ClickOnMenuSave(wxCommandEvent& event);
-	void ClickOnMenuSaveAs(wxCommandEvent& event);
 	void ClickOnMenuExit(wxCommandEvent& event);
 	void ClickOnAdd(wxCommandEvent& event);
 	void ClickOnRemove(wxCommandEvent& event);
