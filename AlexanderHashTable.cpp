@@ -121,7 +121,7 @@ namespace Alexander {
 		for (char c : key)
 			hash = (R * hash + c) % _buckets;
 
-		return R * hash % _buckets;
+		return hash;
 	}
 
 
