@@ -33,6 +33,10 @@ private:
 	wxTextCtrl* service_price = nullptr;
 	wxTextCtrl* service_measure = nullptr;
 	IndexManager* manager_pointer = nullptr;
+	wxBoxSizer* main_s = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* label = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* text_in = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* button = new wxBoxSizer(wxHORIZONTAL);
 	void ClickOnAdd(wxCommandEvent& event);
 
 	wxDECLARE_EVENT_TABLE();

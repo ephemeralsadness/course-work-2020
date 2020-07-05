@@ -33,6 +33,11 @@ private:
 	wxTextCtrl* service_volume = nullptr;
 	wxTextCtrl* customer_name = nullptr;
 	IndexManager* manager_pointer = nullptr;
+	wxBoxSizer* main_s = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* label = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* text_in = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* button = new wxBoxSizer(wxHORIZONTAL);
+
 	void ClickOnAdd(wxCommandEvent& event);
 	void CompanyChoice(wxCommandEvent& event);
 	wxDECLARE_EVENT_TABLE();

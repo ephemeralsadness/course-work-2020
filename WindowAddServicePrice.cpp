@@ -19,12 +19,9 @@ WindowAddServicePrice::WindowAddServicePrice(wxWindow* parent, wxWindowID id, co
 	label2 = new wxStaticText(this, wxID_ANY, "Название услуги");
 	label3 = new wxStaticText(this, wxID_ANY, "Цена услуги за у.е.");
 	label4 = new wxStaticText(this, wxID_ANY, "Еденица измерения услуги");
-	wxBoxSizer* main_s = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer* label = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* text_in = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* button = new wxBoxSizer(wxHORIZONTAL);
-	company_name = new wxChoice(this, 30001);
-	service_name = new wxChoice(this, 30002);
+
+	company_name = new wxChoice(this, 30001, wxDefaultPosition, wxSize(100, 25));
+	service_name = new wxChoice(this, 30002, wxDefaultPosition, wxSize(100,25));
 	company_name->SetBackgroundColour(wxColour(255, 255, 255));
 	service_name->SetBackgroundColour(wxColour(255, 255, 255));
 	company_name->SetOwnBackgroundColour(wxColour(255, 255, 255));
@@ -34,14 +31,14 @@ WindowAddServicePrice::WindowAddServicePrice(wxWindow* parent, wxWindowID id, co
 	label->Add(label3, 1, wxALL | wxALIGN_BOTTOM, 10);
 	label->Add(label4, 1, wxALL | wxALIGN_BOTTOM, 10);
 	label->Add(label1, 1, wxALL | wxALIGN_BOTTOM, 10);
-	text_in->Add(service_name, 1, wxALL | wxALIGN_BOTTOM, 10);
-	text_in->Add(service_price, 1, wxALL | wxALIGN_BOTTOM, 10);
-	text_in->Add(service_measure, 1, wxALL | wxALIGN_BOTTOM, 10);
-	text_in->Add(company_name, 1, wxALL | wxALIGN_BOTTOM, 10);
-	button->Add(add, 1, wxALIGN_CENTER, 10);
-	main_s->Add(label, 1, wxBOTTOM, 10);
+	text_in->Add(service_name, 1, wxALL , 10);
+	text_in->Add(service_price, 1, wxALL , 10);
+	text_in->Add(service_measure, 1, wxALL , 10);
+	text_in->Add(company_name, 1, wxALL, 10);
+	button->Add(add, 1, wxALL, 15);
+	main_s->Add(label, 1, wxEXPAND, 10);
 	main_s->Add(text_in, 1, wxEXPAND, 10);
-	main_s->Add(button, 1, wxALIGN_CENTER, 10);
+	main_s->Add(button, 1, wxALIGN_RIGHT);
 	this->SetSizerAndFit(main_s);
 }
 

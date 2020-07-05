@@ -214,17 +214,22 @@ void cMain::ClickOnAdd(wxCommandEvent& event)
 
 void cMain::ClickOnRemove(wxCommandEvent& event)
 {
-	wxWindow::SetFocus();
-	RemoveWindow* remove_dialog = new RemoveWindow(this, wxID_ANY, "Удаление");
-	remove_dialog->SetManagerPointer(*data_manager);
-	remove_dialog->ShowModal();
-	if (remove_dialog->GetData() != nullptr) {
-		switch (remove_dialog->GetData()->choice_num) {
-		case 0:data_manager->RemoveCompany(remove_dialog->GetData()->main_str); break;
-		case 1:data_manager->RemoveCustomer(remove_dialog->GetData()->main_str); break;
-		case 2:data_manager->RemoveServiceDuration(remove_dialog->GetData()->main_str); break;
-		case 3:data_manager->RemoveServicePrice(remove_dialog->GetData()->main_str, remove_dialog->GetData()->additional_str); break;
+	try {
+		wxWindow::SetFocus();
+		RemoveWindow* remove_dialog = new RemoveWindow(this, wxID_ANY, "Удаление");
+		remove_dialog->SetManagerPointer(*data_manager);
+		remove_dialog->ShowModal();
+		if (remove_dialog->GetData() != nullptr) {
+			switch (remove_dialog->GetData()->choice_num) {
+			case 0:data_manager->RemoveCompany(remove_dialog->GetData()->main_str); break;
+			case 1:data_manager->RemoveCustomer(remove_dialog->GetData()->main_str); break;
+			case 2:data_manager->RemoveServiceDuration(remove_dialog->GetData()->main_str); break;
+			case 3:data_manager->RemoveServicePrice(remove_dialog->GetData()->main_str, remove_dialog->GetData()->additional_str); break;
+			}
 		}
+	}
+	catch (std::invalid_argument e) {
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -442,17 +447,22 @@ void cMain::ClickOnServiceLength(wxCommandEvent& event)
 
 void cMain::ClickOnAddCustomer(wxCommandEvent& event)
 {
-	wxWindow::SetFocus();
-	WindowAddCustomer* x = new WindowAddCustomer(this, wxID_ANY, "Добавление заказа");
-	if (data_manager->LookUpCompanies().Size() == 0) {
-		wxMessageBox("Список компаний пуст");
-	}
-	else {
-		x->SetManagerPointer(*data_manager);
-		x->ShowModal();
-		if (x->GetData() != nullptr) {
-			data_manager->AddCustomer(x->GetData()->name_customer, x->GetData()->name_service, x->GetData()->name_company, x->GetData()->volume);
+	try {
+		wxWindow::SetFocus();
+		WindowAddCustomer* x = new WindowAddCustomer(this, wxID_ANY, "Добавление заказа");
+		if (data_manager->LookUpCompanies().Size() == 0) {
+			wxMessageBox("Список компаний пуст");
 		}
+		else {
+			x->SetManagerPointer(*data_manager);
+			x->ShowModal();
+			if (x->GetData() != nullptr) {
+				data_manager->AddCustomer(x->GetData()->name_customer, x->GetData()->name_service, x->GetData()->name_company, x->GetData()->volume);
+			}
+		}
+	}
+	catch (std::invalid_argument e) {
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -460,11 +470,16 @@ void cMain::ClickOnAddCustomer(wxCommandEvent& event)
 
 void cMain::ClickOnAddCompany(wxCommandEvent& event)
 {
-	wxWindow::SetFocus();
-	WindowAddCompany* x = new WindowAddCompany(this, wxID_ANY, "Добваление компании");
-	x->ShowModal();
-	if (x->GetData() != nullptr) {
-		data_manager->AddCompany(x->GetData()->GetName(), x->GetData()->GetAddress());
+	try {
+		wxWindow::SetFocus();
+		WindowAddCompany* x = new WindowAddCompany(this, wxID_ANY, "Добваление компании");
+		x->ShowModal();
+		if (x->GetData() != nullptr) {
+			data_manager->AddCompany(x->GetData()->GetName(), x->GetData()->GetAddress());
+		}
+	}
+	catch (std::invalid_argument e) {
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -472,23 +487,28 @@ void cMain::ClickOnAddCompany(wxCommandEvent& event)
 
 void cMain::ClickOnAddServicePrice(wxCommandEvent& event)
 {
-	wxWindow::SetFocus();
-	WindowAddServicePrice* x = new WindowAddServicePrice(this, wxID_ANY, "Добавление услуги к компании");
-	if (data_manager->LookUpCompanies().Size() == 0 && data_manager->LookUpServiceDurations().Size() == 0) {
-		wxMessageBox("Список компаний и услуг пуст");
-	}
-	else if (data_manager->LookUpCompanies().Size() == 0) {
-		wxMessageBox("Список компаний пуст");
-	}
-	else if (data_manager->LookUpServiceDurations().Size() == 0) {
-		wxMessageBox("Список услуг пуст");
-	}
-	else {
-		x->SetManagerPointer(*data_manager);
-		x->ShowModal();
-		if (x->GetData() != nullptr) {
-			data_manager->AddServicePrice(x->GetData()->name_s, x->GetData()->name_c, x->GetData()->price_s, x->GetData()->measure_s);
+	try {
+		wxWindow::SetFocus();
+		WindowAddServicePrice* x = new WindowAddServicePrice(this, wxID_ANY, "Добавление услуги к компании");
+		if (data_manager->LookUpCompanies().Size() == 0 && data_manager->LookUpServiceDurations().Size() == 0) {
+			wxMessageBox("Список компаний и услуг пуст");
 		}
+		else if (data_manager->LookUpCompanies().Size() == 0) {
+			wxMessageBox("Список компаний пуст");
+		}
+		else if (data_manager->LookUpServiceDurations().Size() == 0) {
+			wxMessageBox("Список услуг пуст");
+		}
+		else {
+			x->SetManagerPointer(*data_manager);
+			x->ShowModal();
+			if (x->GetData() != nullptr) {
+				data_manager->AddServicePrice(x->GetData()->name_s, x->GetData()->name_c, x->GetData()->price_s, x->GetData()->measure_s);
+			}
+		}
+	}
+	catch (std::invalid_argument e) {
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -496,11 +516,16 @@ void cMain::ClickOnAddServicePrice(wxCommandEvent& event)
 
 void cMain::ClickOnAddServiceDuration(wxCommandEvent& event)
 {
-	wxWindow::SetFocus();
-	WindowAddServiceDuration* x = new WindowAddServiceDuration(this, wxID_ANY, "Добавление новой услуги");
-	x->ShowModal();
-	if (x->GetData() != nullptr) {
-		data_manager->AddServiceDuration(x->GetData()->GetName(), x->GetData()->GetMinDuration(), x->GetData()->GetMaxDuration());
+	try {
+		wxWindow::SetFocus();
+		WindowAddServiceDuration* x = new WindowAddServiceDuration(this, wxID_ANY, "Добавление новой услуги");
+		x->ShowModal();
+		if (x->GetData() != nullptr) {
+			data_manager->AddServiceDuration(x->GetData()->GetName(), x->GetData()->GetMinDuration(), x->GetData()->GetMaxDuration());
+		}
+	}
+	catch (std::invalid_argument e) {
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -514,6 +539,7 @@ void cMain::ClickOnOkAdd(wxCommandEvent& event)
 }
 
 void cMain::ClickOnCustomer(wxCommandEvent& event) {
+
 	choice->SetFocus();
 	main_list->ClearAll();
 

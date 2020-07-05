@@ -96,7 +96,7 @@ namespace Aleksei {
 		for (size_t i = 0; i < N; i++) {
 			buf = table[i].ToPointerVector();
 			for (size_t j = 0; j < table[i].Size(); j++) {
-				v.PushBack(Pair<const Company*, size_t>(buf[j], i));
+				v.PushBack(Pair<const Company*, size_t>(buf[j], (size_t)Hash(buf[j]->GetName())));
 			}
 		}
 		return v;

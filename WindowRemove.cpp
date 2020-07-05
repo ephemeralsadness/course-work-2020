@@ -113,7 +113,8 @@ void RemoveWindow::Choosing(wxCommandEvent& event)
 		Vector<std::string> str_vec;
 		Vector<Pair<Company, size_t>> all_companies = manager->LookUpCompanies();
 		for (size_t i = 0; i < all_companies.Size(); i++) {
-			str_vec.PushBack(all_companies[i].first.GetName());
+			if(all_companies[i].first.GetName()!= all_companies[i-1].first.GetName() || i ==0)
+				str_vec.PushBack(all_companies[i].first.GetName());
 		}
 		for (size_t i = 0; i < str_vec.Size(); i++)
 			first_choice->Append(str_vec[i]);
@@ -128,7 +129,8 @@ void RemoveWindow::Choosing(wxCommandEvent& event)
 		Vector<std::string> str_vec;
 		Vector<Customer> all_companies = manager->LookUpCustomers();
 		for (size_t i = 0; i < all_companies.Size(); i++) {
-			str_vec.PushBack(all_companies[i].GetName());
+			if (all_companies[i].GetName() != all_companies[i - 1].GetName() || i == 0)
+				str_vec.PushBack(all_companies[i].GetName());
 		}
 		for (size_t i = 0; i < str_vec.Size(); i++)
 			first_choice->Append(str_vec[i]);
@@ -143,7 +145,8 @@ void RemoveWindow::Choosing(wxCommandEvent& event)
 		Vector<std::string> str_vec;
 		Vector<Pair<ServiceDuration, size_t>> all_companies = manager->LookUpServiceDurations();
 		for (size_t i = 0; i < all_companies.Size(); i++) {
-			str_vec.PushBack(all_companies[i].first.GetName());
+			if (all_companies[i].first.GetName() != all_companies[i - 1].first.GetName() || i == 0)
+				str_vec.PushBack(all_companies[i].first.GetName());
 		}
 		for (size_t i = 0; i < str_vec.Size(); i++)
 			first_choice->Append(str_vec[i]);
@@ -158,7 +161,8 @@ void RemoveWindow::Choosing(wxCommandEvent& event)
 		Vector<std::string> str_vec;
 		Vector<Pair<Company, size_t>> all_companies = manager->LookUpCompanies();
 		for (size_t i = 0; i < all_companies.Size(); i++) {
-			str_vec.PushBack(all_companies[i].first.GetName());
+			if (all_companies[i].first.GetName() != all_companies[i - 1].first.GetName() || i == 0)
+				str_vec.PushBack(all_companies[i].first.GetName());
 		}
 		for (size_t i = 0; i < str_vec.Size(); i++) {
 			first_choice->Append(str_vec[i]);

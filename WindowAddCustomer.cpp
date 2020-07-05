@@ -17,14 +17,11 @@ WindowAddCustomer::WindowAddCustomer(wxWindow* parent, wxWindowID id, const wxSt
 	add->SetBackgroundColour(wxColour(127, 255, 212));
 	label1 = new wxStaticText(this, wxID_ANY, "Имя заказчика");
 	label2 = new wxStaticText(this, wxID_ANY, "Название компании");
-	label3 = new wxStaticText(this, wxID_ANY, "Наименование услуги");
-	label4 = new wxStaticText(this, wxID_ANY, "Объем заказанной услуги");
-	wxBoxSizer* main_s = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer* label = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* text_in = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* button = new wxBoxSizer(wxHORIZONTAL);
-	company_name = new wxChoice(this, 30001);
-	service_name = new wxChoice(this, 30002);
+	label3 = new wxStaticText(this, wxID_ANY, "Наименованеи услуги");
+	label4 = new wxStaticText(this, wxID_ANY, "Объем заказаннйо услуги");
+
+	company_name = new wxChoice(this, 30001, wxDefaultPosition, wxSize(100, 25));
+	service_name = new wxChoice(this, 30002, wxDefaultPosition, wxSize(100, 25));
 	company_name->SetBackgroundColour(wxColour(255, 255, 255));
 	service_name->SetBackgroundColour(wxColour(255, 255, 255));
 	company_name->SetOwnBackgroundColour(wxColour(255, 255, 255));
@@ -35,14 +32,14 @@ WindowAddCustomer::WindowAddCustomer(wxWindow* parent, wxWindowID id, const wxSt
 	label->Add(label3, 1, wxALL | wxALIGN_BOTTOM, 10);
 	label->Add(label4, 1, wxALL | wxALIGN_BOTTOM, 10);
 
-	text_in->Add(customer_name, 1, wxALL | wxALIGN_BOTTOM, 10);
-	text_in->Add(company_name, 1, wxALL | wxALIGN_BOTTOM, 10);
-	text_in->Add(service_name, 1, wxALL | wxALIGN_BOTTOM, 10);
-	text_in->Add(service_volume, 1, wxALL | wxALIGN_BOTTOM, 10);
-	button->Add(add, 1, wxALIGN_CENTER, 10);
-	main_s->Add(label, 1, wxBOTTOM, 10);
+	text_in->Add(customer_name, 1, wxALL, 10);
+	text_in->Add(company_name, 1, wxALL, 10);
+	text_in->Add(service_name, 1, wxALL, 10);
+	text_in->Add(service_volume, 1, wxALL, 10);
+	button->Add(add, 1, wxALL, 15);
+	main_s->Add(label, 1, wxEXPAND, 10);
 	main_s->Add(text_in, 1, wxEXPAND, 10);
-	main_s->Add(button, 1, wxALIGN_CENTER, 10);
+	main_s->Add(button, 1, wxALIGN_RIGHT);
 	this->SetSizerAndFit(main_s);
 }
 
@@ -53,9 +50,13 @@ WindowAddCustomer::~WindowAddCustomer()
 void WindowAddCustomer::SetManagerPointer(IndexManager& x) {
 	manager_pointer = &x;
 	Vector<Pair<Company, size_t>> companies = manager_pointer->LookUpCompanies();
+	Vector<std::string> str_vec;
 	for (int i = 0; i < companies.Size(); i++) {
-		company_name->Append(companies[i].first.GetName());
+		str_vec.PushBack(companies[i].first.GetName());
 	}
+	for (int i = 0; i < companies.Size(); i++)
+		company_name->Append(str_vec[i]);
+	company_name->SetSize(wxDefaultSize);
 }
 
 WindowAddCustomer::data* WindowAddCustomer::GetData() {
