@@ -72,19 +72,19 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	this->SetIcon({ "icon.png", wxBITMAP_TYPE_PNG });
 
 	wxMenu* menu_file = new wxMenu();
-	menu_file->Append(wxID_NEW, "Новый\t");
-	menu_file->Append(wxID_OPEN, "Открыть\t");
-	menu_file->Append(wxID_SAVE, "Сохранить\t");
+	menu_file->Append(wxID_NEW, "ГЌГ®ГўГ»Г©\t");
+	menu_file->Append(wxID_OPEN, "ГЋГІГЄГ°Г»ГІГј\t");
+	menu_file->Append(wxID_SAVE, "Г‘Г®ГµГ°Г Г­ГЁГІГј\t");
 	menu_file->AppendSeparator();
-	menu_file->Append(wxID_EXIT, "Выход");
-	m_menu_bar->Append(menu_file, "Файл");
+	menu_file->Append(wxID_EXIT, "Г‚Г»ГµГ®Г¤");
+	m_menu_bar->Append(menu_file, "Г”Г Г©Г«");
 
 	wxMenu* menu_reports = new wxMenu();
-	menu_reports->Append(11111, "Доходы компаний\t");
-	menu_reports->Append(11112, "Клиенты компаний\t");
-	menu_reports->Append(11113, "Длительность выполнения всех услуг\nдля каждого клиента\t");
-	menu_reports->Append(11114, "Перечень всех услуг со списком компаний, \nкоторые их предоставляют");
-	m_menu_bar->Append(menu_reports, "Отчёты");
+	menu_reports->Append(11111, "Г„Г®ГµГ®Г¤Г» ГЄГ®Г¬ГЇГ Г­ГЁГ©\t");
+	menu_reports->Append(11112, "ГЉГ«ГЁГҐГ­ГІГ» ГЄГ®Г¬ГЇГ Г­ГЁГ©\t");
+	menu_reports->Append(11113, "Г„Г«ГЁГІГҐГ«ГјГ­Г®Г±ГІГј ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї ГўГ±ГҐГµ ГіГ±Г«ГіГЈ\nГ¤Г«Гї ГЄГ Г¦Г¤Г®ГЈГ® ГЄГ«ГЁГҐГ­ГІГ \t");
+	menu_reports->Append(11114, "ГЏГҐГ°ГҐГ·ГҐГ­Гј ГўГ±ГҐГµ ГіГ±Г«ГіГЈ Г±Г® Г±ГЇГЁГ±ГЄГ®Г¬ ГЄГ®Г¬ГЇГ Г­ГЁГ©, \nГЄГ®ГІГ®Г°Г»ГҐ ГЁГµ ГЇГ°ГҐГ¤Г®Г±ГІГ ГўГ«ГїГѕГІ");
+	m_menu_bar->Append(menu_reports, "ГЋГІГ·ВёГІГ»");
 	this->SetMenuBar(m_menu_bar);
 
 	data_manager = new IndexManager();
@@ -96,7 +96,7 @@ cMain::~cMain() {
 }
 
 void cMain::ClickOnMenuNew(wxCommandEvent& event) {
-	// TODO подтверждение действия
+	// TODO ГЇГ®Г¤ГІГўГҐГ°Г¦Г¤ГҐГ­ГЁГҐ Г¤ГҐГ©Г±ГІГўГЁГї
 	delete data_manager;
 	data_manager = new IndexManager();
 }
@@ -107,7 +107,7 @@ void cMain::ClickOnMenuOpen(wxCommandEvent& event) {
 	data_manager = new IndexManager();
 
 	wxFileDialog
-		openFileDialog(this, _("Открыть файл..."), "", "",
+		openFileDialog(this, _("ГЋГІГЄГ°Г»ГІГј ГґГ Г©Г«..."), "", "",
 			"(*.cw2020)|*.cw2020", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -118,7 +118,7 @@ void cMain::ClickOnMenuOpen(wxCommandEvent& event) {
 
 void cMain::ClickOnMenuSave(wxCommandEvent& event) {
 	wxFileDialog
-		openFileDialog(this, _("Сохранить файл..."), "", "",
+		openFileDialog(this, _("Г‘Г®ГµГ°Г Г­ГЁГІГј ГґГ Г©Г«..."), "", "",
 			"(*.cw2020)|*.cw2020", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -134,7 +134,7 @@ void cMain::ClickOnMenuExit(wxCommandEvent& event) {
 
 void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event) {
 	wxFileDialog
-		openFileDialog(this, _("Сохранить файл..."), "", "",
+		openFileDialog(this, _("Г‘Г®ГµГ°Г Г­ГЁГІГј ГґГ Г©Г«..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -145,7 +145,7 @@ void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event) {
 
 void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event) {
 	wxFileDialog
-		openFileDialog(this, _("Сохранить файл..."), "", "",
+		openFileDialog(this, _("Г‘Г®ГµГ°Г Г­ГЁГІГј ГґГ Г©Г«..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -156,7 +156,7 @@ void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event) {
 
 void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event) {
 	wxFileDialog
-		openFileDialog(this, _("Сохранить файл..."), "", "",
+		openFileDialog(this, _("Г‘Г®ГµГ°Г Г­ГЁГІГј ГґГ Г©Г«..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -167,7 +167,7 @@ void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event) {
 
 void cMain::ClickOnReportGetServiceCompanies(wxCommandEvent& event) {
 	wxFileDialog
-		openFileDialog(this, _("Сохранить файл..."), "", "",
+		openFileDialog(this, _("Г‘Г®ГµГ°Г Г­ГЁГІГј ГґГ Г©Г«..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
 
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -179,16 +179,16 @@ void cMain::ClickOnReportGetServiceCompanies(wxCommandEvent& event) {
 void cMain::ClickOnAdd(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
-	choice = new wxDialog(this, wxID_ANY, "Выберете справочник");
+	choice = new wxDialog(this, wxID_ANY, "Г‚Г»ГЎГҐГ°ГҐГІГҐ Г±ГЇГ°Г ГўГ®Г·Г­ГЁГЄ");
 	wxBoxSizer* s = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* s_main = new wxBoxSizer(wxVERTICAL);
 	choice->SetBackgroundColour(wxColour(255, 255, 255));
 
-	wxButton* ok = new wxButton(choice, 14000, "ОК", wxDefaultPosition, wxSize(150, 25));
-	wxButton* cust = new wxButton(choice, 14001, "Добавить заказ", wxDefaultPosition, wxSize(150, 50));
-	wxButton* comp = new wxButton(choice, 14002, "Добавить компанию", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_pr = new wxButton(choice, 14003, "Добавить услугу\n к компании", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_len = new wxButton(choice, 14004, "Добавить новую услугу", wxDefaultPosition, wxSize(150, 50));
+	wxButton* ok = new wxButton(choice, 14000, "ГЋГЉ", wxDefaultPosition, wxSize(150, 25));
+	wxButton* cust = new wxButton(choice, 14001, "Г„Г®ГЎГ ГўГЁГІГј Г§Г ГЄГ Г§", wxDefaultPosition, wxSize(150, 50));
+	wxButton* comp = new wxButton(choice, 14002, "Г„Г®ГЎГ ГўГЁГІГј ГЄГ®Г¬ГЇГ Г­ГЁГѕ", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_pr = new wxButton(choice, 14003, "Г„Г®ГЎГ ГўГЁГІГј ГіГ±Г«ГіГЈГі\n ГЄ ГЄГ®Г¬ГЇГ Г­ГЁГЁ", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_len = new wxButton(choice, 14004, "Г„Г®ГЎГ ГўГЁГІГј Г­Г®ГўГіГѕ ГіГ±Г«ГіГЈГі", wxDefaultPosition, wxSize(150, 50));
 	ok->SetBackgroundColour(wxColour(127, 255, 212));
 	cust->SetBackgroundColour(wxColour(127, 255, 212));
 	comp->SetBackgroundColour(wxColour(127, 255, 212));
@@ -216,7 +216,7 @@ void cMain::ClickOnRemove(wxCommandEvent& event)
 {
 	try {
 		wxWindow::SetFocus();
-		RemoveWindow* remove_dialog = new RemoveWindow(this, wxID_ANY, "Удаление");
+		RemoveWindow* remove_dialog = new RemoveWindow(this, wxID_ANY, "Г“Г¤Г Г«ГҐГ­ГЁГҐ");
 		remove_dialog->SetManagerPointer(*data_manager);
 		remove_dialog->ShowModal();
 		if (remove_dialog->GetData() != nullptr) {
@@ -224,7 +224,8 @@ void cMain::ClickOnRemove(wxCommandEvent& event)
 			case 0:data_manager->RemoveCompany(remove_dialog->GetData()->main_str); break;
 			case 1:data_manager->RemoveCustomer(remove_dialog->GetData()->main_str); break;
 			case 2:data_manager->RemoveServiceDuration(remove_dialog->GetData()->main_str); break;
-			case 3:data_manager->RemoveServicePrice(remove_dialog->GetData()->main_str, remove_dialog->GetData()->additional_str); break;
+			case 3:data_manager->RemoveServicePrice(remove_dialog->GetData()->additional_str, remove_dialog->GetData()->main_str); break;
+
 			}
 		}
 	}
@@ -241,14 +242,14 @@ void cMain::ClickOnShow(wxCommandEvent& event)
 	wxWindow::SetFocus();
 
 
-	choice = new wxDialog(this, wxID_ANY, "Выберете справочник");
+	choice = new wxDialog(this, wxID_ANY, "Г‚Г»ГЎГҐГ°ГҐГІГҐ Г±ГЇГ°Г ГўГ®Г·Г­ГЁГЄ");
 	wxBoxSizer* s = new wxBoxSizer(wxHORIZONTAL);
 	choice->SetBackgroundColour(wxColour(255, 255, 255));
 
-	wxButton* cust = new wxButton(choice, 13001, "Заказчики", wxDefaultPosition, wxSize(150, 50));
-	wxButton* comp = new wxButton(choice, 13002, "Компании", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_pr = new wxButton(choice, 13003, "Цена услуг", wxDefaultPosition, wxSize(150, 50));
-	wxButton* serv_len = new wxButton(choice, 13004, "Длительность услуг", wxDefaultPosition, wxSize(150, 50));
+	wxButton* cust = new wxButton(choice, 13001, "Г‡Г ГЄГ Г§Г·ГЁГЄГЁ", wxDefaultPosition, wxSize(150, 50));
+	wxButton* comp = new wxButton(choice, 13002, "ГЉГ®Г¬ГЇГ Г­ГЁГЁ", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_pr = new wxButton(choice, 13003, "Г–ГҐГ­Г  ГіГ±Г«ГіГЈ", wxDefaultPosition, wxSize(150, 50));
+	wxButton* serv_len = new wxButton(choice, 13004, "Г„Г«ГЁГІГҐГ«ГјГ­Г®Г±ГІГј ГіГ±Г«ГіГЈ", wxDefaultPosition, wxSize(150, 50));
 	cust->SetBackgroundColour(wxColour(127, 255, 212));
 	comp->SetBackgroundColour(wxColour(127, 255, 212));
 	serv_pr->SetBackgroundColour(wxColour(127, 255, 212));
@@ -271,7 +272,7 @@ void cMain::ClickOnShow(wxCommandEvent& event)
 void cMain::ClickOnSearch(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
-	FindWindowDialog* window = new FindWindowDialog(this, wxID_ANY, "Поиск");
+	FindWindowDialog* window = new FindWindowDialog(this, wxID_ANY, "ГЏГ®ГЁГ±ГЄ");
 	window->ShowModal();
 	try {
 		if (window->GetData() != nullptr) {
@@ -279,9 +280,9 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 			switch (window->GetData()->choice_num) {
 			case 0: {
 				Company x = data_manager->FindCompany(window->GetData()->main_str);
-				main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Услуги", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Адрес", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЉГ®Г¬ГЇГ Г­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Г“Г±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЂГ¤Г°ГҐГ±", wxLIST_FORMAT_LEFT, 200);
 
 				size_t size_of_services = 0;
 				std::string str_buf = "";
@@ -300,10 +301,10 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 			}
 			case 1: {
 				Vector<Customer> x = data_manager->FindCustomer(window->GetData()->main_str);
-				main_list->AppendColumn("Заказчик", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Объем услуги", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Г‡Г ГЄГ Г§Г·ГЁГЄ", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЉГ®Г¬ГЇГ Г­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ ГіГ±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЋГЎГєГҐГ¬ ГіГ±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
 
 				for (int i = 0; i < x.Size(); i++) {
 
@@ -316,9 +317,9 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 			}
 			case 2: {
 				ServiceDuration x = data_manager->FindServiceDuration(window->GetData()->main_str);
-				main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Минимальная длительность", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Максимальная длительность", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ ГіГ±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЊГЁГ­ГЁГ¬Г Г«ГјГ­Г Гї Г¤Г«ГЁГІГҐГ«ГјГ­Г®Г±ГІГј", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЊГ ГЄГ±ГЁГ¬Г Г«ГјГ­Г Гї Г¤Г«ГЁГІГҐГ«ГјГ­Г®Г±ГІГј", wxLIST_FORMAT_LEFT, 200);
 
 				main_list->InsertItem(0, x.GetName());
 				main_list->SetItem(0, 1, std::to_string(x.GetMinDuration()));
@@ -328,10 +329,10 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 			}
 			case 3: {
 				Vector<ServicePrice> x = data_manager->FindServicePrice(window->GetData()->main_str);
-				main_list->AppendColumn("Услуга", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Цена за еденицу измерения", wxLIST_FORMAT_LEFT, 200);
-				main_list->AppendColumn("Еденица измерения", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Г“Г±Г«ГіГЈГ ", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("ГЉГ®Г¬ГЇГ Г­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Г–ГҐГ­Г  Г§Г  ГҐГ¤ГҐГ­ГЁГ¶Гі ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+				main_list->AppendColumn("Г…Г¤ГҐГ­ГЁГ¶Г  ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГї", wxLIST_FORMAT_LEFT, 200);
 
 				for (int i = 0; i < x.Size(); i++) {
 
@@ -345,7 +346,7 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 
 			}
 			size_t comparisons = data_manager->GetLastComparisonsAmount();
-			wxMessageBox("Произведено " + std::to_string(comparisons) + " сравнений");
+			wxMessageBox("ГЏГ°Г®ГЁГ§ГўГҐГ¤ГҐГ­Г® " + std::to_string(comparisons) + " Г±Г°Г ГўГ­ГҐГ­ГЁГ©");
 		}
 	}
 	catch (std::invalid_argument e) {
@@ -363,10 +364,10 @@ void cMain::ClickOnCompany(wxCommandEvent& event)
 	Vector<Pair<Company, size_t>> data;
 	data = data_manager->LookUpCompanies();
 
-	main_list->AppendColumn("Хэш", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Услуги", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Адрес", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Г•ГЅГё", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЉГ®Г¬ГЇГ Г­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Г“Г±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЂГ¤Г°ГҐГ±", wxLIST_FORMAT_LEFT, 200);
 
 	size_t size_of_services = 0;
 	std::string str_buf = "";
@@ -398,10 +399,10 @@ void cMain::ClickOnServicePrice(wxCommandEvent& event)
 
 	Vector<ServicePrice> data;
 	data = data_manager->LookUpServicePrices();
-	main_list->AppendColumn("Услуга", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Цена за еденицу измерения", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Еденица измерения", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Г“Г±Г«ГіГЈГ ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЉГ®Г¬ГЇГ Г­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Г–ГҐГ­Г  Г§Г  ГҐГ¤ГҐГ­ГЁГ¶Гі ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Г…Г¤ГҐГ­ГЁГ¶Г  ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГї", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < data.Size(); i++) {
 
@@ -425,10 +426,10 @@ void cMain::ClickOnServiceLength(wxCommandEvent& event)
 	Vector<Pair<ServiceDuration, size_t>> data;
 	data = data_manager->LookUpServiceDurations();
 
-	main_list->AppendColumn("Хэш", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Минимальная длительность", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Максимальная длительность", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Г•ГЅГё", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ ГіГ±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЊГЁГ­ГЁГ¬Г Г«ГјГ­Г Гї Г¤Г«ГЁГІГҐГ«ГјГ­Г®Г±ГІГј", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЊГ ГЄГ±ГЁГ¬Г Г«ГјГ­Г Гї Г¤Г«ГЁГІГҐГ«ГјГ­Г®Г±ГІГј", wxLIST_FORMAT_LEFT, 200);
 
 
 	std::string str_buf = "";
@@ -449,9 +450,9 @@ void cMain::ClickOnAddCustomer(wxCommandEvent& event)
 {
 	try {
 		wxWindow::SetFocus();
-		WindowAddCustomer* x = new WindowAddCustomer(this, wxID_ANY, "Добавление заказа");
+		WindowAddCustomer* x = new WindowAddCustomer(this, wxID_ANY, "Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г§Г ГЄГ Г§Г ");
 		if (data_manager->LookUpCompanies().Size() == 0) {
-			wxMessageBox("Список компаний пуст");
+			wxMessageBox("Г‘ГЇГЁГ±Г®ГЄ ГЄГ®Г¬ГЇГ Г­ГЁГ© ГЇГіГ±ГІ");
 		}
 		else {
 			x->SetManagerPointer(*data_manager);
@@ -472,7 +473,7 @@ void cMain::ClickOnAddCompany(wxCommandEvent& event)
 {
 	try {
 		wxWindow::SetFocus();
-		WindowAddCompany* x = new WindowAddCompany(this, wxID_ANY, "Добваление компании");
+		WindowAddCompany* x = new WindowAddCompany(this, wxID_ANY, "Г„Г®ГЎГўГ Г«ГҐГ­ГЁГҐ ГЄГ®Г¬ГЇГ Г­ГЁГЁ");
 		x->ShowModal();
 		if (x->GetData() != nullptr) {
 			data_manager->AddCompany(x->GetData()->GetName(), x->GetData()->GetAddress());
@@ -489,15 +490,15 @@ void cMain::ClickOnAddServicePrice(wxCommandEvent& event)
 {
 	try {
 		wxWindow::SetFocus();
-		WindowAddServicePrice* x = new WindowAddServicePrice(this, wxID_ANY, "Добавление услуги к компании");
+		WindowAddServicePrice* x = new WindowAddServicePrice(this, wxID_ANY, "Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ ГіГ±Г«ГіГЈГЁ ГЄ ГЄГ®Г¬ГЇГ Г­ГЁГЁ");
 		if (data_manager->LookUpCompanies().Size() == 0 && data_manager->LookUpServiceDurations().Size() == 0) {
-			wxMessageBox("Список компаний и услуг пуст");
+			wxMessageBox("Г‘ГЇГЁГ±Г®ГЄ ГЄГ®Г¬ГЇГ Г­ГЁГ© ГЁ ГіГ±Г«ГіГЈ ГЇГіГ±ГІ");
 		}
 		else if (data_manager->LookUpCompanies().Size() == 0) {
-			wxMessageBox("Список компаний пуст");
+			wxMessageBox("Г‘ГЇГЁГ±Г®ГЄ ГЄГ®Г¬ГЇГ Г­ГЁГ© ГЇГіГ±ГІ");
 		}
 		else if (data_manager->LookUpServiceDurations().Size() == 0) {
-			wxMessageBox("Список услуг пуст");
+			wxMessageBox("Г‘ГЇГЁГ±Г®ГЄ ГіГ±Г«ГіГЈ ГЇГіГ±ГІ");
 		}
 		else {
 			x->SetManagerPointer(*data_manager);
@@ -518,7 +519,7 @@ void cMain::ClickOnAddServiceDuration(wxCommandEvent& event)
 {
 	try {
 		wxWindow::SetFocus();
-		WindowAddServiceDuration* x = new WindowAddServiceDuration(this, wxID_ANY, "Добавление новой услуги");
+		WindowAddServiceDuration* x = new WindowAddServiceDuration(this, wxID_ANY, "Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г­Г®ГўГ®Г© ГіГ±Г«ГіГЈГЁ");
 		x->ShowModal();
 		if (x->GetData() != nullptr) {
 			data_manager->AddServiceDuration(x->GetData()->GetName(), x->GetData()->GetMinDuration(), x->GetData()->GetMaxDuration());
@@ -545,10 +546,10 @@ void cMain::ClickOnCustomer(wxCommandEvent& event) {
 
 	Vector<Customer> data = data_manager->LookUpCustomers();
 
-	main_list->AppendColumn("Заказчик", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Компания", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Наименование услуги", wxLIST_FORMAT_LEFT, 200);
-	main_list->AppendColumn("Объем услуги", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("Г‡Г ГЄГ Г§Г·ГЁГЄ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЉГ®Г¬ГЇГ Г­ГЁГї", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ ГіГ±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
+	main_list->AppendColumn("ГЋГЎГєГҐГ¬ ГіГ±Г«ГіГЈГЁ", wxLIST_FORMAT_LEFT, 200);
 
 	for (int i = 0; i < data.Size(); i++) {
 
