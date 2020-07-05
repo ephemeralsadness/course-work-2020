@@ -51,7 +51,7 @@ void WindowAddServiceDuration::ClickOnAdd(wxCommandEvent& event) {
 	double min_dur_str, max_dur_str;
 	if (!name_ser->IsEmpty() && !min_dur->IsEmpty() && !max_dur->IsEmpty()) {
 		name_str = name_ser->GetLineText(0);
-		try{
+		try {
 			min_dur_str = std::stod((std::string)(min_dur->GetLineText(0)));
 			max_dur_str = std::stod((std::string)(max_dur->GetLineText(0)));
 			if (CheckDurationsAreCorrect(min_dur_str, max_dur_str))
@@ -67,10 +67,10 @@ void WindowAddServiceDuration::ClickOnAdd(wxCommandEvent& event) {
 			}
 
 		}
-		catch (std::exception& e){
+		catch (std::exception& e) {
 			wxMessageBox("В полях для чисел должны быть числа!!");
 		}
-		
+
 	}
 	else {
 		wxMessageBox("Поля не могут быть пустыми!!");

@@ -16,7 +16,7 @@ WindowAddCompany::WindowAddCompany(wxWindow* parent, wxWindowID id, const wxStri
 	add = new wxButton(this, wxID_ADD, "Добавить");
 	add->SetBackgroundColour(wxColour(127, 255, 212));
 	label1 = new wxStaticText(this, wxID_ANY, "Название компании");
-	label2 = new wxStaticText(this, wxID_ANY, "Адресс");
+	label2 = new wxStaticText(this, wxID_ANY, "Адрес");
 	wxBoxSizer* main_s = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* label = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* text_in = new wxBoxSizer(wxHORIZONTAL);

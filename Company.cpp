@@ -22,5 +22,5 @@ void Company::SetName(std::string n) {
 }
 
 void Company::SetAddress(std::string a) {
-    address = std::move(a);
+	address = std::move(a);
 }

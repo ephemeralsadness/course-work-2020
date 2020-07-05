@@ -1,6 +1,6 @@
 #include "Customer.h"
 
-const std::string& Customer::GetName() const{
+const std::string& Customer::GetName() const {
 	return name;
 }
 

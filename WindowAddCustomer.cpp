@@ -96,7 +96,7 @@ void WindowAddCustomer::ClickOnAdd(wxCommandEvent& event) {
 void WindowAddCustomer::CompanyChoice(wxCommandEvent& event)
 {
 	service_name->Clear();
-	Company x; 
+	Company x;
 	x = manager_pointer->FindCompany((std::string)company_name->GetString(company_name->GetSelection()));
 	for (int i = 0; i < x.GetServices().Size(); i++) {
 		service_name->Append(x.GetServices()[i]);

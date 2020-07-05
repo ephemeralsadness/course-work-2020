@@ -1,14 +1,15 @@
-#include "cMain.h" 
 #include <wx/grid.h>
 #include <wx/minifram.h>
+#include <fstream>
+
+#include "cMain.h" 
+#include "IndexManager.h"
 #include "WindowAddCompany.h"
 #include "WindowAddServiceDuration.h"
-#include"IndexManager.h"
-#include"WindowAddServicePrice.h"
-#include"WindowAddCustomer.h"
-#include "RemoveWindow.h"
-#include <fstream>
-#include "FindWindow.h"
+#include "WindowAddServicePrice.h"
+#include "WindowAddCustomer.h"
+#include "WindowRemove.h"
+#include "WindowFind.h"
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_MENU(wxID_OPEN, cMain::ClickOnMenuOpen)
@@ -50,7 +51,7 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	show_list->SetBackgroundColour(wxColour(127, 255, 212));
 	search->SetBackgroundColour(wxColour(127, 255, 212));
 
-	main_list = new wxListView(this, 20000, wxDefaultPosition, wxSize(250, 200));
+	main_list = new wxListView(this, 20000, wxDefaultPosition, wxSize(800, 600));
 	main_box = new wxBoxSizer(wxVERTICAL);
 	buttons_box = new wxBoxSizer(wxHORIZONTAL);
 
@@ -68,7 +69,7 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Alex-Alex Course work", wxPoint(30,
 	SetMinClientSize(wxSize(800, 600));
 
 	wxImage::AddHandler(new wxPNGHandler());
-	this->SetIcon({ "icon2.png", wxBITMAP_TYPE_PNG });
+	this->SetIcon({ "icon.png", wxBITMAP_TYPE_PNG });
 
 	wxMenu* menu_file = new wxMenu();
 	menu_file->Append(wxID_NEW, "Новый\t");
@@ -131,7 +132,7 @@ void cMain::ClickOnMenuExit(wxCommandEvent& event) {
 	event.Skip();
 }
 
-void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event){
+void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event) {
 	wxFileDialog
 		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
@@ -142,7 +143,7 @@ void cMain::ClickOnReportGetCompaniesIncomes(wxCommandEvent& event){
 	data_manager->SaveCompaniesIncomes(openFileDialog.GetPath().ToStdString());
 }
 
-void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event){
+void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event) {
 	wxFileDialog
 		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
@@ -153,7 +154,7 @@ void cMain::ClickOnReportGetCompaniesClients(wxCommandEvent& event){
 	data_manager->SaveCompaniesClients(openFileDialog.GetPath().ToStdString());
 }
 
-void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event){
+void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event) {
 	wxFileDialog
 		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
@@ -164,7 +165,7 @@ void cMain::ClickOnReportGetCustomersServiceDurations(wxCommandEvent& event){
 	data_manager->SaveCustomersServiceDurations(openFileDialog.GetPath().ToStdString());
 }
 
-void cMain::ClickOnReportGetServiceCompanies(wxCommandEvent& event){
+void cMain::ClickOnReportGetServiceCompanies(wxCommandEvent& event) {
 	wxFileDialog
 		openFileDialog(this, _("Сохранить файл..."), "", "",
 			"(*.txt)|*.txt", wxFD_SAVE);
@@ -336,14 +337,14 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 				}
 				break;
 			}
-				  
+
 			}
 			size_t comparisons = data_manager->GetLastComparisonsAmount();
 			wxMessageBox("Произведено " + std::to_string(comparisons) + " сравнений");
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(e.what());
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -366,12 +367,12 @@ void cMain::ClickOnCompany(wxCommandEvent& event)
 	std::string str_buf = "";
 	for (int i = 0; i < data.Size(); i++) {
 		size_of_services = data[i].first.GetServices().Size();
-		for (int j = 0; j < (size_of_services - 1) && size_of_services!=0; j++) {
+		for (int j = 0; j < (size_of_services - 1) && size_of_services != 0; j++) {
 			str_buf += data[i].first.GetServices()[j];
 			str_buf += ", ";
 		}
-		if (size_of_services != 0) { 
-			str_buf += data[i].first.GetServices()[data[i].first.GetServices().Size() - 1]; 
+		if (size_of_services != 0) {
+			str_buf += data[i].first.GetServices()[data[i].first.GetServices().Size() - 1];
 		}
 		main_list->InsertItem(i, std::to_string(data[i].second));
 		main_list->SetItem(i, 1, data[i].first.GetName());
@@ -424,7 +425,7 @@ void cMain::ClickOnServiceLength(wxCommandEvent& event)
 	main_list->AppendColumn("Минимальная длительность", wxLIST_FORMAT_LEFT, 200);
 	main_list->AppendColumn("Максимальная длительность", wxLIST_FORMAT_LEFT, 200);
 
-	
+
 	std::string str_buf = "";
 	for (int i = 0; i < data.Size(); i++) {
 		main_list->InsertItem(i, std::to_string(data[i].second));
@@ -475,9 +476,11 @@ void cMain::ClickOnAddServicePrice(wxCommandEvent& event)
 	WindowAddServicePrice* x = new WindowAddServicePrice(this, wxID_ANY, "Добавление услуги к компании");
 	if (data_manager->LookUpCompanies().Size() == 0 && data_manager->LookUpServiceDurations().Size() == 0) {
 		wxMessageBox("Список компаний и услуг пуст");
-	} else if (data_manager->LookUpCompanies().Size() == 0) {
+	}
+	else if (data_manager->LookUpCompanies().Size() == 0) {
 		wxMessageBox("Список компаний пуст");
-	} else if ( data_manager->LookUpServiceDurations().Size() == 0) {
+	}
+	else if (data_manager->LookUpServiceDurations().Size() == 0) {
 		wxMessageBox("Список услуг пуст");
 	}
 	else {

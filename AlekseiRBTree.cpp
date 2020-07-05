@@ -3,14 +3,14 @@
 
 using namespace Aleksei;
 
-RBTree::RBTree() noexcept{
+RBTree::RBTree() noexcept {
 	root = nil;
 	nil->left = nil;
 	nil->parent = nil;
 	nil->right = nil;
 }
 
-RBTree::~RBTree() noexcept{
+RBTree::~RBTree() noexcept {
 	_DeleteSubtree(root);
 	delete nil;
 }
@@ -36,14 +36,14 @@ void RBTree::_DeleteSubtree(Node* st_root) noexcept {
 
 void RBTree::Insert(Customer t)noexcept {
 
-    last_comparisons_amount = 0;
+	last_comparisons_amount = 0;
 	Node* z = new Node();
 	z->key = { std::move(t) };
 	Node* y = nil;
 	Node* x = root;
 	while (x != nil) {
 		y = x;
-		if (_Compare(z->key.GetName(),x->key.GetName()))
+		if (_Compare(z->key.GetName(), x->key.GetName()))
 			x = x->left;
 		else x = x->right;
 	}
@@ -247,33 +247,35 @@ RBTree::Node* RBTree::_Successor(Node* node) const noexcept {
 }
 
 RBTree::Node* RBTree::_LowerBound(const std::string& key) noexcept {
-    Node* x = root;
-    Node* y = nil;
-    while (x != nil) {
-        if (!_Compare(x->key.GetName(), key)) {
-            y = x;
-            x = x->left;
-        } else {
-            x = x->right;
-        }
-    }
+	Node* x = root;
+	Node* y = nil;
+	while (x != nil) {
+		if (!_Compare(x->key.GetName(), key)) {
+			y = x;
+			x = x->left;
+		}
+		else {
+			x = x->right;
+		}
+	}
 
-    return y;
+	return y;
 }
 
 RBTree::Node* RBTree::_UpperBound(const std::string& key)noexcept {
-    Node* x = root;
-    Node* y = nil;
-    while (x != nil) {
-        if (_Compare(key, x->key.GetName())) {
-            y = x;
-            x = x->left;
-        } else {
-            x = x->right;
-        }
-    }
+	Node* x = root;
+	Node* y = nil;
+	while (x != nil) {
+		if (_Compare(key, x->key.GetName())) {
+			y = x;
+			x = x->left;
+		}
+		else {
+			x = x->right;
+		}
+	}
 
-    return y;
+	return y;
 }
 
 size_t RBTree::Size() const noexcept {

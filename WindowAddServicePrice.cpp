@@ -66,12 +66,14 @@ WindowAddServicePrice::data* WindowAddServicePrice::GetData() {
 }
 
 void WindowAddServicePrice::ClickOnAdd(wxCommandEvent& event) {
-	
+
 	if (company_name->GetSelection() == wxNOT_FOUND && service_name->GetSelection() == wxNOT_FOUND) {
 		wxMessageBox("Выберете компанию и услугу");
-	} else if(company_name->GetSelection() == wxNOT_FOUND ) {
+	}
+	else if (company_name->GetSelection() == wxNOT_FOUND) {
 		wxMessageBox("Выберете компанию");
-	}else if (service_name->GetSelection() == wxNOT_FOUND) {
+	}
+	else if (service_name->GetSelection() == wxNOT_FOUND) {
 		wxMessageBox("Выберете услугу");
 	}
 	else if (service_price->IsEmpty() || service_measure->IsEmpty()) {

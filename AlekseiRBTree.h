@@ -20,8 +20,8 @@ namespace Aleksei {
 		template <typename Predicate>
 		void Remove(const std::string& key, Predicate pred) noexcept;
 		void Remove(const std::string& key) noexcept;
-        template <typename Predicate>
-        void Remove(Predicate pred) noexcept;
+		template <typename Predicate>
+		void Remove(Predicate pred) noexcept;
 		Vector<const Customer*> Find(const std::string& key) noexcept;
 		template <typename Predicate>
 		Vector<const Customer*> Find(const std::string& key, Predicate pred) noexcept;
@@ -69,12 +69,12 @@ namespace Aleksei {
 		bool _Compare(const std::string rhs, const std::string& lhs) noexcept;
 		template <typename T>
 		bool _Equals(const T& rhs, const T& lhs) noexcept;
-	
+
 	};
 
 	template <typename Predicate>
 	void RBTree::Remove(const std::string& key, Predicate pred) noexcept {
-        last_comparisons_amount = 0;
+		last_comparisons_amount = 0;
 
 		Node* first = _LowerBound(key);
 		Node* last = _UpperBound(key);
@@ -87,24 +87,24 @@ namespace Aleksei {
 		}
 	}
 
-    template <typename Predicate>
-    void RBTree::Remove(Predicate pred) noexcept {
-        last_comparisons_amount = 0;
+	template <typename Predicate>
+	void RBTree::Remove(Predicate pred) noexcept {
+		last_comparisons_amount = 0;
 
-        Node* first = _Min(root);
-        Node* last = nil;
-        while (first != last) {
-            Node* next = _Successor(first);
-            if (pred(first->key)) {
-                _RemoveNode(first);
-            }
-            first = next;
-        }
-    }
+		Node* first = _Min(root);
+		Node* last = nil;
+		while (first != last) {
+			Node* next = _Successor(first);
+			if (pred(first->key)) {
+				_RemoveNode(first);
+			}
+			first = next;
+		}
+	}
 
 	template <typename Predicate>
 	Vector<const Customer*> RBTree::Find(const std::string& key, Predicate pred)noexcept {
-        last_comparisons_amount = 0;
+		last_comparisons_amount = 0;
 
 		Vector<const Customer*> result;
 		Node* first = _LowerBound(key);

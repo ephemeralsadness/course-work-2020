@@ -5,168 +5,169 @@
 template <typename Key, typename Value>
 class BinarySearchTree {
 public:
-    BinarySearchTree() noexcept : root(nullptr) {}
+	BinarySearchTree() noexcept : root(nullptr) {}
 
-    ~BinarySearchTree() noexcept {
-        DeleteTree(root);
-    }
+	~BinarySearchTree() noexcept {
+		DeleteTree(root);
+	}
 
-    BinarySearchTree(const BinarySearchTree& tree) = delete;
-    BinarySearchTree& operator = (const BinarySearchTree& tree) = delete;
+	BinarySearchTree(const BinarySearchTree& tree) = delete;
+	BinarySearchTree& operator = (const BinarySearchTree& tree) = delete;
 
-    BinarySearchTree(BinarySearchTree&& tree) noexcept {
-        root = tree.root;
-        tree.root = nullptr;
-    }
+	BinarySearchTree(BinarySearchTree&& tree) noexcept {
+		root = tree.root;
+		tree.root = nullptr;
+	}
 
-    BinarySearchTree& operator = (BinarySearchTree&& tree) noexcept {
-        if (this != &tree) {
-            DeleteTree(root);
-            root = tree.root;
-            tree.root = nullptr;
-        }
-        return *this;
-    }
+	BinarySearchTree& operator = (BinarySearchTree&& tree) noexcept {
+		if (this != &tree) {
+			DeleteTree(root);
+			root = tree.root;
+			tree.root = nullptr;
+		}
+		return *this;
+	}
 
-    bool Insert(Key key, Value value) noexcept {
-        Node* prev = nullptr;
-        Node* now = root;
-        Node* to_insert = new Node(std::move(key), std::move(value));
+	bool Insert(Key key, Value value) noexcept {
+		Node* prev = nullptr;
+		Node* now = root;
+		Node* to_insert = new Node(std::move(key), std::move(value));
 
-        if (now == nullptr) {
-            root = to_insert;
-            return true;
-        }
+		if (now == nullptr) {
+			root = to_insert;
+			return true;
+		}
 
-        while (now != nullptr) {
-            prev = now;
-            if (to_insert->key == now->key)
-                return false;
-            else if (to_insert->key < now->key)
-                now = now->left;
-            else
-                now = now->right;
-        }
+		while (now != nullptr) {
+			prev = now;
+			if (to_insert->key == now->key)
+				return false;
+			else if (to_insert->key < now->key)
+				now = now->left;
+			else
+				now = now->right;
+		}
 
-        if (to_insert->key < prev->key)
-            prev->left = to_insert;
-        else
-            prev->right = to_insert;
+		if (to_insert->key < prev->key)
+			prev->left = to_insert;
+		else
+			prev->right = to_insert;
 
-        return true;
-    }
+		return true;
+	}
 
-    bool Remove(const Key &key) noexcept {
-        Node *prev = nullptr;
-        Node *now = root;
+	bool Remove(const Key& key) noexcept {
+		Node* prev = nullptr;
+		Node* now = root;
 
-        while (now != nullptr && now->key != key) {
-            prev = now;
-            if (key < now->key)
-                now = now->left;
-            else
-                now = now->right;
-        }
+		while (now != nullptr && now->key != key) {
+			prev = now;
+			if (key < now->key)
+				now = now->left;
+			else
+				now = now->right;
+		}
 
-        if (now == nullptr)
-            return false;
+		if (now == nullptr)
+			return false;
 
-        if (now->left == nullptr || now->right == nullptr) {
-            Node *replace;
+		if (now->left == nullptr || now->right == nullptr) {
+			Node* replace;
 
-            if (now->left == nullptr)
-                replace = now->right;
-            else
-                replace = now->left;
+			if (now->left == nullptr)
+				replace = now->right;
+			else
+				replace = now->left;
 
-            if (prev == nullptr)
-                return true;
+			if (prev == nullptr)
+				return true;
 
-            if (now == prev->left)
-                prev->left = replace;
-            else
-                prev->right = replace;
+			if (now == prev->left)
+				prev->left = replace;
+			else
+				prev->right = replace;
 
-            delete now;
-        } else {
-            Node *p = nullptr;
-            Node *temp;
+			delete now;
+		}
+		else {
+			Node* p = nullptr;
+			Node* temp;
 
-            temp = now->right;
-            while (temp->left != nullptr) {
-                p = temp;
-                temp = temp->left;
-            }
+			temp = now->right;
+			while (temp->left != nullptr) {
+				p = temp;
+				temp = temp->left;
+			}
 
-            if (p != nullptr)
-                p->left = temp->right;
-            else
-                now->right = temp->right;
+			if (p != nullptr)
+				p->left = temp->right;
+			else
+				now->right = temp->right;
 
-            now->key = temp->key;
-            delete temp;
-        }
-        return true;
-    }
+			now->key = temp->key;
+			delete temp;
+		}
+		return true;
+	}
 
-    Value* Find(const Key& key) noexcept {
-        return const_cast<Value*>(
-                static_cast<const BinarySearchTree*>(this)->Find(key)
-        );
-    }
+	Value* Find(const Key& key) noexcept {
+		return const_cast<Value*>(
+			static_cast<const BinarySearchTree*>(this)->Find(key)
+			);
+	}
 
-    const Value* Find(const Key& key) const noexcept {
-        Node* prev = nullptr;
-        Node* now = root;
+	const Value* Find(const Key& key) const noexcept {
+		Node* prev = nullptr;
+		Node* now = root;
 
-        while (now != nullptr) {
-            prev = now;
-            if (key == now->key)
-                return &now->value;
-            else if (key < now->key)
-                now = now->left;
-            else
-                now = now->right;
-        }
+		while (now != nullptr) {
+			prev = now;
+			if (key == now->key)
+				return &now->value;
+			else if (key < now->key)
+				now = now->left;
+			else
+				now = now->right;
+		}
 
-        return nullptr;
-    }
+		return nullptr;
+	}
 
-    template <typename Callback>
-    void ForEach(Callback callback) const noexcept {
-        LNRTraversal(root, callback);
-    }
+	template <typename Callback>
+	void ForEach(Callback callback) const noexcept {
+		LNRTraversal(root, callback);
+	}
 
 private:
-    struct Node {
-        Key key;
-        Value value;
-        Node* left;
-        Node* right;
+	struct Node {
+		Key key;
+		Value value;
+		Node* left;
+		Node* right;
 
-        Node(Key key, Value value) noexcept
-                : key(std::move(key)),
-                  value(std::move(value)),
-                  left(nullptr),
-                  right(nullptr) {}
-    };
+		Node(Key key, Value value) noexcept
+			: key(std::move(key)),
+			value(std::move(value)),
+			left(nullptr),
+			right(nullptr) {}
+	};
 
-    void DeleteTree(Node* tree_root) noexcept {
-        if (tree_root == nullptr)
-            return;
-        DeleteTree(tree_root->left);
-        DeleteTree(tree_root->right);
-        delete tree_root;
-    }
+	void DeleteTree(Node* tree_root) noexcept {
+		if (tree_root == nullptr)
+			return;
+		DeleteTree(tree_root->left);
+		DeleteTree(tree_root->right);
+		delete tree_root;
+	}
 
-    template <typename Callback>
-    void LNRTraversal(Node* tree_root, Callback callback) const noexcept {
-        if (tree_root == nullptr)
-            return;
-        LNRTraversal(tree_root->left, callback);
-        callback(tree_root->key, tree_root->value);
-        LNRTraversal(tree_root->right, callback);
-    }
+	template <typename Callback>
+	void LNRTraversal(Node* tree_root, Callback callback) const noexcept {
+		if (tree_root == nullptr)
+			return;
+		LNRTraversal(tree_root->left, callback);
+		callback(tree_root->key, tree_root->value);
+		LNRTraversal(tree_root->right, callback);
+	}
 
-    Node* root;
+	Node* root;
 };

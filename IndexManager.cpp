@@ -1,12 +1,16 @@
+#pragma warning(disable : 4996)
+
 #include "IndexManager.h"
 #include "BinarySearchTree.h"
 
 #include <iomanip>
 #include <stdexcept>
 #include <fstream>
+#include <wx\wx.h>
+
 
 void IndexManager::AddCompany(std::string company_name, std::string address) {
-    Company c = Company(std::move(company_name), {}, std::move(address));
+	Company c = Company(std::move(company_name), {}, std::move(address));
 
 	bool success = _companies.Insert(std::move(c));
 
@@ -33,7 +37,8 @@ void IndexManager::AddCustomer(std::string name, std::string service, std::strin
 
 	if (has_service) {
 		_customers.Insert(std::move(c));
-	} else {
+	}
+	else {
 		throw std::invalid_argument("Данная компания не предоставляет такой услуги");
 	}
 
@@ -43,10 +48,10 @@ void IndexManager::AddCustomer(std::string name, std::string service, std::strin
 void IndexManager::AddServicePrice(std::string name, std::string company, double price, std::string measure) {
 	ServicePrice sp(std::move(name), std::move(company), price, std::move(measure));
 
-    auto ptr = _service_durations.Find(sp.GetName());
-    if (ptr == nullptr) {
-        throw std::invalid_argument("Данной услуги нету в базе данных");
-    }
+	auto ptr = _service_durations.Find(sp.GetName());
+	if (ptr == nullptr) {
+		throw std::invalid_argument("Данной услуги нету в базе данных");
+	}
 
 	auto lambda = [&sp](const ServicePrice& s) {
 		return s.GetCompany() == sp.GetCompany();
@@ -75,7 +80,7 @@ void IndexManager::AddServiceDuration(std::string name, double min_duration, dou
 	}
 }
 
-void IndexManager::RemoveCompany(const std::string &name) {
+void IndexManager::RemoveCompany(const std::string& name) {
 	bool success = _companies.Remove(name);
 	if (!success) {
 		throw std::invalid_argument("Компании с таким названием нету в базе данных");
@@ -93,7 +98,7 @@ void IndexManager::RemoveCompany(const std::string &name) {
 
 }
 
-void IndexManager::RemoveCustomer(const std::string &name) {
+void IndexManager::RemoveCustomer(const std::string& name) {
 	auto v = _customers.Find(name);
 
 	if (v.Size() == 0) {
@@ -103,7 +108,7 @@ void IndexManager::RemoveCustomer(const std::string &name) {
 	_customers.Remove(name);
 }
 
-void IndexManager::RemoveServicePrice(const std::string &name, const std::string& company) {
+void IndexManager::RemoveServicePrice(const std::string& name, const std::string& company) {
 	auto lambda = [&company](const ServicePrice& sp) {
 		return company == sp.GetCompany();
 	};
@@ -123,7 +128,7 @@ void IndexManager::RemoveServicePrice(const std::string &name, const std::string
 	_customers.Remove(customer_lambda);
 }
 
-void IndexManager::RemoveServiceDuration(const std::string &name) {
+void IndexManager::RemoveServiceDuration(const std::string& name) {
 	bool success = _service_durations.Remove(name);
 
 	if (!success) {
@@ -132,7 +137,7 @@ void IndexManager::RemoveServiceDuration(const std::string &name) {
 
 	auto& companies_field = _companies;
 	auto lambda = [&name, &companies_field](const ServicePrice& sp) {
-        companies_field.RemoveService(sp.GetCompany(), name);
+		companies_field.RemoveService(sp.GetCompany(), name);
 		return true;
 	};
 	_service_prices.Remove(name, lambda);
@@ -140,10 +145,10 @@ void IndexManager::RemoveServiceDuration(const std::string &name) {
 	auto customer_lambda = [&name](const Customer& c) {
 		return name == c.GetService();
 	};
-    _customers.Remove(customer_lambda);
+	_customers.Remove(customer_lambda);
 }
 
-Company IndexManager::FindCompany(const std::string &name) {
+Company IndexManager::FindCompany(const std::string& name) {
 	auto company_ptr = _companies.Find(name);
 	_last_comparisons_amount = _companies.LastComparisonsAmount();
 
@@ -153,13 +158,14 @@ Company IndexManager::FindCompany(const std::string &name) {
 	return *company_ptr;
 }
 
-Vector<Customer> IndexManager::FindCustomer(const std::string &name) {
+Vector<Customer> IndexManager::FindCustomer(const std::string& name) {
 	Vector<Customer> result;
 
 	auto customer_ptrs = _customers.Find(name);
 	_last_comparisons_amount = _customers.LastComparisonsAmount();
 
 	if (customer_ptrs.Size() == 0) {
+
 		throw std::invalid_argument("Заказчика с таким именем нету в базе данных");
 	}
 
@@ -170,7 +176,7 @@ Vector<Customer> IndexManager::FindCustomer(const std::string &name) {
 }
 
 
-Vector<ServicePrice> IndexManager::FindServicePrice(const std::string &name) {
+Vector<ServicePrice> IndexManager::FindServicePrice(const std::string& name) {
 	Vector<ServicePrice> result;
 	auto service_price_ptrs = _service_prices.Find(name);
 	_last_comparisons_amount = _service_prices.LastComparisonsAmount();
@@ -186,7 +192,7 @@ Vector<ServicePrice> IndexManager::FindServicePrice(const std::string &name) {
 }
 
 
-ServiceDuration IndexManager::FindServiceDuration(const std::string &name) {
+ServiceDuration IndexManager::FindServiceDuration(const std::string& name) {
 	auto service_duration_ptr = _service_durations.Find(name);
 	_last_comparisons_amount = _service_durations.LastComparisonsAmount();
 
@@ -200,7 +206,7 @@ Vector<Pair<Company, size_t>> IndexManager::LookUpCompanies() {
 	Vector<Pair<Company, size_t>> result;
 	auto v = _companies.LookUp();
 	for (auto it = v.Begin(); it != v.End(); ++it) {
-		result.PushBack({*it->first, it->second});
+		result.PushBack({ *it->first, it->second });
 	}
 
 	return result;
@@ -228,13 +234,13 @@ Vector<Pair<ServiceDuration, size_t>> IndexManager::LookUpServiceDurations() {
 	Vector<Pair<ServiceDuration, size_t>> result;
 	auto v = _service_durations.LookUp();
 	for (auto it = v.Begin(); it != v.End(); ++it) {
-		result.PushBack({*it->first, it->second});
+		result.PushBack({ *it->first, it->second });
 	}
 
 	return result;
 }
 
-void IndexManager::SaveData(const std::string &file_name) {
+void IndexManager::SaveData(const std::string& file_name) {
 	std::ofstream fout(file_name);
 
 	auto company_lookup = _companies.LookUp();
@@ -285,7 +291,7 @@ void IndexManager::SaveData(const std::string &file_name) {
 
 }
 
-void IndexManager::LoadData(const std::string &file_name) {
+void IndexManager::LoadData(const std::string& file_name) {
 	std::ifstream fin(file_name);
 	std::string buffer;
 
@@ -401,23 +407,24 @@ void IndexManager::SaveCompaniesIncomes(const std::string& file_name) {
 	tree.ForEach([&fout, &counter](const std::string& key, double value) {
 		fout << ++counter << ". \"" << key << "\""
 			<< " : " << std::setprecision(6) << value << "\n";
-	});
+		});
 }
 
 // vector of {company name, vector of its clients}
 void IndexManager::SaveCompaniesClients(const std::string& file_name) {
-    BinarySearchTree<std::string, Vector<std::string>> tree;
-    auto lookup = _customers.LookUp();
+	BinarySearchTree<std::string, Vector<std::string>> tree;
+	auto lookup = _customers.LookUp();
 
-    for (auto it = lookup.Begin(); it != lookup.End(); ++it) {
-        auto ptr = tree.Find((**it).GetCompanyName());
-        if (ptr == nullptr) {
-            Vector<std::string> to_insert; to_insert.PushBack((**it).GetName());
-            tree.Insert((**it).GetCompanyName(), std::move(to_insert));
-        } else {
-            ptr->PushBack((**it).GetName());
-        }
-    }
+	for (auto it = lookup.Begin(); it != lookup.End(); ++it) {
+		auto ptr = tree.Find((**it).GetCompanyName());
+		if (ptr == nullptr) {
+			Vector<std::string> to_insert; to_insert.PushBack((**it).GetName());
+			tree.Insert((**it).GetCompanyName(), std::move(to_insert));
+		}
+		else {
+			ptr->PushBack((**it).GetName());
+		}
+	}
 
 	std::ofstream fout(file_name);
 	size_t counter = 0;
@@ -428,7 +435,7 @@ void IndexManager::SaveCompaniesClients(const std::string& file_name) {
 			fout << "\"" << *it << "\"" << ", ";
 		}
 		fout << "\"" << *(value.End() - 1) << "\"" << "}" << "\n";
-	});
+		});
 
 }
 
@@ -443,7 +450,7 @@ void IndexManager::SaveCustomersServiceDurations(const std::string& file_name) {
 		const ServiceDuration* sd = _service_durations.Find((**it).GetService());
 		if ((**it).GetName() != current_customer) {
 			current_customer = (**it).GetName();
-			result.PushBack({current_customer, {0, 0}});
+			result.PushBack({ current_customer, {0, 0} });
 		}
 		result[result.Size() - 1].second.first += sd->GetMinDuration() * (**it).GetVolume();
 		result[result.Size() - 1].second.second += sd->GetMaxDuration() * (**it).GetVolume();
@@ -461,21 +468,22 @@ void IndexManager::SaveCustomersServiceDurations(const std::string& file_name) {
 
 // vector of {service, {companies, who perform this service}}
 void IndexManager::SaveServiceCompanies(const std::string& file_name) {
-    BinarySearchTree<std::string, Vector<std::string>> tree;
+	BinarySearchTree<std::string, Vector<std::string>> tree;
 
-    auto companies = _companies.LookUp();
-    for (auto it = companies.Begin(); it != companies.End(); ++it) {
-        auto v = it->first->GetServices();
-        for (auto jt = v.Begin(); jt != v.End(); ++jt) {
-            auto ptr = tree.Find(*jt);
-            if (ptr == nullptr) {
-                Vector<std::string> to_insert; to_insert.PushBack(it->first->GetName());
-                tree.Insert(*jt, std::move(to_insert));
-            } else {
-                ptr->PushBack(it->first->GetName());
-            }
-        }
-    }
+	auto companies = _companies.LookUp();
+	for (auto it = companies.Begin(); it != companies.End(); ++it) {
+		auto v = it->first->GetServices();
+		for (auto jt = v.Begin(); jt != v.End(); ++jt) {
+			auto ptr = tree.Find(*jt);
+			if (ptr == nullptr) {
+				Vector<std::string> to_insert; to_insert.PushBack(it->first->GetName());
+				tree.Insert(*jt, std::move(to_insert));
+			}
+			else {
+				ptr->PushBack(it->first->GetName());
+			}
+		}
+	}
 
 	std::ofstream fout(file_name);
 	size_t counter = 0;
@@ -486,7 +494,7 @@ void IndexManager::SaveServiceCompanies(const std::string& file_name) {
 			fout << "\"" << *it << "\"" << ", ";
 		}
 		fout << "\"" << *(value.End() - 1) << "\"" << "}" << "\n";
-	});
+		});
 
 }
 
