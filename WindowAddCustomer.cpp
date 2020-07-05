@@ -17,8 +17,8 @@ WindowAddCustomer::WindowAddCustomer(wxWindow* parent, wxWindowID id, const wxSt
 	add->SetBackgroundColour(wxColour(127, 255, 212));
 	label1 = new wxStaticText(this, wxID_ANY, "Имя заказчика");
 	label2 = new wxStaticText(this, wxID_ANY, "Название компании");
-	label3 = new wxStaticText(this, wxID_ANY, "Наименованеи услуги");
-	label4 = new wxStaticText(this, wxID_ANY, "Объем заказаннйо услуги");
+	label3 = new wxStaticText(this, wxID_ANY, "Наименование услуги");
+	label4 = new wxStaticText(this, wxID_ANY, "Объем заказанной услуги");
 	wxBoxSizer* main_s = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* label = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* text_in = new wxBoxSizer(wxHORIZONTAL);
