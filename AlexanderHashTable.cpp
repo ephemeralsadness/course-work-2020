@@ -116,7 +116,7 @@ namespace Alexander {
 
 
 	size_t HashTable::_Hash(const key_t& key) const noexcept {
-		const size_t R = 27644437;
+		const size_t R = 32767;
 		size_t hash = 0;
 		for (char c : key)
 			hash = (R * hash + c) % _buckets;
