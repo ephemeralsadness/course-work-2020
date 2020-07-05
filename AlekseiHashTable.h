@@ -12,8 +12,8 @@ namespace Aleksei {
 		~HashTable() noexcept;
 		HashTable(const HashTable&) = delete;
 		HashTable& operator = (const HashTable&) = delete;
-		HashTable(HashTable&&) = default;
-		HashTable& operator = (HashTable&&) = default;
+		HashTable(HashTable&& ht);
+		HashTable& operator = (HashTable&& ht);
 
 		bool Insert(Company t) noexcept;
 		bool InsertService(const std::string& company, std::string service) noexcept;

@@ -13,6 +13,30 @@ namespace Aleksei {
         delete[] table;
     }
 
+    HashTable::HashTable(HashTable&& ht) 
+            : N(ht.N),
+              table(ht.table), 
+              size(ht.size), 
+              last_comparison_amount(ht.last_comparison_amount) {
+
+        ht.table = nullptr;
+
+    }
+
+    HashTable& HashTable::operator = (HashTable&& ht) {
+        if (this != &ht) {
+            delete[] table;
+
+            N = ht.N;
+            table = ht.table;
+            size = ht.size;
+            last_comparison_amount = ht.last_comparison_amount;
+
+            ht.table = nullptr;
+        }
+        return *this;
+    }
+
     bool HashTable::Insert(Company t) noexcept {
         if (Find(t.GetName()) == nullptr) {
             table[Hash(t.GetName())].Push(t);
