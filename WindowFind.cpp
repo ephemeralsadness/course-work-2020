@@ -22,8 +22,8 @@ FindWindowDialog::FindWindowDialog(wxWindow* parent, wxWindowID id, const wxStri
 	choices.Add("Услуга (стоимость)");
 	main_choice = new wxChoice(this, wxID_SETUP, wxDefaultPosition, wxDefaultSize, choices);
 	name_to_find = new wxTextCtrl(this, wxID_ANY, "");
-	top->Add(lable1, 1, wxALL | wxALIGN_BOTTOM, 10);
-	top->Add(lable2, 1, wxALL | wxALIGN_BOTTOM, 10);
+	top->Add(lable1, 1, wxALL, 10);
+	top->Add(lable2, 1, wxALL, 10);
 	ok_b = new wxButton(this, wxID_OK, "Ок");
 	cancel_b = new wxButton(this, wxID_CANCEL, "Отмена");
 	ok_b->SetBackgroundColour(wxColour(127, 255, 212));
@@ -33,9 +33,9 @@ FindWindowDialog::FindWindowDialog(wxWindow* parent, wxWindowID id, const wxStri
 	bottom->Add(ok_b, 1, wxALL, 5);
 	bottom->Add(cancel_b, 1, wxALL, 5);
 
-	main_s->Add(top, 0, wxBOTTOM);
+	main_s->Add(top, 0, wxEXPAND);
 	main_s->Add(choice_mid, 0, wxEXPAND);
-	main_s->Add(bottom, 0, wxALIGN_CENTER);
+	main_s->Add(bottom, 0, wxEXPAND);
 
 	this->SetSizerAndFit(main_s);
 }
