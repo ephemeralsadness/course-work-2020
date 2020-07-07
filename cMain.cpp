@@ -228,7 +228,7 @@ void cMain::ClickOnRemove(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(e.what());
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -348,7 +348,7 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(e.what());
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -461,7 +461,7 @@ void cMain::ClickOnAddCustomer(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(e.what());
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -478,7 +478,7 @@ void cMain::ClickOnAddCompany(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(e.what());
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -507,7 +507,7 @@ void cMain::ClickOnAddServicePrice(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(e.what());
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -524,7 +524,7 @@ void cMain::ClickOnAddServiceDuration(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(e.what());
+		wxMessageBox(wxString::FromUTF8(e.what()));
 	}
 	wxWindow::SetFocus();
 	event.Skip();
