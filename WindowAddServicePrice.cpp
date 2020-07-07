@@ -86,6 +86,8 @@ void WindowAddServicePrice::ClickOnAdd(wxCommandEvent& event) {
 	}
 	catch (std::exception& e) {
 		wxMessageBox("В поле для цены должно быть число!!");
+		delete data1;
+		data1 = nullptr;
 	}
 	event.Skip();
 }

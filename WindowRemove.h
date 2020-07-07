@@ -3,7 +3,7 @@
 #include<wx\Choice.h>
 #include"IndexManager.h"
 
-class RemoveWindow : public wxDialog
+class WindowRemove : public wxDialog
 {
 	enum { COMPANY, CUSTOMER, SERVICE_ALL, SERVICE_COMPANY };
 	struct data {
@@ -12,13 +12,13 @@ class RemoveWindow : public wxDialog
 		std::string additional_str;
 	};
 public:
-	RemoveWindow(wxWindow* parent, wxWindowID id,
+	WindowRemove(wxWindow* parent, wxWindowID id,
 		const wxString& title,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = wxDEFAULT_DIALOG_STYLE,
 		const wxString& name = wxDialogNameStr);
-	~RemoveWindow();
+	~WindowRemove();
 	void SetManagerPointer(IndexManager& x);
 	data* GetData();
 private:

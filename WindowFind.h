@@ -3,7 +3,7 @@
 #include<wx\Choice.h>"
 #include"IndexManager.h"
 
-class FindWindowDialog : public wxDialog
+class WindowFind : public wxDialog
 {
 	enum { COMPANY, CUSTOMER, SERVICE_DURATION, SERVICE_PRICE };
 	struct data {
@@ -11,13 +11,13 @@ class FindWindowDialog : public wxDialog
 		std::string main_str;
 	};
 public:
-	FindWindowDialog(wxWindow* parent, wxWindowID id,
+	WindowFind(wxWindow* parent, wxWindowID id,
 		const wxString& title,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = wxDEFAULT_DIALOG_STYLE,
 		const wxString& name = wxDialogNameStr);
-	~FindWindowDialog();
+	~WindowFind();
 	void SetManagerPointer(IndexManager& x);
 	data* GetData();
 

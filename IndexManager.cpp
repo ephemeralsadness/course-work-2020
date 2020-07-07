@@ -197,7 +197,7 @@ ServiceDuration IndexManager::FindServiceDuration(const std::string& name) {
 	_last_comparisons_amount = _service_durations.LastComparisonsAmount();
 
 	if (service_duration_ptr == nullptr) {
-		throw std::invalid_argument("Компании с таким названием нету в базе данных");
+		throw std::invalid_argument("Услуги с таким названием нету в базе данных");
 	}
 	return *service_duration_ptr;
 }
@@ -276,7 +276,7 @@ void IndexManager::SaveData(const std::string& file_name) {
 		const ServicePrice& sp = **it;
 		fout << sp.GetName() << '\n';
 		fout << sp.GetCompany() << '\n';
-		fout << sp.GetPrice() << '\n';
+		fout << std::setprecision(6) << sp.GetPrice() << '\n';
 		fout << sp.GetMeasure() << '\n';
 	}
 
@@ -284,8 +284,8 @@ void IndexManager::SaveData(const std::string& file_name) {
 	for (auto it = service_duration_lookup.Begin(); it != service_duration_lookup.End(); ++it) {
 		const ServiceDuration& sd = *it->first;
 		fout << sd.GetName() << '\n';
-		fout << sd.GetMinDuration() << '\n';
-		fout << sd.GetMaxDuration() << '\n';
+		fout << std::setprecision(6) << sd.GetMinDuration() << '\n';
+		fout << std::setprecision(6) << sd.GetMaxDuration() << '\n';
 	}
 
 
@@ -406,7 +406,7 @@ void IndexManager::SaveCompaniesIncomes(const std::string& file_name) {
 	size_t counter = 0;
 	tree.ForEach([&fout, &counter](const std::string& key, double value) {
 		fout << ++counter << ". \"" << key << "\""
-			<< " : " << std::setprecision(6) << value << "\n";
+			<< " : " << std::fixed << std::setprecision(6) << value << "\n";
 		});
 }
 
@@ -460,8 +460,8 @@ void IndexManager::SaveCustomersServiceDurations(const std::string& file_name) {
 	size_t counter = 0;
 	for (auto it = result.Begin(); it != result.End(); ++it) {
 		fout << ++counter << ". " << it->first << " : "
-			<< std::setprecision(3) << it->second.first << ", "
-			<< std::setprecision(3) << it->second.second << "\n";
+			<< std::fixed << std::setprecision(6) << it->second.first << ", "
+			<< std::fixed << std::setprecision(6) << it->second.second << "\n";
 	}
 
 }

@@ -1,12 +1,12 @@
 #include "WindowFind.h"
 
-wxBEGIN_EVENT_TABLE(FindWindowDialog, wxDialog)
-EVT_BUTTON(wxID_OK, FindWindowDialog::ClickOnOk)
-EVT_BUTTON(wxID_CANCEL, FindWindowDialog::ClickOnCancel)
-EVT_CHOICE(wxID_SETUP, FindWindowDialog::Choosing)
+wxBEGIN_EVENT_TABLE(WindowFind, wxDialog)
+EVT_BUTTON(wxID_OK, WindowFind::ClickOnOk)
+EVT_BUTTON(wxID_CANCEL, WindowFind::ClickOnCancel)
+EVT_CHOICE(wxID_SETUP, WindowFind::Choosing)
 wxEND_EVENT_TABLE()
 
-FindWindowDialog::FindWindowDialog(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
+WindowFind::WindowFind(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
 {
 	Init();
 	(void)Create(parent, id, title, pos, size, style, name);
@@ -40,19 +40,19 @@ FindWindowDialog::FindWindowDialog(wxWindow* parent, wxWindowID id, const wxStri
 	this->SetSizerAndFit(main_s);
 }
 
-FindWindowDialog::~FindWindowDialog()
+WindowFind::~WindowFind()
 {
 }
 
-void FindWindowDialog::SetManagerPointer(IndexManager& x) {
+void WindowFind::SetManagerPointer(IndexManager& x) {
 	manager = &x;
 }
 
-FindWindowDialog::data* FindWindowDialog::GetData() {
+WindowFind::data* WindowFind::GetData() {
 	return data1;
 }
 
-void FindWindowDialog::ClickOnOk(wxCommandEvent& event) {
+void WindowFind::ClickOnOk(wxCommandEvent& event) {
 	std::string str_choice = (std::string)main_choice->GetString(main_choice->GetSelection());
 	std::string text_in = (std::string)name_to_find->GetLineText(0);
 	if (text_in == "")
@@ -96,12 +96,12 @@ void FindWindowDialog::ClickOnOk(wxCommandEvent& event) {
 	}
 }
 
-void FindWindowDialog::ClickOnCancel(wxCommandEvent& event) {
+void WindowFind::ClickOnCancel(wxCommandEvent& event) {
 	this->Close();
 	event.Skip();
 }
 
-void FindWindowDialog::Choosing(wxCommandEvent& event) {
+void WindowFind::Choosing(wxCommandEvent& event) {
 	std::string str = (std::string)main_choice->GetString(main_choice->GetSelection());
 
 	if (str == "Компания") {

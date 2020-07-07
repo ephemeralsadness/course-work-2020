@@ -1,13 +1,13 @@
 #include "WindowRemove.h"
 
-wxBEGIN_EVENT_TABLE(RemoveWindow, wxDialog)
-EVT_BUTTON(wxID_OK, RemoveWindow::ClickOnOk)
-EVT_BUTTON(wxID_CANCEL, RemoveWindow::ClickOnCancel)
-EVT_CHOICE(wxID_SETUP, RemoveWindow::Choosing)
-EVT_CHOICE(wxID_APPLY, RemoveWindow::CompanyChosen)
+wxBEGIN_EVENT_TABLE(WindowRemove, wxDialog)
+EVT_BUTTON(wxID_OK, WindowRemove::ClickOnOk)
+EVT_BUTTON(wxID_CANCEL, WindowRemove::ClickOnCancel)
+EVT_CHOICE(wxID_SETUP, WindowRemove::Choosing)
+EVT_CHOICE(wxID_APPLY, WindowRemove::CompanyChosen)
 wxEND_EVENT_TABLE()
 
-RemoveWindow::RemoveWindow(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
+WindowRemove::WindowRemove(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
 {
 	Init();
 	(void)Create(parent, id, title, pos, size, style, name);
@@ -47,18 +47,18 @@ RemoveWindow::RemoveWindow(wxWindow* parent, wxWindowID id, const wxString& titl
 	this->SetSizerAndFit(main_s);
 }
 
-RemoveWindow::~RemoveWindow() {
+WindowRemove::~WindowRemove() {
 }
 
-void RemoveWindow::SetManagerPointer(IndexManager& x) {
+void WindowRemove::SetManagerPointer(IndexManager& x) {
 	manager = &x;
 }
 
-RemoveWindow::data* RemoveWindow::GetData() {
+WindowRemove::data* WindowRemove::GetData() {
 	return data1;
 }
 
-void RemoveWindow::ClickOnOk(wxCommandEvent& event) {
+void WindowRemove::ClickOnOk(wxCommandEvent& event) {
 	if (main_choice->GetString(main_choice->GetSelection()) == "Услуга у компании" && (first_choice->GetSelection() == wxNOT_FOUND || second_choice->GetSelection() == wxNOT_FOUND)) {
 		wxMessageBox("Выберете что удалить!!");
 	}
@@ -92,13 +92,13 @@ void RemoveWindow::ClickOnOk(wxCommandEvent& event) {
 
 }
 
-void RemoveWindow::ClickOnCancel(wxCommandEvent& event)
+void WindowRemove::ClickOnCancel(wxCommandEvent& event)
 {
 	this->Close();
 	event.Skip();
 }
 
-void RemoveWindow::Choosing(wxCommandEvent& event)
+void WindowRemove::Choosing(wxCommandEvent& event)
 {
 
 	std::string str = (std::string)main_choice->GetString(main_choice->GetSelection());
@@ -145,8 +145,12 @@ void RemoveWindow::Choosing(wxCommandEvent& event)
 		Vector<std::string> str_vec;
 		Vector<Pair<ServiceDuration, size_t>> all_companies = manager->LookUpServiceDurations();
 		for (size_t i = 0; i < all_companies.Size(); i++) {
-			if (all_companies[i].first.GetName() != all_companies[i - 1].first.GetName() || i == 0)
-				str_vec.PushBack(all_companies[i].first.GetName());
+			if (i != 0)
+			{
+				if (all_companies[i].first.GetName() != all_companies[i - 1].first.GetName())
+					str_vec.PushBack(all_companies[i].first.GetName());
+			}
+			else str_vec.PushBack(all_companies[i].first.GetName());
 		}
 		for (size_t i = 0; i < str_vec.Size(); i++)
 			first_choice->Append(str_vec[i]);
@@ -177,7 +181,7 @@ void RemoveWindow::Choosing(wxCommandEvent& event)
 
 }
 
-void RemoveWindow::CompanyChosen(wxCommandEvent& event) {
+void WindowRemove::CompanyChosen(wxCommandEvent& event) {
 	if (main_choice->GetString(main_choice->GetSelection()) == "Услуга у компании") {
 		label3->SetLabelText("Выберете услугу");
 		lable_mid->Clear();

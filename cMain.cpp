@@ -215,7 +215,7 @@ void cMain::ClickOnRemove(wxCommandEvent& event)
 {
 	try {
 		wxWindow::SetFocus();
-		RemoveWindow* remove_dialog = new RemoveWindow(this, wxID_ANY, "Удаление");
+		WindowRemove* remove_dialog = new WindowRemove(this, wxID_ANY, "Удаление");
 		remove_dialog->SetManagerPointer(*data_manager);
 		remove_dialog->ShowModal();
 		if (remove_dialog->GetData() != nullptr) {
@@ -228,7 +228,7 @@ void cMain::ClickOnRemove(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(wxString::FromUTF8(e.what()));
+		wxMessageBox(e.what());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -270,7 +270,7 @@ void cMain::ClickOnShow(wxCommandEvent& event)
 void cMain::ClickOnSearch(wxCommandEvent& event)
 {
 	wxWindow::SetFocus();
-	FindWindowDialog* window = new FindWindowDialog(this, wxID_ANY, "Поиск");
+	WindowFind* window = new WindowFind(this, wxID_ANY, "Поиск");
 	window->ShowModal();
 	try {
 		if (window->GetData() != nullptr) {
@@ -348,7 +348,7 @@ void cMain::ClickOnSearch(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(wxString::FromUTF8(e.what()));
+		wxMessageBox(e.what());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -461,7 +461,7 @@ void cMain::ClickOnAddCustomer(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(wxString::FromUTF8(e.what()));
+		wxMessageBox(e.what());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -478,7 +478,7 @@ void cMain::ClickOnAddCompany(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(wxString::FromUTF8(e.what()));
+		wxMessageBox(e.what());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -507,7 +507,7 @@ void cMain::ClickOnAddServicePrice(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(wxString::FromUTF8(e.what()));
+		wxMessageBox(e.what());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
@@ -524,7 +524,7 @@ void cMain::ClickOnAddServiceDuration(wxCommandEvent& event)
 		}
 	}
 	catch (std::invalid_argument e) {
-		wxMessageBox(wxString::FromUTF8(e.what()));
+		wxMessageBox(e.what());
 	}
 	wxWindow::SetFocus();
 	event.Skip();
