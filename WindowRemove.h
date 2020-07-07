@@ -38,6 +38,7 @@ private:
 	wxBoxSizer* lable_mid = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* choice_mid = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* bottom = new wxBoxSizer(wxHORIZONTAL);
+	wxMessageDialog* warning = nullptr;
 
 	void ClickOnOk(wxCommandEvent& event);
 	void ClickOnCancel(wxCommandEvent& event);

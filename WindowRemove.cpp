@@ -1,7 +1,7 @@
 #include "WindowRemove.h"
 
 wxBEGIN_EVENT_TABLE(WindowRemove, wxDialog)
-EVT_BUTTON(wxID_OK, WindowRemove::ClickOnOk)
+EVT_BUTTON(32221, WindowRemove::ClickOnOk)
 EVT_BUTTON(wxID_CANCEL, WindowRemove::ClickOnCancel)
 EVT_CHOICE(wxID_SETUP, WindowRemove::Choosing)
 EVT_CHOICE(wxID_APPLY, WindowRemove::CompanyChosen)
@@ -25,7 +25,7 @@ WindowRemove::WindowRemove(wxWindow* parent, wxWindowID id, const wxString& titl
 	label1 = new wxStaticText(this, wxID_ANY, "Выберете что удалить:");
 	top->Add(label1, 1, wxALL | wxALIGN_BOTTOM, 5);
 	top->Add(main_choice, 1, wxALL | wxALIGN_BOTTOM, 5);
-	ok_b = new wxButton(this, wxID_OK, "Ок");
+	ok_b = new wxButton(this, 32221, "Ок");
 	cancel_b = new wxButton(this, wxID_CANCEL, "Отмена");
 	ok_b->SetBackgroundColour(wxColour(127, 255, 212));
 	cancel_b->SetBackgroundColour(wxColour(127, 255, 212));
@@ -65,31 +65,42 @@ void WindowRemove::ClickOnOk(wxCommandEvent& event) {
 	else if (main_choice->GetSelection() == wxNOT_FOUND || first_choice->GetSelection() == wxNOT_FOUND) {
 		wxMessageBox("Выберете что удалить!!");
 	}
+	else  if ((std::string)main_choice->GetString(main_choice->GetSelection()) != "Заказчик") {
+		warning = new wxMessageDialog(this, "Удаление этого объекта может повлечь удаление объектов из других списков.\nПродолжить удаление?", wxMessageBoxCaptionStr,wxYES_NO );
+		warning->SetYesNoLabels("Да", "Нет");
+		switch (warning->ShowModal()) {
+		case wxID_YES: {
+			data1 = new data;
+			std::string str = (std::string)main_choice->GetString(main_choice->GetSelection());
+			if (str == "Компания") {
+				data1->choice_num = COMPANY;
+				data1->main_str = first_choice->GetString(first_choice->GetSelection());
+			}
+			else  if (str == "Услуга") {
+				data1->choice_num = SERVICE_ALL;
+				data1->main_str = first_choice->GetString(first_choice->GetSelection());
+			}
+			else if (str == "Услуга у компании") {
+				data1->choice_num = SERVICE_COMPANY;
+				data1->main_str = first_choice->GetString(first_choice->GetSelection());
+				data1->additional_str = second_choice->GetString(second_choice->GetSelection());
+			}
+			this->Close();
+			event.Skip();
+			break;
+		}
+		default: {
+			data1 = nullptr;
+		}
+		}
+	}
 	else {
 		data1 = new data;
-		std::string str = (std::string)main_choice->GetString(main_choice->GetSelection());
-		if (str == "Компания") {
-			data1->choice_num = COMPANY;
-			data1->main_str = first_choice->GetString(first_choice->GetSelection());
-		}
-		else if (str == "Заказчик") {
-			data1->choice_num = CUSTOMER;
-			data1->main_str = first_choice->GetString(first_choice->GetSelection());
-
-		}
-		else if (str == "Услуга") {
-			data1->choice_num = SERVICE_ALL;
-			data1->main_str = first_choice->GetString(first_choice->GetSelection());
-		}
-		else if (str == "Услуга у компании") {
-			data1->choice_num = SERVICE_COMPANY;
-			data1->main_str = first_choice->GetString(first_choice->GetSelection());
-			data1->additional_str = second_choice->GetString(second_choice->GetSelection());
-		}
+		data1->choice_num = CUSTOMER;
+		data1->main_str = first_choice->GetString(first_choice->GetSelection());
 		this->Close();
 		event.Skip();
 	}
-
 }
 
 void WindowRemove::ClickOnCancel(wxCommandEvent& event)
