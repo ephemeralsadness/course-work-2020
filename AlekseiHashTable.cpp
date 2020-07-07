@@ -41,8 +41,6 @@ namespace Aleksei {
 		if (Find(t.GetName()) == nullptr) {
 			table[Hash(t.GetName())].Push(std::move(t));
 			size++;
-			// TODO лучше вынести 3/4 как static поле класса, 
-			// которое обычно называется MAX_LOAD_FACTOR
 			if (size >= (N / 4) * 3)
 				ReHash();
 			return true;
